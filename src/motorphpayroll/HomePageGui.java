@@ -19,17 +19,16 @@ public class HomePageGui extends javax.swing.JFrame {
     
     private User user;
     private Timer timer;
-    private EmployeeManagementModule empModule;
+    
   
     public HomePageGui(User user) {
         initComponents();
         adjustSearchField();
         setDateAndTime();   
         this.user = user;
-        empModule = new EmployeeManagementModule();
-        empModule.fillDetails(user, profileLabel, profileLabel2);
         popup.setVisible(false);
         hamburgerPanel.setVisible(false);
+        displayEmplyoeeDetails();
                
         
     }
@@ -168,6 +167,7 @@ public class HomePageGui extends javax.swing.JFrame {
         profileButton.setBorderPainted(false);
         profileButton.setContentAreaFilled(false);
         profileButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        profileButton.setFocusable(false);
         profileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 profileButtonActionPerformed(evt);
@@ -196,27 +196,32 @@ public class HomePageGui extends javax.swing.JFrame {
 
         hamburgerPanel.setBackground(new java.awt.Color(61, 48, 72));
 
-        jButton2.setBackground(new java.awt.Color(86, 71, 97));
+        jButton2.setBackground(new java.awt.Color(61, 48, 72));
         jButton2.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Payroll Processing");
-        jButton2.setBorderPainted(false);
+        jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(86, 71, 97));
+        jButton3.setBackground(new java.awt.Color(61, 48, 72));
         jButton3.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Time and Attendance Database");
-        jButton3.setBorderPainted(false);
+        jButton3.setBorder(null);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        jButton4.setBackground(new java.awt.Color(86, 71, 97));
+        jButton4.setBackground(new java.awt.Color(61, 48, 72));
         jButton4.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setBorderPainted(false);
+        jButton4.setBorder(null);
 
         javax.swing.GroupLayout hamburgerPanelLayout = new javax.swing.GroupLayout(hamburgerPanel);
         hamburgerPanel.setLayout(hamburgerPanelLayout);
@@ -231,11 +236,11 @@ public class HomePageGui extends javax.swing.JFrame {
             .addGroup(hamburgerPanelLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addContainerGap(360, Short.MAX_VALUE))
         );
 
         backgroundPanel.add(hamburgerPanel);
@@ -560,6 +565,33 @@ public class HomePageGui extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+    private void displayEmplyoeeDetails () {       
+        String text = ("<html>" +
+            "<table cellspacing='2' cellpadding='2' style='line-height:1.2;'>" +
+            "  <tr><td><b>Name</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + user.getFirstName()+ " " + user.getLastName() + " </td></tr>" +
+            "  <tr><td><b>Employee ID</b></td><td>&nbsp:</td><td>" + user.getId()+ " </td></tr>" +
+            "  <tr><td><b>Job Position</b></td><td>&nbsp:</td><td>" + user.getPosition()+ " </td></tr>" +
+            "  <tr><td><b>Department</b></td><td>&nbsp:</td><td>" + user.getAddress()+ " </td></tr>" +
+            "</table>" +
+            "</html>");
+        profileLabel.setText(text);
+        
+        String textII = ("<html>" +
+            "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
+            "  <tr><td><b>Birthday</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + user.getBirthday() + " </td></tr>" +
+            "  <tr><td><b>Status</b></td><td>&nbsp:</td><td>" + user.getStatus() + " </td></tr>" +
+            "  <tr><td><b>Phone</b></td><td>&nbsp:</td><td>" + user.getPhoneNumber() + " </td></tr>" +
+            "  <tr><td><b>SSS</b></td><td>&nbsp:</td><td>" + user.getSSSNumber() + " </td></tr>" +
+            "  <tr><td><b>Philhealth</b></td><td>&nbsp:</td><td>" + user.getPhilhealthNumber()+ " </td></tr>" +
+            "  <tr><td><b>PAG-IBIG</b></td><td>&nbsp:</td><td>" + user.getPagibigNumber() + " </td></tr>" +
+            "  <tr><td><b>TIN</b></td><td>&nbsp:</td><td>" + user.getTinNumber() + " </td></tr>" +
+            "  <tr><td><b>Hourly Rate</b></td><td>&nbsp:</td><td>" + user.getHourlyRate() + " </td></tr>" +
+            "</table>" +
+            "</html>");
+        profileLabel2.setText(textII);
+    }
+    
+    
     private void setDateAndTime () {
         ActionListener ac = new ActionListener() {
             @Override
@@ -577,12 +609,7 @@ public class HomePageGui extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
-    
-   
-    
-    
-    
-    
+        
     private void adjustSearchField() {
         searchTextfield.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(searchTextfield.getForeground(), 0),
@@ -727,6 +754,11 @@ public class HomePageGui extends javax.swing.JFrame {
             hamburgerPanel.setVisible(false);
         }
     }//GEN-LAST:event_hamburgerMenuButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.setVisible(false);
+        new AttendanceDatabaseGUI(this).setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
     
     
    

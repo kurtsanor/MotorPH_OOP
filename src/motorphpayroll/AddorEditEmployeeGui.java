@@ -5,10 +5,13 @@
 package motorphpayroll;
 
 import java.awt.Color;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
@@ -19,20 +22,20 @@ import motorphpayroll.customcomponents.RoundJTextField;
  */
 public class AddorEditEmployeeGui extends javax.swing.JFrame {
 
-    private boolean addingEmployee;
+    private boolean isAddingEmployee;
     private int employeeId;
     private EmployeeManagementModule empModule;
     private JTable empTable;
+    private String [] details = new String[13];
     
-    public AddorEditEmployeeGui(boolean addingEmployee, int employeeId, JTable empTable) {
+    public AddorEditEmployeeGui(boolean isAddingEmployee, int employeeId, JTable empTable) {
         initComponents();
-        this.addingEmployee = addingEmployee;
+        this.isAddingEmployee = isAddingEmployee;
         this.employeeId = employeeId;
         this.empTable = empTable;
         empModule = new EmployeeManagementModule();
         adjustSearchField();
-        setTitle();
-        fillDetails();
+        identifyUserAction();
     }
 
     /**
@@ -152,23 +155,18 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         manageEmpLabel1.setForeground(new java.awt.Color(47, 36, 56));
         manageEmpLabel1.setText("PERSONAL INFORMATION");
 
-        firstName.setBackground(new java.awt.Color(255, 255, 255));
         firstName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         firstName.setForeground(new java.awt.Color(0, 0, 0));
 
-        birthday.setBackground(new java.awt.Color(255, 255, 255));
         birthday.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         birthday.setForeground(new java.awt.Color(0, 0, 0));
 
-        phoneNum.setBackground(new java.awt.Color(255, 255, 255));
         phoneNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         phoneNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        address.setBackground(new java.awt.Color(255, 255, 255));
         address.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         address.setForeground(new java.awt.Color(0, 0, 0));
 
-        lastName.setBackground(new java.awt.Color(255, 255, 255));
         lastName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lastName.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -191,15 +189,12 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         manageEmpLabel3.setForeground(new java.awt.Color(47, 36, 56));
         manageEmpLabel3.setText("EMPLOYMENT DETAILS");
 
-        status.setBackground(new java.awt.Color(255, 255, 255));
         status.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         status.setForeground(new java.awt.Color(0, 0, 0));
 
-        position.setBackground(new java.awt.Color(255, 255, 255));
         position.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         position.setForeground(new java.awt.Color(0, 0, 0));
 
-        hourlyRate.setBackground(new java.awt.Color(255, 255, 255));
         hourlyRate.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         hourlyRate.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -222,19 +217,15 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         manageEmpLabel4.setForeground(new java.awt.Color(47, 36, 56));
         manageEmpLabel4.setText("GOVERNMENT NUMBERS");
 
-        sssNum.setBackground(new java.awt.Color(255, 255, 255));
         sssNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         sssNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        philhealthNum.setBackground(new java.awt.Color(255, 255, 255));
         philhealthNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         philhealthNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        pagibigNum.setBackground(new java.awt.Color(255, 255, 255));
         pagibigNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         pagibigNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        tinNum.setBackground(new java.awt.Color(255, 255, 255));
         tinNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         tinNum.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -286,7 +277,6 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         jLabel54.setForeground(new java.awt.Color(0, 0, 0));
         jLabel54.setText("   SSS Number");
 
-        role.setBackground(new java.awt.Color(255, 255, 255));
         role.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         role.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -514,40 +504,99 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void setTitle () {
-        if (!addingEmployee) {
-            titleLabel.setText("EDIT EMPLOYEE");
+    
+    private void setDetails () {
+        details[0] = firstName.getText();
+        details[1] = lastName.getText();
+        details[2] = address.getText();
+        details[3] = birthday.getText();
+        details[4] = position.getText();
+        details[5] = phoneNum.getText();
+        details[6] = sssNum.getText();
+        details[7] = philhealthNum.getText();
+        details[8] = tinNum.getText();
+        details[9] = pagibigNum.getText();
+        details[10] = status.getText();        
+        details[11] = hourlyRate.getText();
+        details[12] = role.getText();                                  
+    }
+    
+    private void populateTextFields () {
+        String [] empDetails = empModule.getEmployeeDetails(employeeId);
+        
+        firstName.setText(empDetails[1]);
+        lastName.setText(empDetails[2]);
+        birthday.setText(empDetails[3]);
+        phoneNum.setText(empDetails[4]);
+        address.setText(empDetails[5]);
+        status.setText(empDetails[6]);
+        position.setText(empDetails[7]);
+        hourlyRate.setText(empDetails[8]);
+        role.setText(empDetails[9]);
+        sssNum.setText(empDetails[10]);
+        philhealthNum.setText(empDetails[11]);
+        pagibigNum.setText(empDetails[12]);
+        tinNum.setText(empDetails[13]);
+    }
+    
+    public void loadEmployeeTable () {
+        List <String []> employeeList = empModule.getAllRecords();
+        DefaultTableModel tblmodel = (DefaultTableModel) empTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] employeeDetails: employeeList) {
+            tblmodel.addRow(new Object [] {employeeDetails[0], employeeDetails[1], employeeDetails[2]} );
         }
     }
     
-    public void fillDetails () {
-        if (!addingEmployee) {
-            empModule.fillDetails(employeeId, firstName, lastName, birthday, phoneNum, address);
-            empModule.fillDetails(employeeId, status, position, hourlyRate, role, sssNum, philhealthNum, pagibigNum, tinNum);
+    private void identifyUserAction () {
+        if (!isAddingEmployee) {
+            titleLabel.setText("EDIT EMPLOYEE");
+            populateTextFields();
         }
     }
+    
+    private boolean hasLetters (String input) {
+        for (char c: input.toCharArray()) {
+            if (Character.isLetter(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean hasBlankFields (JTextField field1, JTextField field2, JTextField field3, JTextField field4, JTextField field5,
+                                   JTextField field6, JTextField field7, JTextField field8, JTextField field9, JTextField field10,
+                                   JTextField field11, JTextField field12, JTextField field13) 
+    {
+        return field1.getText().isBlank() || field2.getText().isBlank() || field3.getText().isBlank() || field4.getText().isBlank() ||
+               field5.getText().isBlank() || field6.getText().isBlank() || field7.getText().isBlank() || field8.getText().isBlank() ||
+               field9.getText().isBlank() || field10.getText().isBlank() || field11.getText().isBlank() || field12.getText().isBlank() ||
+               field13.getText().isBlank();
+    }
+    
     
     private void closeButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButton2ActionPerformed
         this.dispose();
     }//GEN-LAST:event_closeButton2ActionPerformed
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if (empModule.hasLetters(hourlyRate.getText())) {
+        if (hasLetters(hourlyRate.getText())) {
             JOptionPane.showMessageDialog(null, "Numerical Values only for hourly rate field");
             return;
         }
-        if (empModule.hasBlankFields(firstName, lastName, birthday, phoneNum, address, status, position, hourlyRate, role, sssNum, philhealthNum, pagibigNum, tinNum)) {
+        if (hasBlankFields(firstName, lastName, birthday, phoneNum, address, status, position, hourlyRate, role, sssNum, philhealthNum, pagibigNum, tinNum)) {
             JOptionPane.showMessageDialog(null, "Please fill up all information");
             return;
         }
-        if (addingEmployee) {
-            empModule.addEmployee(firstName, lastName, birthday, phoneNum, address, status, position, hourlyRate, role, sssNum, philhealthNum, pagibigNum, tinNum);
+        setDetails();
+        if (isAddingEmployee) {           
+            empModule.addEmployee(details);
         }
         else {
-            empModule.editEmployee(employeeId, firstName, lastName, birthday, phoneNum, address, status, position, hourlyRate, role, sssNum, philhealthNum, pagibigNum, tinNum);
+            empModule.editEmployee(employeeId, details);
         }
-        empModule.loadTable(empTable);
+        loadEmployeeTable();
         this.dispose();
     }//GEN-LAST:event_saveButtonActionPerformed
 
