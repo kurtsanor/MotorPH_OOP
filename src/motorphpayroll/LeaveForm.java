@@ -9,6 +9,7 @@ import motorphpayroll.customcomponents.PanelRound;
 import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -24,6 +25,7 @@ public class LeaveForm extends javax.swing.JFrame {
     private LeaveRequestGui leavePage;
     private LeaveManagementModule leaveModule;
     private JTable leaveTable;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");  
     
     public LeaveForm(User user, LeaveRequestGui leavePage, JTable leaveTable) {
         initComponents();
@@ -31,7 +33,7 @@ public class LeaveForm extends javax.swing.JFrame {
         this.user = user;
         this.leavePage = leavePage;
         this.leaveTable = leaveTable;
-        leaveModule = new LeaveManagementModule(user);
+        leaveModule = new LeaveManagementModule(user);          
     }
     
     
@@ -44,6 +46,8 @@ public class LeaveForm extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel10 = new PanelRound();
         leaveType = new javax.swing.JComboBox<>();
+        startDateChooser = new com.toedter.calendar.JDateChooser();
+        endDateChooser = new com.toedter.calendar.JDateChooser();
         endDateField = new RoundJTextField(5);
         startDateField = new RoundJTextField(5);
         jLabel42 = new javax.swing.JLabel();
@@ -59,11 +63,14 @@ public class LeaveForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 102, 0));
+        setPreferredSize(new java.awt.Dimension(700, 510));
+        getContentPane().setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(238, 238, 238));
-        jPanel2.setLayout(new javax.swing.OverlayLayout(jPanel2));
+        jPanel2.setLayout(null);
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setLayout(null);
 
         leaveType.setBackground(new java.awt.Color(255, 255, 255));
         leaveType.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
@@ -72,6 +79,24 @@ public class LeaveForm extends javax.swing.JFrame {
         leaveType.setBorder(null);
         leaveType.setFocusable(false);
         leaveType.setLightWeightPopupEnabled(false);
+        jPanel10.add(leaveType);
+        leaveType.setBounds(22, 117, 269, 45);
+
+        startDateChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                startDateChooserPropertyChange(evt);
+            }
+        });
+        jPanel10.add(startDateChooser);
+        startDateChooser.setBounds(300, 212, 22, 30);
+
+        endDateChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                endDateChooserPropertyChange(evt);
+            }
+        });
+        jPanel10.add(endDateChooser);
+        endDateChooser.setBounds(627, 210, 22, 30);
 
         endDateField.setBackground(new java.awt.Color(255, 255, 255));
         endDateField.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
@@ -91,6 +116,8 @@ public class LeaveForm extends javax.swing.JFrame {
                 endDateFieldActionPerformed(evt);
             }
         });
+        jPanel10.add(endDateField);
+        endDateField.setBounds(353, 204, 304, 45);
 
         startDateField.setBackground(new java.awt.Color(255, 255, 255));
         startDateField.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
@@ -105,22 +132,32 @@ public class LeaveForm extends javax.swing.JFrame {
                 startDateFieldFocusLost(evt);
             }
         });
+        jPanel10.add(startDateField);
+        startDateField.setBounds(20, 205, 310, 45);
 
         jLabel42.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel42.setForeground(new java.awt.Color(0, 0, 0));
         jLabel42.setText("Leave Type*");
+        jPanel10.add(jLabel42);
+        jLabel42.setBounds(22, 89, 69, 16);
 
         jLabel43.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel43.setForeground(new java.awt.Color(0, 0, 0));
         jLabel43.setText("Start Date*");
+        jPanel10.add(jLabel43);
+        jLabel43.setBounds(30, 182, 63, 16);
 
         jLabel44.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel44.setForeground(new java.awt.Color(0, 0, 0));
         jLabel44.setText("End Date*");
+        jPanel10.add(jLabel44);
+        jLabel44.setBounds(362, 183, 57, 15);
 
         jLabel45.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel45.setForeground(new java.awt.Color(0, 0, 0));
         jLabel45.setText("Reason*");
+        jPanel10.add(jLabel45);
+        jLabel45.setBounds(31, 267, 48, 15);
 
         submitButton.setBackground(new java.awt.Color(252, 141, 80));
         submitButton.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
@@ -140,6 +177,8 @@ public class LeaveForm extends javax.swing.JFrame {
                 submitButtonActionPerformed(evt);
             }
         });
+        jPanel10.add(submitButton);
+        submitButton.setBounds(561, 409, 90, 38);
 
         cancelButton.setBackground(new java.awt.Color(204, 204, 204));
         cancelButton.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
@@ -159,6 +198,8 @@ public class LeaveForm extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
+        jPanel10.add(cancelButton);
+        cancelButton.setBounds(459, 410, 90, 36);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -183,6 +224,9 @@ public class LeaveForm extends javax.swing.JFrame {
                 .addGap(17, 17, 17))
         );
 
+        jPanel10.add(jPanel1);
+        jPanel1.setBounds(0, 0, 686, 71);
+
         reasonField.setBackground(new java.awt.Color(255, 255, 255));
         reasonField.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
         reasonField.setForeground(new java.awt.Color(102, 102, 102));
@@ -196,99 +240,16 @@ public class LeaveForm extends javax.swing.JFrame {
                 reasonFieldFocusLost(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(leaveType, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel10Layout.createSequentialGroup()
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(6, 6, 6))
-                            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(reasonField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel10Layout.createSequentialGroup()
-                                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(startDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
-                                            .addGap(8, 8, 8)
-                                            .addComponent(jLabel43)))
-                                    .addGap(27, 27, 27)
-                                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(endDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                                            .addComponent(jLabel44)
-                                            .addGap(238, 238, 238)))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jLabel45)))
-                        .addGap(29, 29, 29))
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabel42)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(259, 259, 259))))
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(leaveType, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel43, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel44))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(endDateField, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                    .addComponent(startDateField))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel45)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reasonField, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
-        );
+        jPanel10.add(reasonField);
+        reasonField.setBounds(22, 288, 635, 103);
+        jPanel10.add(jTextField1);
+        jTextField1.setBounds(427, 6, 0, 22);
 
         jPanel2.add(jPanel10);
+        jPanel10.setBounds(0, 0, 686, 470);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(0, 0, 686, 470);
 
         pack();
         setLocationRelativeTo(null);
@@ -382,6 +343,17 @@ public class LeaveForm extends javax.swing.JFrame {
         cancelButton.setBackground(new Color(204,204,204));
     }//GEN-LAST:event_cancelButtonMouseExited
 
+    private void endDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_endDateChooserPropertyChange
+        if (endDateChooser.getDate() == null) return;
+        endDateField.setText(dateFormat.format(endDateChooser.getDate()));
+    }//GEN-LAST:event_endDateChooserPropertyChange
+
+    private void startDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_startDateChooserPropertyChange
+        if (startDateChooser.getDate() == null) return;
+        startDateField.setText(dateFormat.format(startDateChooser.getDate()));
+        System.out.println(dateFormat.format(startDateChooser.getDate()));
+    }//GEN-LAST:event_startDateChooserPropertyChange
+
     private void adjustTextField() {
         startDateField.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(startDateField.getForeground(), 0),
@@ -401,6 +373,7 @@ public class LeaveForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private com.toedter.calendar.JDateChooser endDateChooser;
     private javax.swing.JTextField endDateField;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
@@ -413,6 +386,7 @@ public class LeaveForm extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JComboBox<String> leaveType;
     private javax.swing.JTextField reasonField;
+    private com.toedter.calendar.JDateChooser startDateChooser;
     private javax.swing.JTextField startDateField;
     private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables

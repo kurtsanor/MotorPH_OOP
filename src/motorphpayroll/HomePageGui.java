@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
@@ -98,7 +97,7 @@ public class HomePageGui extends javax.swing.JFrame {
         helpButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         helpButton.setFocusable(false);
         helpButton.setPreferredSize(new java.awt.Dimension(50, 30));
-        helpButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/helpHover.png"))); // NOI18N
+        helpButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/question-mark (1).png"))); // NOI18N
         helpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 helpButtonActionPerformed(evt);
@@ -108,7 +107,7 @@ public class HomePageGui extends javax.swing.JFrame {
         helpButton.setBounds(10, 320, 50, 50);
 
         homeButton1.setBackground(new java.awt.Color(47, 36, 56));
-        homeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/home (9) (1).png"))); // NOI18N
+        homeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/home.png"))); // NOI18N
         homeButton1.setToolTipText("Home");
         homeButton1.setBorderPainted(false);
         homeButton1.setContentAreaFilled(false);
@@ -159,7 +158,7 @@ public class HomePageGui extends javax.swing.JFrame {
         settingsButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         settingsButton1.setFocusable(false);
         settingsButton1.setPreferredSize(new java.awt.Dimension(50, 30));
-        settingsButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/settingsHover.png"))); // NOI18N
+        settingsButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/settings (3).png"))); // NOI18N
         jPanel1.add(settingsButton1);
         settingsButton1.setBounds(10, 260, 50, 50);
 
@@ -608,33 +607,6 @@ public class HomePageGui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchTextfieldFocusLost
 
-    private void messageButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_messageButton1ActionPerformed
-        this.setVisible(false);
-        new MessagesGui(this).setVisible(true);
-    }//GEN-LAST:event_messageButton1ActionPerformed
-
-    private void manageEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageEmployeesButtonActionPerformed
-        if (user.hasHrAccess()) {
-            this.setVisible(false);
-            new CrudGui(this).setVisible(true);
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "Only HR can access this feature");
-        }
-        
-
-        
-    }//GEN-LAST:event_manageEmployeesButtonActionPerformed
-
-    private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
-        if (!popup.isVisible()) {
-            popup.setVisible(true);
-        } else {
-            popup.setVisible(false);
-        }
-            
-    }//GEN-LAST:event_profileButtonActionPerformed
-
     private void timeinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeinButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_timeinButtonActionPerformed
@@ -706,15 +678,46 @@ public class HomePageGui extends javax.swing.JFrame {
        timeoutButton.setBackground(new Color(252,141,80));
     }//GEN-LAST:event_timeoutButtonMouseExited
 
+    private void payrollDocsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollDocsButtonActionPerformed
+        this.setVisible(false);
+        new PayrollDocsGui(user,this).setVisible(true);
+    }//GEN-LAST:event_payrollDocsButtonActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        hamburgerPanel.setVisible(false);
+        this.setVisible(false);
+        new PayrollProcessingGui(this).setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
+        if (!popup.isVisible()) {
+            popup.setVisible(true);
+        } else {
+            popup.setVisible(false);
+        }
+
+    }//GEN-LAST:event_profileButtonActionPerformed
+
     private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
         this.setVisible(false);
         new HelpSectionGui(this).setVisible(true);
     }//GEN-LAST:event_helpButtonActionPerformed
 
-    private void payrollDocsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollDocsButtonActionPerformed
+    private void manageEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageEmployeesButtonActionPerformed
+        if (user.hasHrAccess()) {
+            this.setVisible(false);
+            new CrudGui(this).setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Only HR can access this feature");
+        }
+
+    }//GEN-LAST:event_manageEmployeesButtonActionPerformed
+
+    private void messageButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_messageButton1ActionPerformed
         this.setVisible(false);
-        new PayrollDocsGui(user,this).setVisible(true);
-    }//GEN-LAST:event_payrollDocsButtonActionPerformed
+        new MessagesGui(this).setVisible(true);
+    }//GEN-LAST:event_messageButton1ActionPerformed
 
     private void hamburgerMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hamburgerMenuButtonActionPerformed
         if (!hamburgerPanel.isVisible()) {
@@ -724,12 +727,6 @@ public class HomePageGui extends javax.swing.JFrame {
             hamburgerPanel.setVisible(false);
         }
     }//GEN-LAST:event_hamburgerMenuButtonActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        hamburgerPanel.setVisible(false);
-        this.setVisible(false);
-        new PayrollProcessingGui(this).setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
     
     
    
