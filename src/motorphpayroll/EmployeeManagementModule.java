@@ -1,11 +1,10 @@
-
 package motorphpayroll;
-
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -18,7 +17,7 @@ public class EmployeeManagementModule implements RecordOperations {
     public EmployeeManagementModule () {
         
     }
-
+    
     // loads the table with all the employee records
     @Override
     public void loadTable (JTable table) {
@@ -36,7 +35,24 @@ public class EmployeeManagementModule implements RecordOperations {
                     rs.getString("First_Name")
                 });
             }                     
+        } catch (Exception e) {e.printStackTrace();}
+    }
+    
+    public List getAllEmployees () {
+        List <String []> employeeList = new ArrayList<>();
+        try (Connection con = DatabaseConnection.Connect()) {
+            String query = "SELECT * FROM users";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                employeeList.add(new String [] {rs.getString("id"), rs.getString("Last_Name"), rs.getString("First_Name")});
+            }
+            
+            
         } catch (Exception e) {}
+        
+        return employeeList;
     }
     
     // searches existing employees
@@ -51,6 +67,7 @@ public class EmployeeManagementModule implements RecordOperations {
             DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();            
             tablemodel.setRowCount(0);
             
+            // if an employee name or id matches the search text or identifier, it loads it to the table
             while (rs.next()) {
                 if (rs.getString("id").contains(identifier) ||
                     rs.getString("Last_Name").toLowerCase().contains(identifier.toLowerCase()) ||
@@ -62,8 +79,7 @@ public class EmployeeManagementModule implements RecordOperations {
                 });
                 }
             }
-            
-                                 
+                                           
         } catch (Exception e) {e.printStackTrace();}
     }
     
@@ -255,5 +271,26 @@ public class EmployeeManagementModule implements RecordOperations {
                field5.getText().isBlank() || field6.getText().isBlank() || field7.getText().isBlank() || field8.getText().isBlank() ||
                field9.getText().isBlank() || field10.getText().isBlank() || field11.getText().isBlank() || field12.getText().isBlank() ||
                field13.getText().isBlank();
+    }
+    
+    public String [] getEmployeeDetailsForPayslip(int emplyoeeID) {
+        String [] empDetails = new String [5];
+        try (Connection con = DatabaseConnection.Connect()) {         
+             String query = "SELECT * FROM users WHERE id = ?";
+             PreparedStatement pst = con.prepareStatement(query);
+             pst.setInt(1, emplyoeeID);
+             ResultSet rs = pst.executeQuery();
+             
+             if (rs.next()) {
+                 empDetails[0] = rs.getString("id");
+                 empDetails[1] = rs.getString("First_name");
+                 empDetails[2] = rs.getString("Last_name");
+                 empDetails[3] = rs.getString("Position");           
+                 empDetails[4] = rs.getString("Hourly_rate");               
+             }
+                                
+        } catch (Exception e) {e.printStackTrace();}
+        
+        return empDetails;
     }
 }

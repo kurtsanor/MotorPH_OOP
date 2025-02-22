@@ -4,6 +4,8 @@
  */
 package motorphpayroll;
 
+import javax.swing.JWindow;
+
 /**
  *
  * @author keith
@@ -15,17 +17,73 @@ public class PayslipGui extends javax.swing.JFrame {
     private String month;
     private User user;
     private TaxAndDeductionsModule taxModule = new TaxAndDeductionsModule();
+    private JWindow overlay;
+    private String [] empDetails;
     
-    public PayslipGui(SalaryCalculationModule salaryModule, String month, User user) {        
+    // constructor for regular employees viewing their payslip
+    public PayslipGui(SalaryCalculationModule salaryModule, String month, User user, JWindow overlay) {        
         initComponents();
         this.salaryModule = salaryModule;
         this.month = month;
         this.user = user;
+        this.overlay = overlay;
         salaryModule.calculateMonthlyGrossSalary();
-        fillDetails();
-        
-        
+        fillDetails();      
     }
+    
+    // constructor for HR users to view payslip of chosen employee
+    public PayslipGui(SalaryCalculationModule salaryModule, String month, String [] empDetails, JWindow overlay) {        
+        initComponents();
+        this.salaryModule = salaryModule;
+        this.month = month;
+        this.overlay = overlay;
+        this.empDetails = empDetails;
+        salaryModule.calculateMonthlyGrossSalary();
+        fillDetailsOfChosenEmployee ();      
+    }
+    
+    public void fillDetailsOfChosenEmployee () {
+        String text = ("<html>" +
+            "<table cellspacing='2' cellpadding='2' style='line-height:1.2;'>" +
+            "  <tr><td><b>Payslip No</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + "31-2023-12-30" + " </td></tr>" +
+            "  <tr><td><b>Pay Period</b></td><td>&nbsp:</td><td>" + month +", " + salaryModule.getSelectedYear()+  " </td></tr>" +
+            "  <tr><td><b>Worked Hours</b></td><td>&nbsp:</td><td>" + salaryModule.getMonthlyHoursWorked()+ " Hours"+ " </td></tr>" +          
+            "</table>" +
+            "</html>");
+        label1.setText(text);
+        
+        String textII = ("<html>" +
+            "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
+            "  <tr><td><b>Name</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + empDetails[1] + " " + empDetails[2] +  " </td></tr>" +
+            "  <tr><td><b>ID #</b></td><td>&nbsp:</td><td>" + empDetails[0] + " </td></tr>" +
+            "  <tr><td><b>Position</b></td><td>&nbsp:</td><td>" + empDetails[3] + " </td></tr>" +           
+            "</table>" +
+            "</html>");
+        label2.setText(textII);
+        
+        String textIII = ("<html>" +
+            "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
+            "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + salaryModule.getGrossPay() + " </td></tr>" +
+            "  <tr><td>Clothing Allowance</b></td><td>&nbsp</td><td>" + "1000" + " </td></tr>" +
+            "  <tr><td>Rice Allowance</b></td><td>&nbsp</td><td>" + "500" + " </td></tr>" +  
+            "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + salaryModule.getGrossPay() + " </td></tr>" +
+            "</table>" +
+            "</html>");
+        label4.setText(textIII);
+        
+        String textIV = ("<html>" +
+            "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
+            "  <tr><td>SSS</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + taxModule.getSSSDeduction(salaryModule.getGrossPay()) + "0 </td></tr>" +
+            "  <tr><td>Philhealth</b></td><td>&nbsp</td><td>" + taxModule.getPhilHealthDeduction(salaryModule.getGrossPay()) + " </td></tr>" +
+            "  <tr><td>Pagibig</b></td><td>&nbsp</td><td>" + taxModule.getPagIbigDeduction(salaryModule.getGrossPay()) + " </td></tr>" +  
+            "  <tr><td>Withholding Tax</b></td><td>&nbsp</td><td>" + taxModule.getWithholdingTax(salaryModule.getTaxableIncome()) + " </td></tr>" +
+            "  <tr><td>Total Deductions</b></td><td>&nbsp</td><td>" + salaryModule.getTotalDeductions() + " </td></tr>" +
+            "  <tr><td><b>Net Pay</b></td><td>&nbsp</td><td><b>" + salaryModule.getNetSalary() + " </td></tr>" +
+            "</table>" +
+            "</html>");
+        label5.setText(textIV);
+    }
+    
 
     public void fillDetails () {
         String text = ("<html>" +
@@ -108,11 +166,9 @@ public class PayslipGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(500, 565));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 565));
         jPanel1.setLayout(null);
 
@@ -483,6 +539,8 @@ public class PayslipGui extends javax.swing.JFrame {
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         this.dispose();
+        overlay.setVisible(false);
+        
     }//GEN-LAST:event_closeButtonActionPerformed
 
     /**

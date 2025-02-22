@@ -21,17 +21,24 @@ public class AttendanceModule {
     
     // loads the attendance records of the logged in employee
     public void loadTable(JTable table) {
+        // Connect to database and retrieve all attendance of the chosen employee
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "SELECT * FROM attendance WHERE id = ?";
              PreparedStatement ptst = con.prepareStatement(query);
              ptst.setInt(1, employeeId);
              ResultSet rs = ptst.executeQuery();
-             DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();
              
+             // clear the table contents
+             DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();           
              tablemodel.setRowCount(0);
              
+             // read each line of the result set
              while (rs.next()) {
+                 
+                 // split the date to identify the month and year
                  String [] dateParts = rs.getString("date").split("/");
+                 
+                 // dateParts[0] is the month while datParts[2] is the year
                  if (dateParts[0].equals(getSelectedMonth(selectedMonth)) && dateParts[2].equals(selectedYear)) {
                      tablemodel.addRow(new Object [] {
                      rs.getString("date"),
@@ -85,7 +92,7 @@ public class AttendanceModule {
     }
     
     
-    // helper method to get the total work hours
+    // helper method to get the total work hours in a day
     public int calculateTotalHours (String time_in, String time_out) {
         String [] timeIn = time_in.split(":");
         String [] timeOut = time_out.split(":");

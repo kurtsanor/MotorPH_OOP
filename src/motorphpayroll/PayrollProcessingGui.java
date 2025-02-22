@@ -10,13 +10,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JWindow;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import motorphpayroll.customcomponents.CustomPanel;
-import motorphpayroll.customcomponents.PanelRound;
+import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
 
 /**
@@ -27,6 +29,8 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
 
     private SalaryCalculationModule salary;
     private HomePageGui home;
+    private JWindow overlay = new JWindow();
+    private EmployeeManagementModule employeeModule = new EmployeeManagementModule();
     
     public PayrollProcessingGui(HomePageGui home) {
         initComponents();
@@ -34,8 +38,16 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         addIndentionToTable();      
         adjustSearchField();
         this.home = home;
-        salary = new SalaryCalculationModule(0, 0);
+        salary = new SalaryCalculationModule(0, 0);   
+        overlay.setBackground(new Color(0, 0, 0, 200));
+        overlay.setVisible(false);   
         
+    }
+    
+    private void showOverlay() {
+        overlay.setSize(863,558);
+        overlay.setLocation(252,78);
+        overlay.setVisible(true);  
     }
 
     /**
@@ -67,6 +79,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        viewButton = new MyButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(878, 565));
@@ -131,7 +144,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
 
             },
             new String [] {
-                "   Emp ID", "       Employee Name", "   Rate/hr", "   Work Hrs", "   Philhealth", "        SSS", "    Pagibig", "      Tax", "   Gross Pay", "   Net Pay"
+                "   Emp ID", "       Employee Name", "   Rate/hr", "   Work Hrs", "   Philhealth", "        SSS", "    Pagibig", "      Wth Tax", "   Gross Pay", "   Net Pay"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -145,7 +158,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         payrollTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         payrollTable.setFocusable(false);
         payrollTable.setGridColor(new java.awt.Color(102, 102, 102));
-        payrollTable.setRowHeight(30);
+        payrollTable.setRowHeight(35);
         payrollTable.setSelectionBackground(new java.awt.Color(192, 227, 255));
         payrollTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         payrollTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -161,12 +174,12 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         }
 
         manageEmpLabel5.setBackground(new java.awt.Color(47, 36, 56));
-        manageEmpLabel5.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        manageEmpLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         manageEmpLabel5.setForeground(new java.awt.Color(0, 0, 0));
         manageEmpLabel5.setText("Select Month:");
 
         monthComboBox.setBackground(new java.awt.Color(255, 255, 255));
-        monthComboBox.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        monthComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         monthComboBox.setForeground(new java.awt.Color(0, 0, 0));
         monthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         monthComboBox.setBorder(null);
@@ -183,12 +196,12 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         });
 
         manageEmpLabel4.setBackground(new java.awt.Color(47, 36, 56));
-        manageEmpLabel4.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        manageEmpLabel4.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         manageEmpLabel4.setForeground(new java.awt.Color(0, 0, 0));
         manageEmpLabel4.setText("Select Year:");
 
         yearComboBox.setBackground(new java.awt.Color(255, 255, 255));
-        yearComboBox.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        yearComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         yearComboBox.setForeground(new java.awt.Color(0, 0, 0));
         yearComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2022", "2023", "2024", "2025", "2026", "2027" }));
         yearComboBox.setBorder(null);
@@ -292,6 +305,18 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
+        viewButton.setBackground(new java.awt.Color(102, 153, 255));
+        viewButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        viewButton.setForeground(new java.awt.Color(255, 255, 255));
+        viewButton.setText("View Payslip");
+        viewButton.setToolTipText("View");
+        viewButton.setBorderPainted(false);
+        viewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -301,44 +326,50 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 841, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(manageEmpLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(manageEmpLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(viewButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(manageEmpLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(yearComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(manageEmpLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(monthComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(viewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(manageEmpLabel5))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(manageEmpLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -397,8 +428,28 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldFocusLost
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
-        
+        salary.setSelectedMonth(monthComboBox.getSelectedItem().toString());
+        salary.setSelectedYear(yearComboBox.getSelectedItem().toString());
+        salary.search(payrollTable, searchField.getText());
     }//GEN-LAST:event_searchFieldKeyReleased
+
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
+        if (payrollTable.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(null, "Select an employe to view payslip");
+            return;
+        }
+        
+        int chosenEmployee = Integer.parseInt(payrollTable.getValueAt(payrollTable.getSelectedRow(), 0).toString());
+        salary.setEmployeeId(chosenEmployee);
+        salary.setSelectedMonth(monthComboBox.getSelectedItem().toString());
+        salary.setSelectedYear(yearComboBox.getSelectedItem().toString());
+        
+        String [] empDetails = employeeModule.getEmployeeDetailsForPayslip(chosenEmployee);
+        salary.setHourlyRate(Double.parseDouble(empDetails[4]));
+        
+        showOverlay();
+        new PayslipGui(salary, monthComboBox.getSelectedItem().toString(), empDetails, overlay).setVisible(true);
+    }//GEN-LAST:event_viewButtonActionPerformed
 
    
     
@@ -413,7 +464,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         JTableHeader header = payrollTable.getTableHeader();
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 40));
         
-        payrollTable.getTableHeader().setFont(new Font("Yu Gothic UI", Font.BOLD, 16));
+        payrollTable.getTableHeader().setFont(new Font("Roboto", Font.BOLD, 16));
         payrollTable.getTableHeader().setBackground(new Color(230,184,183));
         
         header.setDefaultRenderer(new CustomHeaderRendererV());
@@ -460,6 +511,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> monthComboBox;
     private javax.swing.JTable payrollTable;
     private javax.swing.JTextField searchField;
+    private javax.swing.JButton viewButton;
     private javax.swing.JComboBox<String> yearComboBox;
     // End of variables declaration//GEN-END:variables
 }

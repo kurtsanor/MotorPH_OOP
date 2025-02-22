@@ -152,23 +152,18 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         manageEmpLabel1.setForeground(new java.awt.Color(47, 36, 56));
         manageEmpLabel1.setText("PERSONAL INFORMATION");
 
-        firstName.setBackground(new java.awt.Color(255, 255, 255));
         firstName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         firstName.setForeground(new java.awt.Color(0, 0, 0));
 
-        birthday.setBackground(new java.awt.Color(255, 255, 255));
         birthday.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         birthday.setForeground(new java.awt.Color(0, 0, 0));
 
-        phoneNum.setBackground(new java.awt.Color(255, 255, 255));
         phoneNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         phoneNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        address.setBackground(new java.awt.Color(255, 255, 255));
         address.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         address.setForeground(new java.awt.Color(0, 0, 0));
 
-        lastName.setBackground(new java.awt.Color(255, 255, 255));
         lastName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lastName.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -191,15 +186,12 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         manageEmpLabel3.setForeground(new java.awt.Color(47, 36, 56));
         manageEmpLabel3.setText("EMPLOYMENT DETAILS");
 
-        status.setBackground(new java.awt.Color(255, 255, 255));
         status.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         status.setForeground(new java.awt.Color(0, 0, 0));
 
-        position.setBackground(new java.awt.Color(255, 255, 255));
         position.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         position.setForeground(new java.awt.Color(0, 0, 0));
 
-        hourlyRate.setBackground(new java.awt.Color(255, 255, 255));
         hourlyRate.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         hourlyRate.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -222,19 +214,15 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         manageEmpLabel4.setForeground(new java.awt.Color(47, 36, 56));
         manageEmpLabel4.setText("GOVERNMENT NUMBERS");
 
-        sssNum.setBackground(new java.awt.Color(255, 255, 255));
         sssNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         sssNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        philhealthNum.setBackground(new java.awt.Color(255, 255, 255));
         philhealthNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         philhealthNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        pagibigNum.setBackground(new java.awt.Color(255, 255, 255));
         pagibigNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         pagibigNum.setForeground(new java.awt.Color(0, 0, 0));
 
-        tinNum.setBackground(new java.awt.Color(255, 255, 255));
         tinNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         tinNum.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -286,7 +274,6 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         jLabel54.setForeground(new java.awt.Color(0, 0, 0));
         jLabel54.setText("   SSS Number");
 
-        role.setBackground(new java.awt.Color(255, 255, 255));
         role.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         role.setForeground(new java.awt.Color(0, 0, 0));
 

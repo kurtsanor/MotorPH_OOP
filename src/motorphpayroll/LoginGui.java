@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 public class LoginGui extends javax.swing.JFrame {
 
-    UserAuthentication system;
+    private UserAuthentication system;
     
     public LoginGui() {
         initComponents();
@@ -206,7 +206,6 @@ public class LoginGui extends javax.swing.JFrame {
     }
     
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-//        new HomePageGui().setVisible(true);
         boolean validAccount = system.Login(UsernameTextfield.getText(), String.valueOf(PasswordField.getPassword()));
         if (validAccount) this.dispose();       
     }//GEN-LAST:event_loginButtonActionPerformed

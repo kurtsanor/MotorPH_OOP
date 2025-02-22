@@ -9,12 +9,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JWindow;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
@@ -24,6 +27,7 @@ public class CrudGui extends javax.swing.JFrame {
     private HomePageGui homePage;
     private ViewProfileGui profile;
     private EmployeeManagementModule empManagement = new EmployeeManagementModule();
+    private JWindow overlay = new JWindow(); 
     
     public CrudGui(HomePageGui homePage) {
         initComponents();
@@ -31,17 +35,29 @@ public class CrudGui extends javax.swing.JFrame {
         adjustSearchField();
         addIndentionToTable();
         this.homePage = homePage;
-        empManagement.loadTable(empTable);                           
+        long startTime = System.currentTimeMillis();
+        loadEmployeeTable();
+//        empManagement.loadTable(empTable);
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
+           
+        overlay.setBackground(new Color(0, 0, 0, 200));
+        overlay.setVisible(false);
     }
+    
+    private void loadEmployeeTable () {
+        List <String []> employeeList = empManagement.getAllEmployees();
+        DefaultTableModel tblmodel = (DefaultTableModel) empTable.getModel();
+        
+        for (String [] employeeDetails: employeeList) {
+            tblmodel.addRow(new Object [] {employeeDetails[0], employeeDetails[1], employeeDetails[2]} );
+        }
+   }
     
     // for JTable formatting
     private void customizeTable() {
         JTableHeader header = empTable.getTableHeader();
-        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 50));
-        
-        empTable.getTableHeader().setFont(new Font("Roboto", Font.BOLD, 16));
-        empTable.getTableHeader().setBackground(new Color(51,51,0));
-        
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 50));              
         header.setDefaultRenderer(new CustomHeaderRenderer());
         empTable.setSelectionBackground(new Color(47,36,56,200));                          
     }
@@ -142,7 +158,7 @@ public class CrudGui extends javax.swing.JFrame {
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(backButton, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
             .addGroup(headerPanelLayout.createSequentialGroup()
                 .addContainerGap(27, Short.MAX_VALUE)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -319,7 +335,7 @@ public class CrudGui extends javax.swing.JFrame {
         bgPanel.setLayout(bgPanelLayout);
         bgPanelLayout.setHorizontalGroup(
             bgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
+            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 857, Short.MAX_VALUE)
             .addGroup(bgPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,7 +386,8 @@ public class CrudGui extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // opens the GUI for adding employees
-        new AddorEditEmployeeGui(true, 0, empTable).setVisible(true);
+        boolean addingEmployee = true;
+        new AddorEditEmployeeGui(addingEmployee, 0, empTable).setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
@@ -378,6 +395,7 @@ public class CrudGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldKeyReleased
 
     private void searchFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusLost
+        // textfield placeholders
         if (searchField.getText().equals("")) {
             searchField.setText("Search");
             searchField.setForeground(Color.GRAY);
@@ -385,6 +403,7 @@ public class CrudGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldFocusLost
 
     private void searchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusGained
+        // textfield placeholders
         if (searchField.getText().equals("Search")) {
             searchField.setText("");
             searchField.setForeground(Color.BLACK);
@@ -392,6 +411,7 @@ public class CrudGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldFocusGained
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // disposes the current frame and restores the previous frame
         this.dispose();
         homePage.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
@@ -428,6 +448,16 @@ public class CrudGui extends javax.swing.JFrame {
         viewButton.setBackground(new Color(252,141,80));
     }//GEN-LAST:event_viewButtonMouseExited
     
+     
+    // to darken the background while viewing employee information
+    private void showOverlay() {
+        overlay.setSize(863,558);
+        overlay.setLocation(252,78);
+        overlay.setVisible(true);  
+    }
+        
+    
+    
     // Views details of the chosen employee
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // throw error if no employee is selected from the table
@@ -442,8 +472,9 @@ public class CrudGui extends javax.swing.JFrame {
             profile.dispose();         
         }       
             
-        // views the profile of the chosen employee    
-        profile = new ViewProfileGui(chosenEmployee);
+        // opens a new frame and displays employee info
+        showOverlay();
+        profile = new ViewProfileGui(chosenEmployee, overlay);
         profile.setVisible(true);  
         }
                            
@@ -458,7 +489,8 @@ public class CrudGui extends javax.swing.JFrame {
         // gets the employeeID of the chosen employee from the table then updates it
         else {
             int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
-            new AddorEditEmployeeGui(false, chosenEmployee, empTable).setVisible(true);
+            boolean addingEmployees = true;
+            new AddorEditEmployeeGui(!addingEmployees, chosenEmployee, empTable).setVisible(true);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
     // deletes the record of the chosen employee

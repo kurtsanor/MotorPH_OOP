@@ -288,16 +288,10 @@ public class AttendancePageGui extends javax.swing.JFrame {
     }//GEN-LAST:event_monthComboBoxItemStateChanged
 
     private void yearComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_yearComboBoxItemStateChanged
-        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-           long start = System.currentTimeMillis();
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {          
            attendanceModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
            attendanceModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-           attendanceModule.loadTable(attendanceTable);
-           
-        
-        
-            long end = System.currentTimeMillis();
-        System.out.println("Query executed in: " + (end - start) + " ms");
+           attendanceModule.loadTable(attendanceTable);                         
       }
     }//GEN-LAST:event_yearComboBoxItemStateChanged
     private void customizeTable() {

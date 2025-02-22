@@ -53,6 +53,7 @@ public class TaxAndDeductionsModule {
         else if (salary < 24250) deduction = 1080.00;
         else if (salary < 24750) deduction = 1102.50;
         else deduction = 1125.00; // For salaries 24,750 and above
+        
         return deduction;
     }
     
@@ -62,6 +63,7 @@ public class TaxAndDeductionsModule {
         else if (salary <= 10000) deduction = 150.0;
         else if (salary <= 59999.99) deduction = (salary * 0.03) / 2;
         else deduction = 900;
+        
         return Math.round(deduction * 100.0)/ 100.0;
     }
     
@@ -70,6 +72,7 @@ public class TaxAndDeductionsModule {
         if (salary < 1000) deduction = 0;
         else if (salary <= 1500) deduction = salary * 0.01;
         else deduction = Math.min(100, salary * 0.02);
+        
         return Math.round(deduction * 100.0)/ 100.0;
     }
     
@@ -81,8 +84,8 @@ public class TaxAndDeductionsModule {
         else if (taxableSalary < 166667) deduction = 10833 + (taxableSalary - 66667) * 0.30;
         else if (taxableSalary < 666667) deduction = 40833.33 + (taxableSalary - 166667) * 0.32;
         else deduction = 200833.33 + (taxableSalary - 666667) * 0.35;
-        return Math.round(deduction * 100.0)/ 100.0;
         
+        return Math.round(deduction * 100.0)/ 100.0;    
     }
     
     
