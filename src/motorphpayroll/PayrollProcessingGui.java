@@ -413,7 +413,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         JTableHeader header = payrollTable.getTableHeader();
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 40));
         
-        payrollTable.getTableHeader().setFont(new Font("Yu Gothic UI", Font.BOLD, 16));
+        payrollTable.getTableHeader().setFont(new Font("Roboto", Font.BOLD, 16));
         payrollTable.getTableHeader().setBackground(new Color(230,184,183));
         
         header.setDefaultRenderer(new CustomHeaderRendererV());

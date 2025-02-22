@@ -200,6 +200,7 @@ public class HomePageGui extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Payroll Processing");
+        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton2.setBorderPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -211,11 +212,13 @@ public class HomePageGui extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Time and Attendance Database");
+        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton3.setBorderPainted(false);
 
         jButton4.setBackground(new java.awt.Color(86, 71, 97));
         jButton4.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton4.setBorderPainted(false);
 
         javax.swing.GroupLayout hamburgerPanelLayout = new javax.swing.GroupLayout(hamburgerPanel);
@@ -231,11 +234,11 @@ public class HomePageGui extends javax.swing.JFrame {
             .addGroup(hamburgerPanelLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addContainerGap(360, Short.MAX_VALUE))
         );
 
         backgroundPanel.add(hamburgerPanel);

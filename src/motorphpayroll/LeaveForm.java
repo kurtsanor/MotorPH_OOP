@@ -63,10 +63,11 @@ public class LeaveForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 102, 0));
-        setPreferredSize(new java.awt.Dimension(700, 510));
+        setPreferredSize(new java.awt.Dimension(700, 511));
+        setResizable(false);
         getContentPane().setLayout(null);
 
-        jPanel2.setBackground(new java.awt.Color(238, 238, 238));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(null);
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -246,10 +247,10 @@ public class LeaveForm extends javax.swing.JFrame {
         jTextField1.setBounds(427, 6, 0, 22);
 
         jPanel2.add(jPanel10);
-        jPanel10.setBounds(0, 0, 686, 470);
+        jPanel10.setBounds(0, 0, 700, 470);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 0, 686, 470);
+        jPanel2.setBounds(-1, 0, 690, 470);
 
         pack();
         setLocationRelativeTo(null);

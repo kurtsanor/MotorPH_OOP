@@ -4,6 +4,8 @@
  */
 package motorphpayroll;
 
+import javax.swing.JWindow;
+
 /**
  *
  * @author keith
@@ -15,12 +17,14 @@ public class PayslipGui extends javax.swing.JFrame {
     private String month;
     private User user;
     private TaxAndDeductionsModule taxModule = new TaxAndDeductionsModule();
+    private JWindow overlay;
     
-    public PayslipGui(SalaryCalculationModule salaryModule, String month, User user) {        
+    public PayslipGui(SalaryCalculationModule salaryModule, String month, User user, JWindow overlay) {        
         initComponents();
         this.salaryModule = salaryModule;
         this.month = month;
         this.user = user;
+        this.overlay = overlay;
         salaryModule.calculateMonthlyGrossSalary();
         fillDetails();
         
@@ -108,11 +112,9 @@ public class PayslipGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(500, 565));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 565));
         jPanel1.setLayout(null);
 
@@ -483,6 +485,8 @@ public class PayslipGui extends javax.swing.JFrame {
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         this.dispose();
+        overlay.setVisible(false);
+        
     }//GEN-LAST:event_closeButtonActionPerformed
 
     /**

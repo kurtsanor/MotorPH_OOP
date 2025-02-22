@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JWindow;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -24,6 +25,7 @@ public class CrudGui extends javax.swing.JFrame {
     private HomePageGui homePage;
     private ViewProfileGui profile;
     private EmployeeManagementModule empManagement = new EmployeeManagementModule();
+    private JWindow overlay = new JWindow(); 
     
     public CrudGui(HomePageGui homePage) {
         initComponents();
@@ -31,7 +33,9 @@ public class CrudGui extends javax.swing.JFrame {
         adjustSearchField();
         addIndentionToTable();
         this.homePage = homePage;
-        empManagement.loadTable(empTable);                           
+        empManagement.loadTable(empTable);   
+        overlay.setBackground(new Color(0, 0, 0, 200));
+        overlay.setVisible(false);
     }
     
     // for JTable formatting
@@ -428,6 +432,16 @@ public class CrudGui extends javax.swing.JFrame {
         viewButton.setBackground(new Color(252,141,80));
     }//GEN-LAST:event_viewButtonMouseExited
     
+     
+    
+    private void showOverlay() {
+        overlay.setSize(863,558);
+        overlay.setLocation(252,78);
+        overlay.setVisible(true);  
+    }
+        
+    
+    
     // Views details of the chosen employee
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // throw error if no employee is selected from the table
@@ -442,8 +456,9 @@ public class CrudGui extends javax.swing.JFrame {
             profile.dispose();         
         }       
             
-        // views the profile of the chosen employee    
-        profile = new ViewProfileGui(chosenEmployee);
+        // views the profile of the chosen employee
+        showOverlay();
+        profile = new ViewProfileGui(chosenEmployee, overlay);
         profile.setVisible(true);  
         }
                            
