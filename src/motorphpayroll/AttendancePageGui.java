@@ -5,11 +5,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
@@ -273,6 +275,24 @@ public class AttendancePageGui extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadAttendanceTable () {
+        long startTime = System.currentTimeMillis();
+        
+        List <String []> attendanceRecords = attendanceModule.getAllRecords();
+        DefaultTableModel tblmodel = (DefaultTableModel) attendanceTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] records: attendanceRecords) {
+            tblmodel.addRow(new Object [] {
+            records[0],
+            records[1],
+            records[2],
+            records[3]});
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
+    }
+    
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.dispose();
         homePage.setVisible(true);
@@ -282,22 +302,16 @@ public class AttendancePageGui extends javax.swing.JFrame {
        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
            attendanceModule.setSelectedMonth(String.valueOf(monthComboBox.getSelectedItem()));
            attendanceModule.setSelectedYear(String.valueOf(yearComboBox.getSelectedItem()));
-           attendanceModule.loadTable(attendanceTable);
+           loadAttendanceTable();
            
       }
     }//GEN-LAST:event_monthComboBoxItemStateChanged
 
     private void yearComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_yearComboBoxItemStateChanged
-        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-           long start = System.currentTimeMillis();
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {          
            attendanceModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
            attendanceModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-           attendanceModule.loadTable(attendanceTable);
-           
-        
-        
-            long end = System.currentTimeMillis();
-        System.out.println("Query executed in: " + (end - start) + " ms");
+           loadAttendanceTable();                        
       }
     }//GEN-LAST:event_yearComboBoxItemStateChanged
     private void customizeTable() {

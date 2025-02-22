@@ -7,11 +7,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
@@ -26,62 +28,14 @@ public class LeaveRequestGui extends javax.swing.JFrame {
         initComponents();
         customizeTable();
         addIndentionToTable();     
-        leaveModule = new LeaveManagementModule(user);
-        leaveModule.loadTable(leaveTable);        
+        leaveModule = new LeaveManagementModule(user);             
         this.user = user;
         this.homepage = homepage;
+        loadLeaveTable();
     }
 
     
-    private void customizeTable() {
-        JTableHeader header = leaveTable.getTableHeader();
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.LEFT); // Align text to the left
-        renderer.setBorder(BorderFactory.createEmptyBorder()); 
-        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 70));
-        
-        leaveTable.getTableHeader().setFont(new Font("Yu Gothic UI", Font.BOLD, 16));
-        leaveTable.getTableHeader().setBackground(new Color(51,51,0));
-        
-        header.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLUE));
-        header.setDefaultRenderer(new CustomHeaderRendererII());
-        header.setOpaque(true);
-        header.setForeground(Color.WHITE);
-        leaveTable.setSelectionBackground(new Color(52,58,64,200));                          
-    }
-   
-    private void addIndentionToTable () {
-        DefaultTableCellRenderer paddedRenderer = new DefaultTableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(
-                        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    
-                    if (!isSelected) {
-                        switch (leaveTable.getValueAt(row, 4).toString()) {
-                        case "Approved" -> c.setBackground(new Color(180,216,180));
-                        case "Denied" -> c.setBackground(new Color(255,173,173));
-                        default -> c.setBackground(new Color(255,255,255));
-                        }
-                    }
-                    
-                    
-                    
-                    if (c instanceof JLabel) {
-                        JLabel label = (JLabel) c;
-                        label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Top, Left, Bottom, Right padding
-                    }
-                    return c;
-                }
-            };
-
-            // Apply the renderer to all columns
-            for (int i = 0; i < leaveTable.getColumnCount(); i++) {
-                leaveTable.getColumnModel().getColumn(i).setCellRenderer(paddedRenderer);
-            }
-            
-            
-    }
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -224,7 +178,7 @@ public class LeaveRequestGui extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 864, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,6 +220,23 @@ public class LeaveRequestGui extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadLeaveTable () {
+        List <String []> leaveRecords = leaveModule.getAllRecords(user.getId());
+        
+        DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] record: leaveRecords) {
+            tblmodel.addRow(new String [] {
+            record[0],
+            record[1],
+            record[2],
+            record[3],
+            record[4]});
+        }
+        
+    }
+        
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.dispose();
         homepage.setVisible(true);
@@ -285,11 +256,11 @@ public class LeaveRequestGui extends javax.swing.JFrame {
     }//GEN-LAST:event_requestLeaveButtonMouseExited
 
     private void manageLeaveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageLeaveButtonMouseEntered
-        // TODO add your handling code here:
+        manageLeaveButton.setBackground(new Color(255,165,115));
     }//GEN-LAST:event_manageLeaveButtonMouseEntered
 
     private void manageLeaveButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageLeaveButtonMouseExited
-        // TODO add your handling code here:
+        manageLeaveButton.setBackground(new Color(252,141,80));
     }//GEN-LAST:event_manageLeaveButtonMouseExited
 
     private void manageLeaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageLeaveButtonActionPerformed
@@ -297,7 +268,55 @@ public class LeaveRequestGui extends javax.swing.JFrame {
         new LeaveManagementGui(user,this).setVisible(true);
     }//GEN-LAST:event_manageLeaveButtonActionPerformed
 
-    
+    private void customizeTable() {
+        JTableHeader header = leaveTable.getTableHeader();
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.LEFT); // Align text to the left
+        renderer.setBorder(BorderFactory.createEmptyBorder()); 
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 70));
+        
+        leaveTable.getTableHeader().setFont(new Font("Yu Gothic UI", Font.BOLD, 16));
+        leaveTable.getTableHeader().setBackground(new Color(51,51,0));
+        
+        header.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLUE));
+        header.setDefaultRenderer(new CustomHeaderRendererII());
+        header.setOpaque(true);
+        header.setForeground(Color.WHITE);
+        leaveTable.setSelectionBackground(new Color(52,58,64,200));                          
+    }
+   
+    private void addIndentionToTable () {
+        DefaultTableCellRenderer paddedRenderer = new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(
+                        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    
+                    if (!isSelected) {
+                        switch (leaveTable.getValueAt(row, 4).toString()) {
+                        case "Approved" -> c.setBackground(new Color(180,216,180));
+                        case "Denied" -> c.setBackground(new Color(255,173,173));
+                        default -> c.setBackground(new Color(255,255,255));
+                        }
+                    }
+                    
+                    
+                    
+                    if (c instanceof JLabel) {
+                        JLabel label = (JLabel) c;
+                        label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Top, Left, Bottom, Right padding
+                    }
+                    return c;
+                }
+            };
+
+            // Apply the renderer to all columns
+            for (int i = 0; i < leaveTable.getColumnCount(); i++) {
+                leaveTable.getColumnModel().getColumn(i).setCellRenderer(paddedRenderer);
+            }
+            
+            
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

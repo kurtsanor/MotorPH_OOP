@@ -6,6 +6,7 @@ package motorphpayroll;
 
 import motorphpayroll.customcomponents.CustomPanel;
 import java.awt.Color;
+import javax.swing.JWindow;
 
 /**
  *
@@ -13,18 +14,23 @@ import java.awt.Color;
  */
 public class ViewProfileGui extends javax.swing.JFrame {
 
-    EmployeeManagementModule empModule;
-    int chosenEmployeeId;
+    
+    private int chosenEmployeeId;
+    private JWindow overlay;
             
-    public ViewProfileGui(int chosenEmployeeId) {
+    public ViewProfileGui(int chosenEmployeeId, JWindow overlay) {
         initComponents();
         this.chosenEmployeeId = chosenEmployeeId;
-        empModule = new EmployeeManagementModule();
-        closeButton.setBackground(new Color(0,0,0,100));
-        empModule.viewEmployee(chosenEmployeeId, infoLabel, fullNameLabel);
+        this.overlay = overlay;
+        showEmployeeInformation();
     }
     
-  
+    private void showEmployeeInformation () {
+        EmployeeManagementModule empModule = new EmployeeManagementModule();
+        String [] info = empModule.getEmployeeInformation(chosenEmployeeId);
+        infoLabel.setText(info[0]);
+        fullNameLabel.setText(info[1]);       
+    }
 
     
     
@@ -48,7 +54,6 @@ public class ViewProfileGui extends javax.swing.JFrame {
         setUndecorated(true);
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -128,17 +133,16 @@ public class ViewProfileGui extends javax.swing.JFrame {
         jPanel5.setBounds(30, 30, 212, 300);
 
         jPanel2.setBackground(new java.awt.Color(91, 69, 108));
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 241, Short.MAX_VALUE)
+            .addGap(0, 243, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 184, Short.MAX_VALUE)
+            .addGap(0, 186, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel2);
@@ -185,7 +189,9 @@ public class ViewProfileGui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        overlay.setVisible(false);
         this.dispose();
+        
     }//GEN-LAST:event_closeButtonActionPerformed
 
    

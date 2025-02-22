@@ -9,12 +9,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JWindow;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
@@ -24,50 +27,49 @@ public class CrudGui extends javax.swing.JFrame {
     private HomePageGui homePage;
     private ViewProfileGui profile;
     private EmployeeManagementModule empManagement = new EmployeeManagementModule();
+    private JWindow overlay = new JWindow(); 
     
     public CrudGui(HomePageGui homePage) {
         initComponents();
         customizeTable();
         adjustSearchField();
         addIndentionToTable();
-        this.homePage = homePage;
-        empManagement.loadTable(empTable);                           
+        this.homePage = homePage;       
+        loadEmployeeTable();          
+        overlay.setBackground(new Color(0, 0, 0, 200));
+        overlay.setVisible(false);
+    }
+    
+    public void loadEmployeeTable () {
+        List <String []> employeeList = empManagement.getAllRecords();
+        DefaultTableModel tblmodel = (DefaultTableModel) empTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] employeeDetails: employeeList) {
+            tblmodel.addRow(new Object [] {employeeDetails[0], employeeDetails[1], employeeDetails[2]} );
+        }
+   }
+    
+    private void searchEmployees () {
+        List <String []> searchResults = empManagement.search(searchField.getText());
+        DefaultTableModel tblmodel = (DefaultTableModel) empTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] result: searchResults) {
+            tblmodel.addRow(new Object [] {result[0], result[1], result[2]});
+        }
     }
     
     // for JTable formatting
     private void customizeTable() {
         JTableHeader header = empTable.getTableHeader();
-        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 50));
-        
-        empTable.getTableHeader().setFont(new Font("Roboto", Font.BOLD, 16));
-        empTable.getTableHeader().setBackground(new Color(51,51,0));
-        
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 50));              
         header.setDefaultRenderer(new CustomHeaderRenderer());
         empTable.setSelectionBackground(new Color(47,36,56,200));                          
     }
     
     
-    // for JTable formatting
-    private void addIndentionToTable () {
-        DefaultTableCellRenderer paddedRenderer = new DefaultTableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(
-                        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-                    if (c instanceof JLabel) {
-                        JLabel label = (JLabel) c;
-                        label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Top, Left, Bottom, Right padding
-                    }
-                    return c;
-                }
-            };
-
-            // Apply the renderer to all columns
-            for (int i = 0; i < empTable.getColumnCount(); i++) {
-                empTable.getColumnModel().getColumn(i).setCellRenderer(paddedRenderer);
-            }
-    }
+    
     
     // Puts indention on textfields
     private void adjustSearchField() {
@@ -142,7 +144,7 @@ public class CrudGui extends javax.swing.JFrame {
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(backButton, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
             .addGroup(headerPanelLayout.createSequentialGroup()
                 .addContainerGap(27, Short.MAX_VALUE)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -319,7 +321,7 @@ public class CrudGui extends javax.swing.JFrame {
         bgPanel.setLayout(bgPanelLayout);
         bgPanelLayout.setHorizontalGroup(
             bgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
+            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 857, Short.MAX_VALUE)
             .addGroup(bgPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,14 +372,16 @@ public class CrudGui extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // opens the GUI for adding employees
-        new AddorEditEmployeeGui(true, 0, empTable).setVisible(true);
+        boolean addingEmployee = true;
+        new AddorEditEmployeeGui(addingEmployee, 0, empTable).setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
-        empManagement.search(empTable, searchField.getText());
+        searchEmployees();
     }//GEN-LAST:event_searchFieldKeyReleased
 
     private void searchFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusLost
+        // textfield placeholders
         if (searchField.getText().equals("")) {
             searchField.setText("Search");
             searchField.setForeground(Color.GRAY);
@@ -385,6 +389,7 @@ public class CrudGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldFocusLost
 
     private void searchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusGained
+        // textfield placeholders
         if (searchField.getText().equals("Search")) {
             searchField.setText("");
             searchField.setForeground(Color.BLACK);
@@ -392,6 +397,7 @@ public class CrudGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldFocusGained
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // disposes the current frame and restores the previous frame
         this.dispose();
         homePage.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
@@ -428,6 +434,16 @@ public class CrudGui extends javax.swing.JFrame {
         viewButton.setBackground(new Color(252,141,80));
     }//GEN-LAST:event_viewButtonMouseExited
     
+     
+    // to darken the background while viewing employee information
+    private void showOverlay() {
+        overlay.setSize(863,558);
+        overlay.setLocation(252,78);
+        overlay.setVisible(true);  
+    }
+        
+    
+    
     // Views details of the chosen employee
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // throw error if no employee is selected from the table
@@ -442,8 +458,9 @@ public class CrudGui extends javax.swing.JFrame {
             profile.dispose();         
         }       
             
-        // views the profile of the chosen employee    
-        profile = new ViewProfileGui(chosenEmployee);
+        // opens a new frame and displays employee info
+        showOverlay();
+        profile = new ViewProfileGui(chosenEmployee, overlay);
         profile.setVisible(true);  
         }
                            
@@ -458,7 +475,8 @@ public class CrudGui extends javax.swing.JFrame {
         // gets the employeeID of the chosen employee from the table then updates it
         else {
             int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
-            new AddorEditEmployeeGui(false, chosenEmployee, empTable).setVisible(true);
+            boolean addingEmployees = true;
+            new AddorEditEmployeeGui(!addingEmployees, chosenEmployee, empTable).setVisible(true);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
     // deletes the record of the chosen employee
@@ -472,13 +490,33 @@ public class CrudGui extends javax.swing.JFrame {
             if (JOptionPane.showConfirmDialog(null, "Are you sure you want to delete","", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
                 empManagement.deleteEmployee(chosenEmployee);
-                empManagement.loadTable(empTable);
+                loadEmployeeTable();
             }           
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
     
    
-  
+    // for JTable formatting
+    private void addIndentionToTable () {
+        DefaultTableCellRenderer paddedRenderer = new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(
+                        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                    if (c instanceof JLabel) {
+                        JLabel label = (JLabel) c;
+                        label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Top, Left, Bottom, Right padding
+                    }
+                    return c;
+                }
+            };
+
+            // Apply the renderer to all columns
+            for (int i = 0; i < empTable.getColumnCount(); i++) {
+                empTable.getColumnModel().getColumn(i).setCellRenderer(paddedRenderer);
+            }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
@@ -501,6 +539,7 @@ public class CrudGui extends javax.swing.JFrame {
 
 // for JTable designs
  class CustomHeaderRenderer implements TableCellRenderer {
+     
         @Override
         public Component getTableCellRendererComponent(
                 JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
