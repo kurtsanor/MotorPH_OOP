@@ -8,12 +8,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import motorphpayroll.customcomponents.CustomPanel;
@@ -38,16 +40,11 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         this.user = user;
         this.leaveReqGui = leaveReqGui;
         leaveModule = new LeaveManagementModule(user);
-        leaveModule.loadTable(leaveTable, true);
         adjustSearchField();
+        loadLeaveTable();
     }
 
-    private void adjustSearchField() {
-        searchField.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(searchField.getForeground(), 1),
-                    new EmptyBorder(5, 40, 5, 10)
-            ));
-    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -73,7 +70,6 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         denyButton = new MyButton();
         approveButton = new MyButton();
         jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         searchField = new RoundJTextField(5);
@@ -304,7 +300,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(manageEmpLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reasonField, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                .addComponent(reasonField, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(denyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -322,8 +318,6 @@ public class LeaveManagementGui extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\keith\\Downloads\\image (1).png")); // NOI18N
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(null);
@@ -346,11 +340,6 @@ public class LeaveManagementGui extends javax.swing.JFrame {
                 searchFieldFocusLost(evt);
             }
         });
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
-            }
-        });
         searchField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 searchFieldKeyReleased(evt);
@@ -363,6 +352,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         filterComboBox.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         filterComboBox.setForeground(new java.awt.Color(0, 0, 0));
         filterComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Pending", "Approved", "Denied" }));
+        filterComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         filterComboBox.setFocusable(false);
         filterComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -377,17 +367,14 @@ public class LeaveManagementGui extends javax.swing.JFrame {
             .addComponent(headerPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 12, Short.MAX_VALUE))
         );
@@ -398,19 +385,14 @@ public class LeaveManagementGui extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(33, 33, 33))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
 
@@ -428,15 +410,96 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void loadLeaveTable () {
+        List <String []> leaveRecords = leaveModule.getAllRecords();
+        
+        DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] record: leaveRecords) {
+            tblmodel.addRow(new Object [] {
+            record[0],
+            record[1],
+            record[2],
+            record[3],
+            record[4]});
+        }     
+    }
+    
+    private void search () {
+        List <String []> searchResults = leaveModule.search(searchField.getText());
+        
+        DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] empDetails: searchResults) {
+            tblmodel.addRow(new Object [] {
+            empDetails[0],
+            empDetails[1],
+            empDetails[2],
+            empDetails[3],
+            empDetails[4]});
+        }
+    }
+    
+    private void filterTable () {
+        List <String []> filteredResults = leaveModule.filterRecords(filterComboBox.getSelectedItem().toString(), searchField.getText());
+        DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] details: filteredResults) {
+            tblmodel.addRow(new String [] {
+            details[0],
+            details[1],
+            details[2],
+            details[3],
+            details[4],});
+        }
+    }
+    
+    private void searchFiltered () {
+        List <String []> searchResults = leaveModule.search(searchField.getText(), filterComboBox.getSelectedItem().toString());
+        
+        DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] empDetails: searchResults) {
+            tblmodel.addRow(new Object [] {
+            empDetails[0],
+            empDetails[1],
+            empDetails[2],
+            empDetails[3],
+            empDetails[4]});
+        }
+    }
+    
+    private void fillTextFields () {
+        int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
+        
+        String [] leaveDetails = leaveModule.getLeaveDetails(requestID);
+        
+        empNameField.setText(leaveDetails[0]);
+        startDateField.setText(leaveDetails[1]);
+        endDateField.setText(leaveDetails[2]);
+        leaveTypeField.setText(leaveDetails[3]);
+        reasonField.setText(leaveDetails[4]);
+    }
+    
+    private void adjustSearchField() {
+        searchField.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(searchField.getForeground(), 1),
+                    new EmptyBorder(5, 40, 5, 10)
+            ));
+    }
+    
     private void backButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton2ActionPerformed
         this.dispose();
         leaveReqGui.setVisible(true);
     }//GEN-LAST:event_backButton2ActionPerformed
 
     private void leaveTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_leaveTableMouseReleased
-        int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
-        leaveModule.fillDetails(requestID, empNameField, startDateField, endDateField, leaveTypeField, reasonField);
+        fillTextFields();       
     }//GEN-LAST:event_leaveTableMouseReleased
 
     private void approveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveButtonActionPerformed
@@ -446,7 +509,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         else {
             int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
             leaveModule.approveLeave(requestID);
-            leaveModule.loadTable(leaveTable, true);
+            loadLeaveTable();
         }       
     }//GEN-LAST:event_approveButtonActionPerformed
 
@@ -457,7 +520,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         else {
             int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
             leaveModule.denyLeave(requestID);
-            leaveModule.loadTable(leaveTable, true);
+            loadLeaveTable();
         }     
     }//GEN-LAST:event_denyButtonActionPerformed
 
@@ -475,23 +538,18 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchFieldFocusLost
 
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
         if (filterComboBox.getSelectedItem().toString().equals("All")) {
-            leaveModule.search(leaveTable, searchField.getText());
+            search();
         }
         else {
-            leaveModule.search(leaveTable, searchField.getText(), filterComboBox.getSelectedItem().toString());
-        }
-        
+            searchFiltered();
+        }        
     }//GEN-LAST:event_searchFieldKeyReleased
 
     private void filterComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            leaveModule.loadTable(leaveTable, filterComboBox.getSelectedItem().toString(), searchField.getText());
+            filterTable();
         }
     }//GEN-LAST:event_filterComboBoxItemStateChanged
 
@@ -559,7 +617,6 @@ public class LeaveManagementGui extends javax.swing.JFrame {
     private javax.swing.JTextField endDateField;
     private javax.swing.JComboBox<String> filterComboBox;
     private javax.swing.JPanel headerPanel2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

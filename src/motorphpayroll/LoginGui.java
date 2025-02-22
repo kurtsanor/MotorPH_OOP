@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 public class LoginGui extends javax.swing.JFrame {
 
-    UserAuthentication system;
+    private UserAuthentication system;
     
     public LoginGui() {
         initComponents();
@@ -100,7 +100,7 @@ public class LoginGui extends javax.swing.JFrame {
         jLabel2.setText("We are happy to see you again!");
 
         loginButton.setBackground(new java.awt.Color(252, 141, 80));
-        loginButton.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        loginButton.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setText("LOGIN");
         loginButton.setBorder(null);
@@ -187,7 +187,7 @@ public class LoginGui extends javax.swing.JFrame {
         pasi.setCaretColor(new java.awt.Color(255, 255, 255));
         pasi.setCaretPosition(0);
         jPanel1.add(pasi);
-        pasi.setBounds(0, 0, 0, 9);
+        pasi.setBounds(0, 0, 0, 13);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -206,7 +206,6 @@ public class LoginGui extends javax.swing.JFrame {
     }
     
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-//        new HomePageGui().setVisible(true);
         boolean validAccount = system.Login(UsernameTextfield.getText(), String.valueOf(PasswordField.getPassword()));
         if (validAccount) this.dispose();       
     }//GEN-LAST:event_loginButtonActionPerformed

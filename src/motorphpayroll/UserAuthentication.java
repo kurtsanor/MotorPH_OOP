@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 
 
 public class UserAuthentication  {
+    
+    public UserAuthentication () {}
           
     public boolean Login (String username, String password) {
         try (Connection con = DatabaseConnection.Connect()) {          

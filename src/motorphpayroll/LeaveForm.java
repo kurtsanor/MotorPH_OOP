@@ -10,10 +10,14 @@ import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -63,10 +67,11 @@ public class LeaveForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 102, 0));
-        setPreferredSize(new java.awt.Dimension(700, 510));
+        setPreferredSize(new java.awt.Dimension(700, 511));
+        setResizable(false);
         getContentPane().setLayout(null);
 
-        jPanel2.setBackground(new java.awt.Color(238, 238, 238));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(null);
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
@@ -80,58 +85,39 @@ public class LeaveForm extends javax.swing.JFrame {
         leaveType.setFocusable(false);
         leaveType.setLightWeightPopupEnabled(false);
         jPanel10.add(leaveType);
-        leaveType.setBounds(22, 117, 269, 45);
+        leaveType.setBounds(22, 117, 300, 45);
 
+        startDateChooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         startDateChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 startDateChooserPropertyChange(evt);
             }
         });
         jPanel10.add(startDateChooser);
-        startDateChooser.setBounds(300, 212, 22, 30);
+        startDateChooser.setBounds(300, 212, 23, 30);
 
+        endDateChooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         endDateChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 endDateChooserPropertyChange(evt);
             }
         });
         jPanel10.add(endDateChooser);
-        endDateChooser.setBounds(627, 210, 22, 30);
+        endDateChooser.setBounds(627, 210, 23, 30);
 
+        endDateField.setEditable(false);
         endDateField.setBackground(new java.awt.Color(255, 255, 255));
         endDateField.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
-        endDateField.setForeground(new java.awt.Color(102, 102, 102));
-        endDateField.setText("MM/DD/YYYY");
+        endDateField.setForeground(new java.awt.Color(0, 0, 0));
         endDateField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        endDateField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                endDateFieldFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                endDateFieldFocusLost(evt);
-            }
-        });
-        endDateField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                endDateFieldActionPerformed(evt);
-            }
-        });
         jPanel10.add(endDateField);
         endDateField.setBounds(353, 204, 304, 45);
 
+        startDateField.setEditable(false);
         startDateField.setBackground(new java.awt.Color(255, 255, 255));
         startDateField.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
-        startDateField.setForeground(new java.awt.Color(102, 102, 102));
-        startDateField.setText("MM/DD/YYYY");
+        startDateField.setForeground(new java.awt.Color(0, 0, 0));
         startDateField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        startDateField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                startDateFieldFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                startDateFieldFocusLost(evt);
-            }
-        });
         jPanel10.add(startDateField);
         startDateField.setBounds(20, 205, 310, 45);
 
@@ -243,73 +229,76 @@ public class LeaveForm extends javax.swing.JFrame {
         jPanel10.add(reasonField);
         reasonField.setBounds(22, 288, 635, 103);
         jPanel10.add(jTextField1);
-        jTextField1.setBounds(427, 6, 0, 22);
+        jTextField1.setBounds(427, 6, 0, 26);
 
         jPanel2.add(jPanel10);
-        jPanel10.setBounds(0, 0, 686, 470);
+        jPanel10.setBounds(0, 0, 700, 470);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 0, 686, 470);
+        jPanel2.setBounds(-1, 0, 690, 470);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void loadLeaveTable () {
+        List <String []> leaveRecords = leaveModule.getAllRecords(user.getId());
+        
+        DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
+        tblmodel.setRowCount(0);
+        
+        for (String [] record: leaveRecords) {
+            tblmodel.addRow(new String [] {
+            record[0],
+            record[1],
+            record[2],
+            record[3],
+            record[4]});
+        }      
+    }
+    
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (startDateField.getText().isBlank() || endDateField.getText().isBlank() || reasonField.getText().isBlank()) {
             JOptionPane.showMessageDialog(null, "Please fillup all information");
+            return;
         }
-        else {         
+        
+        if (validDateFields()) {
             String leavetype = String.valueOf(leaveType.getSelectedItem());
             leaveModule.submitLeaveRequest(user.getId(), startDateField.getText(),endDateField.getText(), reasonField.getText(), user.getFirstName(), user.getLastName(), leavetype, "Pending");
-            leaveModule.loadTable(leaveTable);
+            loadLeaveTable();
             this.dispose();
             leavePage.setVisible(true);
-        }
+        }         
         
     }//GEN-LAST:event_submitButtonActionPerformed
 
+    private boolean validDateFields () {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy"); 
+        
+        LocalDate startDate = LocalDate.parse(startDateField.getText(), formatter);
+        LocalDate endDate = LocalDate.parse(endDateField.getText(), formatter);
+        LocalDate currentDate = LocalDate.now();
+        
+        // checks if leave dates are in the past or end date is before the start date
+        if (startDate.isBefore(currentDate) || endDate.isBefore(currentDate) || endDate.isEqual(startDate) || startDate.isAfter(endDate)) {
+            JOptionPane.showMessageDialog(null, 
+            "Invalid leave request:\n" +
+            "- Leave dates cannot be in the past.\n" +
+            "- The end date must be after the start date.", 
+            "Leave Request Error", 
+            JOptionPane.ERROR_MESSAGE);          
+            return false;
+        }
+        
+        // if no errors are found return true
+        return true;
+    }
+    
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
-        leavePage.setVisible(true);
-        
+        leavePage.setVisible(true);            
     }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void endDateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endDateFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_endDateFieldActionPerformed
-
-    private void startDateFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_startDateFieldFocusGained
-        if (startDateField.getText().equals("MM/DD/YYYY")) {
-            startDateField.setText("");
-            startDateField.setForeground(Color.black);
-        }
-        
-    }//GEN-LAST:event_startDateFieldFocusGained
-
-    private void startDateFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_startDateFieldFocusLost
-        if (startDateField.getText().equals("")) {
-            startDateField.setText("MM/DD/YYYY");
-            startDateField.setForeground(Color.GRAY);
-        }
-        
-    }//GEN-LAST:event_startDateFieldFocusLost
-
-    private void endDateFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endDateFieldFocusGained
-        if (endDateField.getText().equals("MM/DD/YYYY")) {
-            endDateField.setText("");
-            endDateField.setForeground(Color.black);
-        }
-        
-    }//GEN-LAST:event_endDateFieldFocusGained
-
-    private void endDateFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_endDateFieldFocusLost
-        if (endDateField.getText().equals("")) {
-            endDateField.setText("MM/DD/YYYY");
-            endDateField.setForeground(Color.GRAY);
-        }
-        
-    }//GEN-LAST:event_endDateFieldFocusLost
 
     private void reasonFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_reasonFieldFocusGained
         if (reasonField.getText().equals("Enter reason for your leave...")) {

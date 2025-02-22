@@ -19,17 +19,16 @@ public class HomePageGui extends javax.swing.JFrame {
     
     private User user;
     private Timer timer;
-    private EmployeeManagementModule empModule;
+    
   
     public HomePageGui(User user) {
         initComponents();
         adjustSearchField();
         setDateAndTime();   
         this.user = user;
-        empModule = new EmployeeManagementModule();
-        empModule.fillDetails(user, profileLabel, profileLabel2);
         popup.setVisible(false);
         hamburgerPanel.setVisible(false);
+        displayEmplyoeeDetails();
                
         
     }
@@ -42,17 +41,18 @@ public class HomePageGui extends javax.swing.JFrame {
 
         backgroundPanel = new javax.swing.JPanel();
         jPanel1 = new CustomPanel(new Color(47,36,56), new Color(89,65,107));
-        helpButton = new javax.swing.JButton();
+        attendanceDatabaseButton = new javax.swing.JButton();
         homeButton1 = new javax.swing.JButton();
         messageButton1 = new javax.swing.JButton();
         manageEmployeesButton = new javax.swing.JButton();
-        settingsButton1 = new javax.swing.JButton();
+        payrollButton = new javax.swing.JButton();
         profileButton = new javax.swing.JButton();
         hamburgerMenuButton = new javax.swing.JButton();
         hamburgerPanel = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        myAttendanceMenu = new javax.swing.JButton();
+        leaveRequestMenu = new javax.swing.JButton();
+        myPayrollMenu = new javax.swing.JButton();
+        needHelpMenu = new javax.swing.JButton();
         jPanel2 = new CustomPanel(new Color(213,213,213), new Color(158,158,158));
         jLabel1 = new javax.swing.JLabel();
         notificationButton = new javax.swing.JButton();
@@ -89,22 +89,22 @@ public class HomePageGui extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(47, 36, 56));
         jPanel1.setLayout(null);
 
-        helpButton.setBackground(new java.awt.Color(47, 36, 56));
-        helpButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/help.png"))); // NOI18N
-        helpButton.setToolTipText("Help");
-        helpButton.setBorderPainted(false);
-        helpButton.setContentAreaFilled(false);
-        helpButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        helpButton.setFocusable(false);
-        helpButton.setPreferredSize(new java.awt.Dimension(50, 30));
-        helpButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/question-mark (1).png"))); // NOI18N
-        helpButton.addActionListener(new java.awt.event.ActionListener() {
+        attendanceDatabaseButton.setBackground(new java.awt.Color(47, 36, 56));
+        attendanceDatabaseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/folder.png"))); // NOI18N
+        attendanceDatabaseButton.setToolTipText("Employee Attendance");
+        attendanceDatabaseButton.setBorderPainted(false);
+        attendanceDatabaseButton.setContentAreaFilled(false);
+        attendanceDatabaseButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        attendanceDatabaseButton.setFocusable(false);
+        attendanceDatabaseButton.setPreferredSize(new java.awt.Dimension(50, 30));
+        attendanceDatabaseButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/folder (2).png"))); // NOI18N
+        attendanceDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpButtonActionPerformed(evt);
+                attendanceDatabaseButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(helpButton);
-        helpButton.setBounds(10, 320, 50, 50);
+        jPanel1.add(attendanceDatabaseButton);
+        attendanceDatabaseButton.setBounds(10, 320, 50, 50);
 
         homeButton1.setBackground(new java.awt.Color(47, 36, 56));
         homeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/home.png"))); // NOI18N
@@ -150,17 +150,22 @@ public class HomePageGui extends javax.swing.JFrame {
         jPanel1.add(manageEmployeesButton);
         manageEmployeesButton.setBounds(10, 200, 50, 50);
 
-        settingsButton1.setBackground(new java.awt.Color(47, 36, 56));
-        settingsButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/settings.png"))); // NOI18N
-        settingsButton1.setToolTipText("Settings");
-        settingsButton1.setBorderPainted(false);
-        settingsButton1.setContentAreaFilled(false);
-        settingsButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        settingsButton1.setFocusable(false);
-        settingsButton1.setPreferredSize(new java.awt.Dimension(50, 30));
-        settingsButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/settings (3).png"))); // NOI18N
-        jPanel1.add(settingsButton1);
-        settingsButton1.setBounds(10, 260, 50, 50);
+        payrollButton.setBackground(new java.awt.Color(47, 36, 56));
+        payrollButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/percentage.png"))); // NOI18N
+        payrollButton.setToolTipText("Payroll Processing");
+        payrollButton.setBorderPainted(false);
+        payrollButton.setContentAreaFilled(false);
+        payrollButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        payrollButton.setFocusable(false);
+        payrollButton.setPreferredSize(new java.awt.Dimension(50, 30));
+        payrollButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/percentageHover.png"))); // NOI18N
+        payrollButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payrollButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(payrollButton);
+        payrollButton.setBounds(10, 260, 50, 50);
 
         profileButton.setBackground(new java.awt.Color(47, 36, 56));
         profileButton.setForeground(new java.awt.Color(47, 36, 56));
@@ -168,6 +173,7 @@ public class HomePageGui extends javax.swing.JFrame {
         profileButton.setBorderPainted(false);
         profileButton.setContentAreaFilled(false);
         profileButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        profileButton.setFocusable(false);
         profileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 profileButtonActionPerformed(evt);
@@ -196,46 +202,103 @@ public class HomePageGui extends javax.swing.JFrame {
 
         hamburgerPanel.setBackground(new java.awt.Color(61, 48, 72));
 
-        jButton2.setBackground(new java.awt.Color(86, 71, 97));
-        jButton2.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Payroll Processing");
-        jButton2.setBorderPainted(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        myAttendanceMenu.setBackground(new java.awt.Color(61, 48, 72));
+        myAttendanceMenu.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        myAttendanceMenu.setForeground(new java.awt.Color(255, 255, 255));
+        myAttendanceMenu.setText("My Attendance");
+        myAttendanceMenu.setBorder(null);
+        myAttendanceMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                myAttendanceMenuMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                myAttendanceMenuMouseExited(evt);
+            }
+        });
+        myAttendanceMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                myAttendanceMenuActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(86, 71, 97));
-        jButton3.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Time and Attendance Database");
-        jButton3.setBorderPainted(false);
+        leaveRequestMenu.setBackground(new java.awt.Color(61, 48, 72));
+        leaveRequestMenu.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        leaveRequestMenu.setForeground(new java.awt.Color(255, 255, 255));
+        leaveRequestMenu.setText("Leave Request Forms");
+        leaveRequestMenu.setBorder(null);
+        leaveRequestMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                leaveRequestMenuMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                leaveRequestMenuMouseExited(evt);
+            }
+        });
+        leaveRequestMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leaveRequestMenuActionPerformed(evt);
+            }
+        });
 
-        jButton4.setBackground(new java.awt.Color(86, 71, 97));
-        jButton4.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setBorderPainted(false);
+        myPayrollMenu.setBackground(new java.awt.Color(61, 48, 72));
+        myPayrollMenu.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        myPayrollMenu.setForeground(new java.awt.Color(255, 255, 255));
+        myPayrollMenu.setText("My Payroll");
+        myPayrollMenu.setBorder(null);
+        myPayrollMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                myPayrollMenuMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                myPayrollMenuMouseExited(evt);
+            }
+        });
+        myPayrollMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                myPayrollMenuActionPerformed(evt);
+            }
+        });
+
+        needHelpMenu.setBackground(new java.awt.Color(61, 48, 72));
+        needHelpMenu.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        needHelpMenu.setForeground(new java.awt.Color(255, 255, 255));
+        needHelpMenu.setText("Need Help?");
+        needHelpMenu.setBorder(null);
+        needHelpMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                needHelpMenuMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                needHelpMenuMouseExited(evt);
+            }
+        });
+        needHelpMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                needHelpMenuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout hamburgerPanelLayout = new javax.swing.GroupLayout(hamburgerPanel);
         hamburgerPanel.setLayout(hamburgerPanelLayout);
         hamburgerPanelLayout.setHorizontalGroup(
             hamburgerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(myAttendanceMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(leaveRequestMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+            .addComponent(myPayrollMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(needHelpMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         hamburgerPanelLayout.setVerticalGroup(
             hamburgerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hamburgerPanelLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addComponent(myAttendanceMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(leaveRequestMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(myPayrollMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(needHelpMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(312, Short.MAX_VALUE))
         );
 
         backgroundPanel.add(hamburgerPanel);
@@ -299,7 +362,7 @@ public class HomePageGui extends javax.swing.JFrame {
         popup.setBackground(new java.awt.Color(61, 48, 72));
 
         logoutButton.setBackground(new java.awt.Color(215, 43, 43));
-        logoutButton.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        logoutButton.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         logoutButton.setForeground(new java.awt.Color(255, 255, 255));
         logoutButton.setText("LOGOUT");
         logoutButton.setBorderPainted(false);
@@ -319,7 +382,7 @@ public class HomePageGui extends javax.swing.JFrame {
         });
 
         timeinButton.setBackground(new java.awt.Color(0, 153, 0));
-        timeinButton.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        timeinButton.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         timeinButton.setForeground(new java.awt.Color(0, 0, 0));
         timeinButton.setText("Time IN");
         timeinButton.setBorderPainted(false);
@@ -339,7 +402,7 @@ public class HomePageGui extends javax.swing.JFrame {
         });
 
         timeoutButton.setBackground(new java.awt.Color(252, 141, 80));
-        timeoutButton.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        timeoutButton.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         timeoutButton.setForeground(new java.awt.Color(0, 0, 0));
         timeoutButton.setText("Time OUT");
         timeoutButton.setBorderPainted(false);
@@ -350,6 +413,11 @@ public class HomePageGui extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 timeoutButtonMouseExited(evt);
+            }
+        });
+        timeoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeoutButtonActionPerformed(evt);
             }
         });
 
@@ -433,7 +501,7 @@ public class HomePageGui extends javax.swing.JFrame {
         jPanel3.add(popup);
         popup.setBounds(0, 60, 230, 210);
 
-        profileLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        profileLabel2.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
         profileLabel2.setForeground(new java.awt.Color(47, 36, 56));
         jPanel3.add(profileLabel2);
         profileLabel2.setBounds(20, 60, 465, 182);
@@ -448,7 +516,7 @@ public class HomePageGui extends javax.swing.JFrame {
         documentsLabel.setText("RECORDS & DOCUMENTS");
 
         leaveRequestButton.setBackground(new java.awt.Color(252, 141, 80));
-        leaveRequestButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        leaveRequestButton.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         leaveRequestButton.setForeground(new java.awt.Color(255, 255, 255));
         leaveRequestButton.setText("Leave Request Forms");
         leaveRequestButton.setBorderPainted(false);
@@ -469,7 +537,7 @@ public class HomePageGui extends javax.swing.JFrame {
         });
 
         payrollDocsButton.setBackground(new java.awt.Color(252, 141, 80));
-        payrollDocsButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        payrollDocsButton.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         payrollDocsButton.setForeground(new java.awt.Color(255, 255, 255));
         payrollDocsButton.setText("Payroll Documents");
         payrollDocsButton.setBorderPainted(false);
@@ -490,7 +558,7 @@ public class HomePageGui extends javax.swing.JFrame {
         });
 
         timeAndAttendanceButton.setBackground(new java.awt.Color(252, 141, 80));
-        timeAndAttendanceButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        timeAndAttendanceButton.setFont(new java.awt.Font("Roboto", 1, 13)); // NOI18N
         timeAndAttendanceButton.setForeground(new java.awt.Color(255, 255, 255));
         timeAndAttendanceButton.setText("Time & Attendance");
         timeAndAttendanceButton.setBorderPainted(false);
@@ -549,7 +617,7 @@ public class HomePageGui extends javax.swing.JFrame {
         backgroundPanel.add(jLabel2);
         jLabel2.setBounds(90, 80, 200, 170);
 
-        profileLabel.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        profileLabel.setFont(new java.awt.Font("Roboto", 0, 15)); // NOI18N
         profileLabel.setForeground(new java.awt.Color(47, 36, 56));
         backgroundPanel.add(profileLabel);
         profileLabel.setBounds(310, 80, 530, 160);
@@ -559,6 +627,76 @@ public class HomePageGui extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void displayEmplyoeeDetails () {       
+        String text = ("<html>" +
+            "<table cellspacing='2' cellpadding='2' style='line-height:1.2;'>" +
+            "  <tr><td><b>Name</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + user.getFirstName()+ " " + user.getLastName() + " </td></tr>" +
+            "  <tr><td><b>Employee ID</b></td><td>&nbsp:</td><td>" + user.getId()+ " </td></tr>" +
+            "  <tr><td><b>Job Position</b></td><td>&nbsp:</td><td>" + user.getPosition()+ " </td></tr>" +
+            "  <tr><td><b>Address</b></td><td>&nbsp:</td><td>" + user.getAddress()+ " </td></tr>" +
+            "</table>" +
+            "</html>");
+        profileLabel.setText(text);
+        
+        String textII = ("<html>" +
+            "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
+            "  <tr><td><b>Birthday</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + user.getBirthday() + " </td></tr>" +
+            "  <tr><td><b>Status</b></td><td>&nbsp:</td><td>" + user.getStatus() + " </td></tr>" +
+            "  <tr><td><b>Phone</b></td><td>&nbsp:</td><td>" + user.getPhoneNumber() + " </td></tr>" +
+            "  <tr><td><b>SSS</b></td><td>&nbsp:</td><td>" + user.getSSSNumber() + " </td></tr>" +
+            "  <tr><td><b>Philhealth</b></td><td>&nbsp:</td><td>" + user.getPhilhealthNumber()+ " </td></tr>" +
+            "  <tr><td><b>PAG-IBIG</b></td><td>&nbsp:</td><td>" + user.getPagibigNumber() + " </td></tr>" +
+            "  <tr><td><b>TIN</b></td><td>&nbsp:</td><td>" + user.getTinNumber() + " </td></tr>" +
+            "  <tr><td><b>Hourly Rate</b></td><td>&nbsp:</td><td>" + user.getHourlyRate() + " </td></tr>" +
+            "</table>" +
+            "</html>");
+        profileLabel2.setText(textII);
+    }
+    
+    
+    private void timeIn() {
+        String [] details = new String [3];
+        Date date = new Date();
+        DateFormat currentDate = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat currentTime = new SimpleDateFormat("HH:mm");
+        details[0] = String.valueOf(user.getId());
+        details[1] = currentDate.format(date);
+        details[2] = currentTime.format(date);
+        
+        AttendanceModule attendance = new AttendanceModule(user.getId());
+        
+        boolean timeIn = attendance.timeIn(details);
+        
+        if (timeIn) {
+            JOptionPane.showMessageDialog(null, "Timed in successfully");
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "You have already timed in", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void timeOut() {
+        String [] details = new String [3];
+        Date date = new Date();
+        DateFormat currentDate = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat currentTime = new SimpleDateFormat("HH:mm");
+        details[0] = currentTime.format(date);
+        details[1] = currentDate.format(date);
+        details[2] = String.valueOf(user.getId());
+        
+        AttendanceModule attendance = new AttendanceModule(user.getId());
+        
+        boolean timeOut = attendance.timeOut(details);
+        
+        if (timeOut) {
+            JOptionPane.showMessageDialog(null, "Timed out successfully");
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "You have not yet timed in", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
     
     private void setDateAndTime () {
         ActionListener ac = new ActionListener() {
@@ -577,12 +715,7 @@ public class HomePageGui extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
-    
-   
-    
-    
-    
-    
+        
     private void adjustSearchField() {
         searchTextfield.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(searchTextfield.getForeground(), 0),
@@ -608,7 +741,7 @@ public class HomePageGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchTextfieldFocusLost
 
     private void timeinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeinButtonActionPerformed
-        // TODO add your handling code here:
+        timeIn();
     }//GEN-LAST:event_timeinButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
@@ -683,11 +816,11 @@ public class HomePageGui extends javax.swing.JFrame {
         new PayrollDocsGui(user,this).setVisible(true);
     }//GEN-LAST:event_payrollDocsButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void myAttendanceMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myAttendanceMenuActionPerformed
         hamburgerPanel.setVisible(false);
+        new AttendancePageGui(user,this).setVisible(true);
         this.setVisible(false);
-        new PayrollProcessingGui(this).setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_myAttendanceMenuActionPerformed
 
     private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
         if (!popup.isVisible()) {
@@ -698,10 +831,16 @@ public class HomePageGui extends javax.swing.JFrame {
 
     }//GEN-LAST:event_profileButtonActionPerformed
 
-    private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
-        this.setVisible(false);
-        new HelpSectionGui(this).setVisible(true);
-    }//GEN-LAST:event_helpButtonActionPerformed
+    private void attendanceDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attendanceDatabaseButtonActionPerformed
+        if (user.hasHrAccess()) {
+            this.setVisible(false);
+            new AttendanceDatabaseGUI(this).setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Only HR can access this feature");
+        }
+        
+    }//GEN-LAST:event_attendanceDatabaseButtonActionPerformed
 
     private void manageEmployeesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageEmployeesButtonActionPerformed
         if (user.hasHrAccess()) {
@@ -727,12 +866,78 @@ public class HomePageGui extends javax.swing.JFrame {
             hamburgerPanel.setVisible(false);
         }
     }//GEN-LAST:event_hamburgerMenuButtonActionPerformed
+
+    private void leaveRequestMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaveRequestMenuActionPerformed
+        hamburgerPanel.setVisible(false);
+        this.setVisible(false);
+        new LeaveRequestGui(user,this).setVisible(true);
+    }//GEN-LAST:event_leaveRequestMenuActionPerformed
+
+    private void timeoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeoutButtonActionPerformed
+        timeOut();
+    }//GEN-LAST:event_timeoutButtonActionPerformed
+
+    private void payrollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollButtonActionPerformed
+        if (user.hasFinanceAccess()) {
+            this.setVisible(false);
+            new PayrollProcessingGui(this).setVisible(true);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Only Finance can access this feature");
+        }
+    }//GEN-LAST:event_payrollButtonActionPerformed
+
+    private void myAttendanceMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myAttendanceMenuMouseEntered
+        myAttendanceMenu.setBackground(new Color(85, 66, 100));
+    }//GEN-LAST:event_myAttendanceMenuMouseEntered
+
+    private void myAttendanceMenuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myAttendanceMenuMouseExited
+        myAttendanceMenu.setBackground(new Color(61,48,72));
+        
+    }//GEN-LAST:event_myAttendanceMenuMouseExited
+
+    private void leaveRequestMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_leaveRequestMenuMouseEntered
+        leaveRequestMenu.setBackground(new Color(85, 66, 100));
+    }//GEN-LAST:event_leaveRequestMenuMouseEntered
+
+    private void leaveRequestMenuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_leaveRequestMenuMouseExited
+        leaveRequestMenu.setBackground(new Color(61,48,72));
+    }//GEN-LAST:event_leaveRequestMenuMouseExited
+
+    private void myPayrollMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myPayrollMenuMouseEntered
+        myPayrollMenu.setBackground(new Color(85, 66, 100));
+    }//GEN-LAST:event_myPayrollMenuMouseEntered
+
+    private void myPayrollMenuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myPayrollMenuMouseExited
+        myPayrollMenu.setBackground(new Color(61,48,72));
+    }//GEN-LAST:event_myPayrollMenuMouseExited
+
+    private void needHelpMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_needHelpMenuMouseEntered
+        needHelpMenu.setBackground(new Color(85, 66, 100));
+    }//GEN-LAST:event_needHelpMenuMouseEntered
+
+    private void needHelpMenuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_needHelpMenuMouseExited
+        needHelpMenu.setBackground(new Color(61,48,72));
+    }//GEN-LAST:event_needHelpMenuMouseExited
+
+    private void myPayrollMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myPayrollMenuActionPerformed
+        hamburgerPanel.setVisible(false);
+        this.setVisible(false);
+        new PayrollDocsGui(user,this).setVisible(true);
+    }//GEN-LAST:event_myPayrollMenuActionPerformed
+
+    private void needHelpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_needHelpMenuActionPerformed
+        hamburgerPanel.setVisible(false);
+        this.setVisible(false);
+        new HelpSectionGui(this).setVisible(true);
+    }//GEN-LAST:event_needHelpMenuActionPerformed
     
     
    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton attendanceDatabaseButton;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JLabel clockLabel;
     private javax.swing.JLabel dateLabel;
@@ -740,11 +945,7 @@ public class HomePageGui extends javax.swing.JFrame {
     private javax.swing.JLabel employeeProfileLabel;
     private javax.swing.JButton hamburgerMenuButton;
     private javax.swing.JPanel hamburgerPanel;
-    private javax.swing.JButton helpButton;
     private javax.swing.JButton homeButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -756,17 +957,21 @@ public class HomePageGui extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton leaveRequestButton;
+    private javax.swing.JButton leaveRequestMenu;
     private javax.swing.JButton logoutButton;
     private javax.swing.JButton manageEmployeesButton;
     private javax.swing.JButton messageButton1;
+    private javax.swing.JButton myAttendanceMenu;
+    private javax.swing.JButton myPayrollMenu;
+    private javax.swing.JButton needHelpMenu;
     private javax.swing.JButton notificationButton;
+    private javax.swing.JButton payrollButton;
     private javax.swing.JButton payrollDocsButton;
     private javax.swing.JPanel popup;
     private javax.swing.JButton profileButton;
     private javax.swing.JLabel profileLabel;
     private javax.swing.JLabel profileLabel2;
     private javax.swing.JTextField searchTextfield;
-    private javax.swing.JButton settingsButton1;
     private javax.swing.JButton timeAndAttendanceButton;
     private javax.swing.JButton timeinButton;
     private javax.swing.JButton timeoutButton;

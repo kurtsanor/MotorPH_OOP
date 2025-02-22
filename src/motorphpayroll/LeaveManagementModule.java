@@ -4,38 +4,57 @@ package motorphpayroll;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
-
 
 public class LeaveManagementModule implements RecordOperations {
     
     private User user;
-  
+
     public LeaveManagementModule(User user) {
         this.user = user;
     }
-    
-    
-    // loads the leave records of the logged in employee
+       
+    // Retrieves all leave requests from the database for HR to approve or deny
     @Override
-    public void loadTable (JTable table) {
+    public List <String []> getAllRecords () {
+        List <String []> leaveRecords = new ArrayList<>();
+        
+        try (Connection con = DatabaseConnection.Connect()) {
+             String query = "SELECT * FROM leave_requests";
+             PreparedStatement ptst = con.prepareStatement(query);
+             ResultSet rs = ptst.executeQuery();             
+                        
+             while (rs.next()) {
+                 leaveRecords.add(new String [] {
+                  rs.getString("Request_number"),
+                  rs.getString("id"),
+                  rs.getString("First_name") + " " + rs.getString("Last_name"),
+                  rs.getString("Leave_type"),
+                  rs.getString("status")} );
+             }
+                                  
+        } catch (Exception e) {System.out.println(e);}
+        
+        return leaveRecords;
+    }
+    
+    
+    
+    // loads only the leave records of the logged in employee    
+    public List <String []> getAllRecords (int employeeID) {
+        List <String []> leaveRecords = new ArrayList<>();
+        
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "SELECT * FROM leave_requests WHERE id = ?";
              PreparedStatement ptst = con.prepareStatement(query);
              ptst.setInt(1, user.getId());
              ResultSet rs = ptst.executeQuery();
-            
-             DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();
-             tablemodel.setRowCount(0);
-             
-             
+                                     
              while (rs.next()) {
-                 tablemodel.addRow(new Object [] 
-                 {rs.getInt("Request_number"),
+                 leaveRecords.add(new String [] 
+                 {rs.getString("Request_number"),
                   rs.getString("Start_date"),
                   rs.getString("End_date"),
                   rs.getString("Leave_type"),
@@ -43,111 +62,94 @@ public class LeaveManagementModule implements RecordOperations {
              }
                                   
         } catch (Exception e) {System.out.println(e);}
+        
+        return leaveRecords;
     }
     
-    // loads all the leave requests of all employees for HR to approve or deny
-    public void loadTable (JTable table, boolean allEmployees) {
+    // Searches for leave records based on employee ID or name   
+    @Override
+    public List <String []> search (String searchInput) {
+        List <String []> searchResults = new ArrayList<>();
+        
         try (Connection con = DatabaseConnection.Connect()) {
-             String query = "SELECT * FROM leave_requests";
-             PreparedStatement ptst = con.prepareStatement(query);
-             ResultSet rs = ptst.executeQuery();             
-             
-             DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();
-             tablemodel.setRowCount(0);
-             
-             while (rs.next()) {
-                 tablemodel.addRow(new Object [] 
-                 {rs.getInt("Request_number"),
-                  rs.getInt("id"),
-                  rs.getString("First_name") + " " + rs.getString("Last_name"),
-                  rs.getString("Leave_type"),
-                  rs.getString("status")} );
-             }
-                                  
+            String query = "SELECT * FROM leave_requests;";
+            PreparedStatement ptst = con.prepareStatement(query);
+            ResultSet rs = ptst.executeQuery();
+                       
+            while (rs.next()) {
+                if (rs.getString("id").contains(searchInput.toLowerCase()) || 
+                    rs.getString("First_name").toLowerCase().contains(searchInput.toLowerCase()) ||
+                    rs.getString("Last_name").toLowerCase().contains(searchInput.toLowerCase())) 
+                {
+                    searchResults.add(new String[]{
+                    rs.getString("Request_number"),
+                    rs.getString("id"),
+                    rs.getString("First_name") + " " + rs.getString("Last_name"),
+                    rs.getString("Leave_type"),
+                    rs.getString("status")});
+                }
+            }
+                                                        
         } catch (Exception e) {System.out.println(e);}
+        
+        return searchResults;
     }
     
-    // used by the filter combox to filter table (All, Pending, Approved, Denied)
-    public void loadTable (JTable table, String status, String identifier) {
+    
+    // Filters leave records based on status (All, Pending, Approved, Denied)
+    public List <String []> filterRecords (String filter, String searchInput) {
+        List <String []> filteredResults = new ArrayList<>();
+        
         try (Connection con = DatabaseConnection.Connect()) {
              String query;
-             switch (status) {
+             switch (filter) {
                  case "All" -> query = "SELECT * FROM leave_requests";
                  default -> query = "SELECT * FROM leave_requests WHERE status = ?";
              }
              PreparedStatement ptst = con.prepareStatement(query);   
              
-             if (!status.equals("All")) ptst.setString(1, status);             
+             if (!filter.equals("All")) ptst.setString(1, filter);             
              ResultSet rs = ptst.executeQuery();              
-             
-             DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();
-             tablemodel.setRowCount(0);
-             
+                         
              while (rs.next()) {
-                 if (identifier.equals("Search")) identifier = "";
-                 if (rs.getString("id").contains(identifier) ||
-                    rs.getString("Last_Name").toLowerCase().contains(identifier.toLowerCase()) ||
-                    rs.getString("First_Name").toLowerCase().contains(identifier.toLowerCase())) 
+                 // if input is equal to the textbox placeholder, clear it
+                 if (searchInput.equals("Search")) searchInput = "";
+                 
+                 if (rs.getString("id").contains(searchInput) ||
+                    rs.getString("Last_Name").toLowerCase().contains(searchInput.toLowerCase()) ||
+                    rs.getString("First_Name").toLowerCase().contains(searchInput.toLowerCase())) 
                 {
-                    tablemodel.addRow(new Object [] {
-                    rs.getInt("Request_number"),
-                    rs.getInt("id"),
+                    filteredResults.add(new String [] {
+                    rs.getString("Request_number"),
+                    rs.getString("id"),
                     rs.getString("First_name") + " " + rs.getString("Last_name"),
                     rs.getString("Leave_type"),
                     rs.getString("status")} );
-                }
-                  
-             }
-                                  
+                }                 
+             }                                 
         } catch (Exception e) {System.out.println(e);}
-    }
-    
-    @Override
-    public void search (JTable table, String identifier) {
-        try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM leave_requests;";
-            PreparedStatement ptst = con.prepareStatement(query);
-            ResultSet rs = ptst.executeQuery();
-            
-            DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();
-            tablemodel.setRowCount(0);
-            
-            while (rs.next()) {
-                if (rs.getString("id").contains(identifier.toLowerCase()) || 
-                    rs.getString("First_name").toLowerCase().contains(identifier.toLowerCase()) ||
-                    rs.getString("Last_name").toLowerCase().contains(identifier.toLowerCase())) 
-                {
-                    tablemodel.addRow(new Object[]{
-                    rs.getInt("Request_number"),
-                    rs.getInt("id"),
-                    rs.getString("First_name") + " " + rs.getString("Last_name"),
-                    rs.getString("Leave_type"),
-                    rs.getString("status")});
-                }
-            }
-                                                        
-        } catch (Exception e) {System.out.println(e);}
-    }
+        
+        return filteredResults;
+    }    
     
     // search employee and their leave records by filtering status
-    public void search (JTable table, String identifier, String filter) {
+    public List <String []> search (String searchInput, String filter) {
+        List <String []> searchResults = new ArrayList<>();
+        
         try (Connection con = DatabaseConnection.Connect()) {
             String query = "SELECT * FROM leave_requests WHERE status = ?;";
             PreparedStatement ptst = con.prepareStatement(query);
             ptst.setString(1, filter);
             ResultSet rs = ptst.executeQuery();
-            
-            DefaultTableModel tablemodel = (DefaultTableModel)table.getModel();
-            tablemodel.setRowCount(0);
-            
+                      
             while (rs.next()) {
-                if ((rs.getString("id").contains(identifier.toLowerCase()) && rs.getString("status").equals(filter)) || 
-                    (rs.getString("First_name").toLowerCase().contains(identifier.toLowerCase()) && rs.getString("status").equals(filter)) ||
-                    (rs.getString("Last_name").toLowerCase().contains(identifier.toLowerCase())) && rs.getString("status").equals(filter)) 
+                if ((rs.getString("id").contains(searchInput.toLowerCase()) && rs.getString("status").equals(filter)) || 
+                    (rs.getString("First_name").toLowerCase().contains(searchInput.toLowerCase()) && rs.getString("status").equals(filter)) ||
+                    (rs.getString("Last_name").toLowerCase().contains(searchInput.toLowerCase())) && rs.getString("status").equals(filter)) 
                 {
-                    tablemodel.addRow(new Object[]{
-                    rs.getInt("Request_number"),
-                    rs.getInt("id"),
+                    searchResults.add(new String[]{
+                    rs.getString("Request_number"),
+                    rs.getString("id"),
                     rs.getString("First_name") + " " + rs.getString("Last_name"),
                     rs.getString("Leave_type"),
                     rs.getString("status")});
@@ -155,10 +157,35 @@ public class LeaveManagementModule implements RecordOperations {
             }
                                                         
         } catch (Exception e) {System.out.println(e);}
+        
+        return searchResults;
+    }
+    
+    // gets detailed information about a leave request
+    public String [] getLeaveDetails (int requestID) {
+        String [] leaveDetails = new String [5];
+        
+        try (Connection con = DatabaseConnection.Connect()) {
+             String query = "SELECT * FROM leave_requests WHERE Request_number = ?";
+             PreparedStatement ptst = con.prepareStatement(query);
+             ptst.setInt(1, requestID);
+             ResultSet rs = ptst.executeQuery();
+             
+             if (rs.next()) {               
+                leaveDetails[0] = rs.getString("First_name") + " " + rs.getString("Last_name");
+                leaveDetails[1] = rs.getString("Start_date");
+                leaveDetails[2] = rs.getString("End_date");
+                leaveDetails[3] = rs.getString("Leave_type");
+                leaveDetails[4] = rs.getString("Reason");                            
+             }
+                               
+        } catch (Exception e) {e.printStackTrace();}
+        
+        return leaveDetails;
     }
     
     public void submitLeaveRequest (int senderId, String startDate, String endDate, String Reason,
-            String firstName, String lastName, String leaveType, String status) {       
+                                    String firstName, String lastName, String leaveType, String status) {       
         
         try (Connection con = DatabaseConnection.Connect()) {
             String query = "INSERT INTO leave_requests "
@@ -179,27 +206,7 @@ public class LeaveManagementModule implements RecordOperations {
                                                                   
         } catch (Exception e) {System.out.println(e);}
     }
-    
-    @Override
-    public void fillDetails (int requestID, JTextField empName, JTextField startDate, JTextField endDate, JTextField leaveType, JTextField reason) {
-        try (Connection con = DatabaseConnection.Connect()) {
-             String query = "SELECT * FROM leave_requests WHERE Request_number = ?";
-             PreparedStatement ptst = con.prepareStatement(query);
-             ptst.setInt(1, requestID);
-             ResultSet rs = ptst.executeQuery();
-             
-             if (rs.next()) {
-                empName.setText(rs.getString("First_name") + " " + rs.getString("Last_name"));
-                startDate.setText(rs.getString("Start_date"));
-                endDate.setText(rs.getString("End_date"));
-                leaveType.setText(rs.getString("Leave_type"));
-                reason.setText(rs.getString("Reason")); 
-             }
-             
-                      
-        } catch (Exception e) {e.printStackTrace();}
-    }
-    
+        
     public void approveLeave (int reqNumber) {
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "UPDATE leave_requests SET status = ? WHERE request_number = ?";

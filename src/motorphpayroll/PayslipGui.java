@@ -4,6 +4,8 @@
  */
 package motorphpayroll;
 
+import javax.swing.JWindow;
+
 /**
  *
  * @author keith
@@ -11,63 +13,64 @@ package motorphpayroll;
 public class PayslipGui extends javax.swing.JFrame {
 
     
-    private SalaryCalculationModule salaryModule;
+    private PayrollModule payrollModule;
     private String month;
-    private User user;
     private TaxAndDeductionsModule taxModule = new TaxAndDeductionsModule();
-    
-    public PayslipGui(SalaryCalculationModule salaryModule, String month, User user) {        
+    private JWindow overlay;
+    private String [] empDetails;
+     
+    public PayslipGui(PayrollModule payrollModule, String month, String [] empDetails, JWindow overlay) {        
         initComponents();
-        this.salaryModule = salaryModule;
+        this.payrollModule = payrollModule;
         this.month = month;
-        this.user = user;
-        salaryModule.calculateMonthlyGrossSalary();
-        fillDetails();
-        
-        
+        this.overlay = overlay;
+        this.empDetails = empDetails;
+        payrollModule.calculateMonthlyGrossSalary();
+        showPayslip();      
     }
-
-    public void fillDetails () {
+    
+    public void showPayslip () {
         String text = ("<html>" +
             "<table cellspacing='2' cellpadding='2' style='line-height:1.2;'>" +
             "  <tr><td><b>Payslip No</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + "31-2023-12-30" + " </td></tr>" +
-            "  <tr><td><b>Pay Period</b></td><td>&nbsp:</td><td>" + month +", " + salaryModule.getSelectedYear()+  " </td></tr>" +
-            "  <tr><td><b>Worked Hours</b></td><td>&nbsp:</td><td>" + salaryModule.getMonthlyHoursWorked()+ " Hours"+ " </td></tr>" +          
+            "  <tr><td><b>Pay Period</b></td><td>&nbsp:</td><td>" + month +", " + payrollModule.getSelectedYear()+  " </td></tr>" +
+            "  <tr><td><b>Worked Hours</b></td><td>&nbsp:</td><td>" + payrollModule.getMonthlyHoursWorked()+ " Hours"+ " </td></tr>" +          
             "</table>" +
             "</html>");
         label1.setText(text);
         
         String textII = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td><b>Name</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + user.getFirstName() + " " + user.getLastName() +  " </td></tr>" +
-            "  <tr><td><b>ID #</b></td><td>&nbsp:</td><td>" + user.getId() + " </td></tr>" +
-            "  <tr><td><b>Position</b></td><td>&nbsp:</td><td>" + user.getPosition() + " </td></tr>" +           
+            "  <tr><td><b>Name</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + empDetails[1] + " " + empDetails[2] +  " </td></tr>" +
+            "  <tr><td><b>ID #</b></td><td>&nbsp:</td><td>" + empDetails[0] + " </td></tr>" +
+            "  <tr><td><b>Position</b></td><td>&nbsp:</td><td>" + empDetails[7] + " </td></tr>" +           
             "</table>" +
             "</html>");
         label2.setText(textII);
         
         String textIII = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + salaryModule.getGrossPay() + " </td></tr>" +
+            "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + payrollModule.getGrossPay() + " </td></tr>" +
             "  <tr><td>Clothing Allowance</b></td><td>&nbsp</td><td>" + "1000" + " </td></tr>" +
             "  <tr><td>Rice Allowance</b></td><td>&nbsp</td><td>" + "500" + " </td></tr>" +  
-            "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + salaryModule.getGrossPay() + " </td></tr>" +
+            "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + payrollModule.getGrossPay() + " </td></tr>" +
             "</table>" +
             "</html>");
         label4.setText(textIII);
         
         String textIV = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td>SSS</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + taxModule.getSSSDeduction(salaryModule.getGrossPay()) + "0 </td></tr>" +
-            "  <tr><td>Philhealth</b></td><td>&nbsp</td><td>" + taxModule.getPhilHealthDeduction(salaryModule.getGrossPay()) + " </td></tr>" +
-            "  <tr><td>Pagibig</b></td><td>&nbsp</td><td>" + taxModule.getPagIbigDeduction(salaryModule.getGrossPay()) + " </td></tr>" +  
-            "  <tr><td>Withholding Tax</b></td><td>&nbsp</td><td>" + taxModule.getWithholdingTax(salaryModule.getTaxableIncome()) + " </td></tr>" +
-            "  <tr><td>Total Deductions</b></td><td>&nbsp</td><td>" + salaryModule.getTotalDeductions() + " </td></tr>" +
-            "  <tr><td><b>Net Pay</b></td><td>&nbsp</td><td><b>" + salaryModule.getNetSalary() + " </td></tr>" +
+            "  <tr><td>SSS</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + taxModule.getSSSDeduction(payrollModule.getGrossPay()) + "0 </td></tr>" +
+            "  <tr><td>Philhealth</b></td><td>&nbsp</td><td>" + taxModule.getPhilHealthDeduction(payrollModule.getGrossPay()) + " </td></tr>" +
+            "  <tr><td>Pagibig</b></td><td>&nbsp</td><td>" + taxModule.getPagIbigDeduction(payrollModule.getGrossPay()) + " </td></tr>" +  
+            "  <tr><td>Withholding Tax</b></td><td>&nbsp</td><td>" + taxModule.getWithholdingTax(payrollModule.getTaxableIncome()) + " </td></tr>" +
+            "  <tr><td>Total Deductions</b></td><td>&nbsp</td><td>" + payrollModule.getTotalDeductions() + " </td></tr>" +
+            "  <tr><td><b>Net Pay</b></td><td>&nbsp</td><td><b>" + payrollModule.getNetSalary() + " </td></tr>" +
             "</table>" +
             "</html>");
         label5.setText(textIV);
     }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -108,11 +111,9 @@ public class PayslipGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(500, 565));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 565));
         jPanel1.setLayout(null);
 
@@ -483,6 +484,8 @@ public class PayslipGui extends javax.swing.JFrame {
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         this.dispose();
+        overlay.setVisible(false);
+        
     }//GEN-LAST:event_closeButtonActionPerformed
 
     /**
