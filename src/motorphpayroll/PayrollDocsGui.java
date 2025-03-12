@@ -366,8 +366,8 @@ public class PayrollDocsGui extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void showOverlay() {
-        overlay.setSize(863, 558);
-        overlay.setLocation(252, 78);
+        overlay.setSize(this.getSize());
+        overlay.setLocationRelativeTo(null);
         overlay.setVisible(true);
     }
 

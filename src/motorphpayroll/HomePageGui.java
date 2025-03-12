@@ -90,14 +90,14 @@ public class HomePageGui extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         attendanceDatabaseButton.setBackground(new java.awt.Color(47, 36, 56));
-        attendanceDatabaseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/folder.png"))); // NOI18N
+        attendanceDatabaseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/folder (3).png"))); // NOI18N
         attendanceDatabaseButton.setToolTipText("Employee Attendance");
         attendanceDatabaseButton.setBorderPainted(false);
         attendanceDatabaseButton.setContentAreaFilled(false);
         attendanceDatabaseButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         attendanceDatabaseButton.setFocusable(false);
         attendanceDatabaseButton.setPreferredSize(new java.awt.Dimension(50, 30));
-        attendanceDatabaseButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/folder (2).png"))); // NOI18N
+        attendanceDatabaseButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/folder (2) (1).png"))); // NOI18N
         attendanceDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 attendanceDatabaseButtonActionPerformed(evt);
@@ -312,7 +312,7 @@ public class HomePageGui extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(47, 36, 56));
         jLabel1.setText("MotorPH");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(14, 6, 132, 48);
+        jLabel1.setBounds(14, 6, 220, 48);
 
         notificationButton.setBackground(new java.awt.Color(158, 158, 158));
         notificationButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/notification.png"))); // NOI18N
@@ -929,7 +929,7 @@ public class HomePageGui extends javax.swing.JFrame {
     private void needHelpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_needHelpMenuActionPerformed
         hamburgerPanel.setVisible(false);
         this.setVisible(false);
-        new HelpSectionGui(this).setVisible(true);
+        new HelpSectionGui(this, user, popup).setVisible(true);
     }//GEN-LAST:event_needHelpMenuActionPerformed
     
     

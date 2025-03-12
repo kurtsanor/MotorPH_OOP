@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -429,8 +428,8 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     }
     
     private void showOverlay() {
-        overlay.setSize(863,558);
-        overlay.setLocation(252,78);
+        overlay.setSize(this.getSize());
+        overlay.setLocationRelativeTo(null);
         overlay.setVisible(true);  
     }
     
@@ -441,10 +440,15 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
 
     private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            payrollModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
-            payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-            loadPayrollTable();
+        long startTime = System.currentTimeMillis();    
+        payrollModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
+        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
+        loadPayrollTable();
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime + " ms");
         }
+        
+        
     }//GEN-LAST:event_monthComboBoxItemStateChanged
 
     private void yearComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_yearComboBoxItemStateChanged
@@ -474,9 +478,12 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldFocusLost
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
+        long start = System.currentTimeMillis();
         payrollModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
         payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
         search();
+        long end = System.currentTimeMillis();  
+        System.out.println(end - start + "ms");
     }//GEN-LAST:event_searchFieldKeyReleased
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed

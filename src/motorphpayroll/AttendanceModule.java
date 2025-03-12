@@ -6,7 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // Tracks employee attendance records and work hours
 public class AttendanceModule implements RecordOperations{
@@ -87,12 +90,16 @@ public class AttendanceModule implements RecordOperations{
             case "October"  : return "10";
             case "November" : return "11";
             case "December" : return "12";
-            default         : return null;
+            default         : return month;
         } 
     }
     
     public void setSelectedMonth (String selectedMonth) {
         this.selectedMonth = selectedMonth;
+    }
+    
+    public String getSelectedMonth () {
+        return selectedMonth;
     }
     
     public void setSelectedYear (String selectedYear) {
@@ -125,7 +132,7 @@ public class AttendanceModule implements RecordOperations{
         return Math.round((timeOutDecimal - timeInDecimal) * 100.0) / 100.0;
     }
     
-    // gets the total work hours on the chosen month and year
+    // gets the total work hours of an employee on the chosen month and year
     public double getMonthlyHoursWorked () {
         double totalHours = 0;
         try (Connection con = DatabaseConnection.Connect()) {            
@@ -208,5 +215,36 @@ public class AttendanceModule implements RecordOperations{
             e.printStackTrace();
             return false;
         }
+    }
+    
+    // calculates all employees work hours each month and stores it in a hashmap
+    public Map <String, Double> getAllEmployeesMonthlyHours () {
+        Map <String, Double> workHoursMap = new HashMap<>();
+        
+        try (Connection con = DatabaseConnection.Connect()) {
+            String query = "SELECT * FROM attendance";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            String [] key = new String [3]; // keys will be the id, month, and year
+            
+            while (rs.next()) {
+                String [] dateParts = rs.getString("date").split("/");
+                setSelectedMonth(dateParts[0]); // set month to the current one in the resultset
+                setSelectedYear(dateParts[2]); // set year to the current one in the resultset
+                
+                key[0] = rs.getString("id");
+                key[1] = getSelectedMonth();
+                key[2] = getSelectedYear();
+                               
+                double hoursWorked = calculateTotalHours(rs.getString("time_in"), rs.getString("time_out"));
+                
+                // add the keys and the total hours as values to the hashmap
+                workHoursMap.put(Arrays.toString(key), workHoursMap.getOrDefault(Arrays.toString(key), 0.0) + hoursWorked);                                             
+            }   
+            
+        } catch (Exception e) {}
+        
+        return workHoursMap;
     }
 }

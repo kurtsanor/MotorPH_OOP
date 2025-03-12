@@ -51,8 +51,6 @@ public class PayslipGui extends javax.swing.JFrame {
         String textIII = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
             "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + payrollModule.getGrossPay() + " </td></tr>" +
-            "  <tr><td>Clothing Allowance</b></td><td>&nbsp</td><td>" + "1000" + " </td></tr>" +
-            "  <tr><td>Rice Allowance</b></td><td>&nbsp</td><td>" + "500" + " </td></tr>" +  
             "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + payrollModule.getGrossPay() + " </td></tr>" +
             "</table>" +
             "</html>");
@@ -382,7 +380,7 @@ public class PayslipGui extends javax.swing.JFrame {
         label4.setForeground(new java.awt.Color(47, 36, 56));
         label4.setText("Date of Joining");
         jPanel2.add(label4);
-        label4.setBounds(5, 30, 192, 70);
+        label4.setBounds(5, 30, 192, 40);
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(40, 170, 407, 150);

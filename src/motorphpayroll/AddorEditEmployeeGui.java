@@ -5,6 +5,8 @@
 package motorphpayroll;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -27,6 +29,7 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     private EmployeeManagementModule empModule;
     private JTable empTable;
     private String [] details = new String[13];
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     
     public AddorEditEmployeeGui(boolean isAddingEmployee, int employeeId, JTable empTable) {
         initComponents();
@@ -60,7 +63,6 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         lastName = new RoundJTextField(5);
         jPanel5 = new javax.swing.JPanel();
         manageEmpLabel3 = new javax.swing.JLabel();
-        status = new RoundJTextField(5);
         position = new RoundJTextField(5);
         hourlyRate = new RoundJTextField(5);
         jPanel6 = new javax.swing.JPanel();
@@ -81,10 +83,12 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         jLabel52 = new javax.swing.JLabel();
         jLabel53 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
-        role = new RoundJTextField(5);
         jLabel50 = new javax.swing.JLabel();
         saveButton = new MyButton();
         discardButton = new MyButton();
+        roleComboBox = new javax.swing.JComboBox<>();
+        statusComboBox = new javax.swing.JComboBox<>();
+        birthdayChooser = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -157,18 +161,45 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
 
         firstName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         firstName.setForeground(new java.awt.Color(0, 0, 0));
+        firstName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                firstNameKeyTyped(evt);
+            }
+        });
 
+        birthday.setEditable(false);
+        birthday.setBackground(new java.awt.Color(255, 255, 255));
         birthday.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         birthday.setForeground(new java.awt.Color(0, 0, 0));
+        birthday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                birthdayActionPerformed(evt);
+            }
+        });
+        birthday.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                birthdayKeyTyped(evt);
+            }
+        });
 
         phoneNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         phoneNum.setForeground(new java.awt.Color(0, 0, 0));
+        phoneNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                phoneNumKeyTyped(evt);
+            }
+        });
 
         address.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         address.setForeground(new java.awt.Color(0, 0, 0));
 
         lastName.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lastName.setForeground(new java.awt.Color(0, 0, 0));
+        lastName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                lastNameKeyTyped(evt);
+            }
+        });
 
         jPanel5.setBackground(new java.awt.Color(0, 0, 0));
         jPanel5.setPreferredSize(new java.awt.Dimension(100, 1));
@@ -189,14 +220,21 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         manageEmpLabel3.setForeground(new java.awt.Color(47, 36, 56));
         manageEmpLabel3.setText("EMPLOYMENT DETAILS");
 
-        status.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        status.setForeground(new java.awt.Color(0, 0, 0));
-
         position.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         position.setForeground(new java.awt.Color(0, 0, 0));
+        position.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                positionKeyTyped(evt);
+            }
+        });
 
         hourlyRate.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         hourlyRate.setForeground(new java.awt.Color(0, 0, 0));
+        hourlyRate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                hourlyRateKeyTyped(evt);
+            }
+        });
 
         jPanel6.setBackground(new java.awt.Color(0, 0, 0));
         jPanel6.setPreferredSize(new java.awt.Dimension(100, 1));
@@ -219,15 +257,35 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
 
         sssNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         sssNum.setForeground(new java.awt.Color(0, 0, 0));
+        sssNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                sssNumKeyTyped(evt);
+            }
+        });
 
         philhealthNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         philhealthNum.setForeground(new java.awt.Color(0, 0, 0));
+        philhealthNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                philhealthNumKeyTyped(evt);
+            }
+        });
 
         pagibigNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         pagibigNum.setForeground(new java.awt.Color(0, 0, 0));
+        pagibigNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                pagibigNumKeyTyped(evt);
+            }
+        });
 
         tinNum.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         tinNum.setForeground(new java.awt.Color(0, 0, 0));
+        tinNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tinNumKeyTyped(evt);
+            }
+        });
 
         jLabel42.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel42.setForeground(new java.awt.Color(0, 0, 0));
@@ -277,9 +335,6 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         jLabel54.setForeground(new java.awt.Color(0, 0, 0));
         jLabel54.setText("   SSS Number");
 
-        role.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        role.setForeground(new java.awt.Color(0, 0, 0));
-
         jLabel50.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel50.setForeground(new java.awt.Color(0, 0, 0));
         jLabel50.setText("Role");
@@ -290,6 +345,14 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         saveButton.setText("Save");
         saveButton.setBorderPainted(false);
         saveButton.setFocusable(false);
+        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                saveButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                saveButtonMouseExited(evt);
+            }
+        });
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -302,9 +365,37 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         discardButton.setText("Discard");
         discardButton.setBorderPainted(false);
         discardButton.setFocusable(false);
+        discardButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                discardButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                discardButtonMouseExited(evt);
+            }
+        });
         discardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 discardButtonActionPerformed(evt);
+            }
+        });
+
+        roleComboBox.setBackground(new java.awt.Color(255, 255, 255));
+        roleComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        roleComboBox.setForeground(new java.awt.Color(0, 0, 0));
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Employee", "HR", "Finance", "IT" }));
+        roleComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        roleComboBox.setFocusable(false);
+
+        statusComboBox.setBackground(new java.awt.Color(255, 255, 255));
+        statusComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        statusComboBox.setForeground(new java.awt.Color(0, 0, 0));
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular", "Probationary" }));
+        statusComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        statusComboBox.setFocusable(false);
+
+        birthdayChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                birthdayChooserPropertyChange(evt);
             }
         });
 
@@ -327,15 +418,18 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(birthday, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(birthday, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(birthdayChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(6, 6, 6)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -364,19 +458,21 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(6, 6, 6)
-                                                .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(159, 159, 159))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(8, 8, 8)
                                                 .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(position, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(address, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(manageEmpLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(manageEmpLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(address, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -395,12 +491,13 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(role, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(discardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -450,18 +547,20 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                     .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(birthday, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(phoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pagibigNum, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tinNum, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(birthday, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(phoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pagibigNum, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tinNum, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(birthdayChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(address, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(address, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(manageEmpLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -469,21 +568,22 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(7, 7, 7)
+                        .addGap(6, 6, 6)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(position, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(position, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
                         .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(hourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(hourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(110, 110, 110)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(7, 7, 7)
-                                .addComponent(role, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(45, 45, 45))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(discardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -516,9 +616,9 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         details[7] = philhealthNum.getText();
         details[8] = tinNum.getText();
         details[9] = pagibigNum.getText();
-        details[10] = status.getText();        
+        details[10] = statusComboBox.getSelectedItem().toString();
         details[11] = hourlyRate.getText();
-        details[12] = role.getText();                                  
+        details[12] = roleComboBox.getSelectedItem().toString();
     }
     
     private void populateTextFields () {
@@ -529,16 +629,16 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         birthday.setText(empDetails[3]);
         phoneNum.setText(empDetails[4]);
         address.setText(empDetails[5]);
-        status.setText(empDetails[6]);
+        statusComboBox.setSelectedItem(empDetails[6].trim());
         position.setText(empDetails[7]);
         hourlyRate.setText(empDetails[8]);
-        role.setText(empDetails[9]);
+        roleComboBox.setSelectedItem(empDetails[9].trim());
         sssNum.setText(empDetails[10]);
         philhealthNum.setText(empDetails[11]);
         pagibigNum.setText(empDetails[12]);
         tinNum.setText(empDetails[13]);
     }
-    
+         
     public void loadEmployeeTable () {
         List <String []> employeeList = empModule.getAllRecords();
         DefaultTableModel tblmodel = (DefaultTableModel) empTable.getModel();
@@ -567,12 +667,25 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     
     public boolean hasBlankFields (JTextField field1, JTextField field2, JTextField field3, JTextField field4, JTextField field5,
                                    JTextField field6, JTextField field7, JTextField field8, JTextField field9, JTextField field10,
-                                   JTextField field11, JTextField field12, JTextField field13) 
+                                   JTextField field11) 
     {
         return field1.getText().isBlank() || field2.getText().isBlank() || field3.getText().isBlank() || field4.getText().isBlank() ||
                field5.getText().isBlank() || field6.getText().isBlank() || field7.getText().isBlank() || field8.getText().isBlank() ||
-               field9.getText().isBlank() || field10.getText().isBlank() || field11.getText().isBlank() || field12.getText().isBlank() ||
-               field13.getText().isBlank();
+               field9.getText().isBlank() || field10.getText().isBlank() || field11.getText().isBlank();
+    }
+    
+    private void allowOnlyLetters (KeyEvent evt) {
+        char letter = evt.getKeyChar();
+        if (!Character.isLetter(letter) && letter != ' ') {
+            evt.consume();
+        }
+    }
+    
+    private void allowOnlyNumbers (KeyEvent evt) {
+        char letter = evt.getKeyChar();
+        if (!Character.isDigit(letter) && letter != '-') {
+            evt.consume(); // Prevent non-numeric characters
+        }
     }
     
     
@@ -585,7 +698,7 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Numerical Values only for hourly rate field");
             return;
         }
-        if (hasBlankFields(firstName, lastName, birthday, phoneNum, address, status, position, hourlyRate, role, sssNum, philhealthNum, pagibigNum, tinNum)) {
+        if (hasBlankFields(firstName, lastName, birthday, phoneNum, address, position, hourlyRate, sssNum, philhealthNum, pagibigNum, tinNum)) {
             JOptionPane.showMessageDialog(null, "Please fill up all information");
             return;
         }
@@ -603,6 +716,78 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     private void discardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discardButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_discardButtonActionPerformed
+
+    private void firstNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_firstNameKeyTyped
+        allowOnlyLetters(evt);
+    }//GEN-LAST:event_firstNameKeyTyped
+
+    private void lastNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lastNameKeyTyped
+        allowOnlyLetters(evt);
+    }//GEN-LAST:event_lastNameKeyTyped
+
+    private void positionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_positionKeyTyped
+        allowOnlyLetters(evt);
+    }//GEN-LAST:event_positionKeyTyped
+
+    private void sssNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sssNumKeyTyped
+        allowOnlyNumbers(evt);
+    }//GEN-LAST:event_sssNumKeyTyped
+
+    private void philhealthNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_philhealthNumKeyTyped
+        allowOnlyNumbers(evt);
+    }//GEN-LAST:event_philhealthNumKeyTyped
+
+    private void pagibigNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pagibigNumKeyTyped
+        allowOnlyNumbers(evt);
+    }//GEN-LAST:event_pagibigNumKeyTyped
+
+    private void tinNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tinNumKeyTyped
+        allowOnlyNumbers(evt);
+    }//GEN-LAST:event_tinNumKeyTyped
+
+    private void hourlyRateKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hourlyRateKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) && c != '.') {
+            evt.consume(); // Prevent non-numeric characters
+        }
+    }//GEN-LAST:event_hourlyRateKeyTyped
+
+    private void phoneNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneNumKeyTyped
+        allowOnlyNumbers(evt);
+    }//GEN-LAST:event_phoneNumKeyTyped
+
+    private void birthdayKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_birthdayKeyTyped
+        char letter = evt.getKeyChar();
+        if (!Character.isDigit(letter) && letter != '/') {
+            evt.consume(); // Prevent non-numeric characters
+        }
+    }//GEN-LAST:event_birthdayKeyTyped
+
+    private void discardButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discardButtonMouseEntered
+        discardButton.setBackground(new Color(221,74,74));
+    }//GEN-LAST:event_discardButtonMouseEntered
+
+    private void discardButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discardButtonMouseExited
+        discardButton.setBackground(new Color(215,43,43));
+    }//GEN-LAST:event_discardButtonMouseExited
+
+    private void saveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseEntered
+        saveButton.setBackground(new Color(255,165,115));
+    }//GEN-LAST:event_saveButtonMouseEntered
+
+    private void saveButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseExited
+        saveButton.setBackground(new Color(252,141,80));
+    }//GEN-LAST:event_saveButtonMouseExited
+
+    private void birthdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthdayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_birthdayActionPerformed
+
+    private void birthdayChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_birthdayChooserPropertyChange
+        if (birthdayChooser.getDate() == null) return;
+        birthday.setText(dateFormat.format(birthdayChooser.getDate()));
+        System.out.println(dateFormat.format(birthdayChooser.getDate()));
+    }//GEN-LAST:event_birthdayChooserPropertyChange
 
    private void adjustSearchField() {
         firstName.setBorder(BorderFactory.createCompoundBorder(
@@ -625,10 +810,7 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                     BorderFactory.createLineBorder(address.getForeground(), 1),
                     new EmptyBorder(5, 10, 5, 10)
             ));
-        status.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(status.getForeground(), 1),
-                    new EmptyBorder(5, 10, 5, 10)
-            ));
+      
         position.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(position.getForeground(), 1),
                     new EmptyBorder(5, 10, 5, 10)
@@ -637,10 +819,7 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                     BorderFactory.createLineBorder(hourlyRate.getForeground(), 1),
                     new EmptyBorder(5, 10, 5, 10)
             ));
-        role.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(role.getForeground(), 1),
-                    new EmptyBorder(5, 10, 5, 10)
-            ));
+       
         sssNum.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(sssNum.getForeground(), 1),
                     new EmptyBorder(5, 10, 5, 10)
@@ -667,6 +846,7 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField address;
     private javax.swing.JTextField birthday;
+    private com.toedter.calendar.JDateChooser birthdayChooser;
     private javax.swing.JButton closeButton2;
     private javax.swing.JButton discardButton;
     private javax.swing.JTextField firstName;
@@ -697,10 +877,10 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     private javax.swing.JTextField philhealthNum;
     private javax.swing.JTextField phoneNum;
     private javax.swing.JTextField position;
-    private javax.swing.JTextField role;
+    private javax.swing.JComboBox<String> roleComboBox;
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField sssNum;
-    private javax.swing.JTextField status;
+    private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JTextField tinNum;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables

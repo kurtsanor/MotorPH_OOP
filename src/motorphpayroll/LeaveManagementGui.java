@@ -4,12 +4,15 @@
  */
 package motorphpayroll;
 
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDayChooser;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -20,6 +23,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.MyButton;
+import motorphpayroll.customcomponents.PanelRound;
 import motorphpayroll.customcomponents.RoundJTextField;
 
 /**
@@ -42,6 +46,8 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         leaveModule = new LeaveManagementModule(user);
         adjustSearchField();
         loadLeaveTable();
+        
+            
     }
 
     
@@ -74,6 +80,8 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         searchField = new RoundJTextField(5);
         filterComboBox = new javax.swing.JComboBox<>();
+        timeSheetLabel = new javax.swing.JLabel();
+        timeSheetLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(878, 565));
@@ -232,6 +240,14 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         denyButton.setForeground(new java.awt.Color(255, 255, 255));
         denyButton.setText("Deny");
         denyButton.setBorderPainted(false);
+        denyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                denyButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                denyButtonMouseExited(evt);
+            }
+        });
         denyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 denyButtonActionPerformed(evt);
@@ -243,6 +259,14 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         approveButton.setForeground(new java.awt.Color(255, 255, 255));
         approveButton.setText("Approve");
         approveButton.setBorderPainted(false);
+        approveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                approveButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                approveButtonMouseExited(evt);
+            }
+        });
         approveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 approveButtonActionPerformed(evt);
@@ -300,7 +324,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(manageEmpLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reasonField, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                .addComponent(reasonField)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(denyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -360,6 +384,16 @@ public class LeaveManagementGui extends javax.swing.JFrame {
             }
         });
 
+        timeSheetLabel.setBackground(new java.awt.Color(47, 36, 56));
+        timeSheetLabel.setFont(new java.awt.Font("Roboto", 1, 25)); // NOI18N
+        timeSheetLabel.setForeground(new java.awt.Color(190, 72, 69));
+        timeSheetLabel.setText("LEAVE REQUEST");
+
+        timeSheetLabel2.setBackground(new java.awt.Color(47, 36, 56));
+        timeSheetLabel2.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        timeSheetLabel2.setForeground(new java.awt.Color(214, 139, 137));
+        timeSheetLabel2.setText("TRACKER");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -368,13 +402,17 @@ public class LeaveManagementGui extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(timeSheetLabel)
+                            .addComponent(timeSheetLabel2))))
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 12, Short.MAX_VALUE))
         );
@@ -385,14 +423,20 @@ public class LeaveManagementGui extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(timeSheetLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(timeSheetLabel2)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(filterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
 
@@ -553,6 +597,22 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_filterComboBoxItemStateChanged
 
+    private void denyButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_denyButtonMouseEntered
+        denyButton.setBackground(new Color(221,74,74));
+    }//GEN-LAST:event_denyButtonMouseEntered
+
+    private void denyButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_denyButtonMouseExited
+        denyButton.setBackground(new Color(215,43,43));
+    }//GEN-LAST:event_denyButtonMouseExited
+
+    private void approveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_approveButtonMouseEntered
+        approveButton.setBackground(new Color(0,188,0));
+    }//GEN-LAST:event_approveButtonMouseEntered
+
+    private void approveButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_approveButtonMouseExited
+        approveButton.setBackground(new Color(0,153,0));
+    }//GEN-LAST:event_approveButtonMouseExited
+
     private void customizeTable() {
         JTableHeader header = leaveTable.getTableHeader();
         header.setPreferredSize(new Dimension(header.getPreferredSize().width, 30));
@@ -635,6 +695,8 @@ public class LeaveManagementGui extends javax.swing.JFrame {
     private javax.swing.JTextField reasonField;
     private javax.swing.JTextField searchField;
     private javax.swing.JTextField startDateField;
+    private javax.swing.JLabel timeSheetLabel;
+    private javax.swing.JLabel timeSheetLabel2;
     // End of variables declaration//GEN-END:variables
 }
 class CustomHeaderRendererIV implements TableCellRenderer {

@@ -437,8 +437,8 @@ public class CrudGui extends javax.swing.JFrame {
      
     // to darken the background while viewing employee information
     private void showOverlay() {
-        overlay.setSize(863,558);
-        overlay.setLocation(252,78);
+        overlay.setSize(this.getSize());
+        overlay.setLocationRelativeTo(null);
         overlay.setVisible(true);  
     }
         
@@ -449,21 +449,19 @@ public class CrudGui extends javax.swing.JFrame {
         // throw error if no employee is selected from the table
         if (empTable.getSelectedRow() < 0) {
             JOptionPane.showMessageDialog(null, "Select an employee first");
+            return;
         }
         
-        // Gets the employeeID of the employee from the table
-        else {
-            int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
-            if (profile != null) {
-            profile.dispose();         
-        }       
-            
+        // Gets the employeeID of the employee from the table       
+        int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
+        if (profile != null) {
+        profile.dispose();         
+        }                   
         // opens a new frame and displays employee info
         showOverlay();
         profile = new ViewProfileGui(chosenEmployee, overlay);
         profile.setVisible(true);  
-        }
-                           
+                
     }//GEN-LAST:event_viewButtonActionPerformed
     
     // updates or edits the information of the chosen employee
