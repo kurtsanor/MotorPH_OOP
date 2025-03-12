@@ -121,7 +121,7 @@ public class AttendanceModule implements RecordOperations{
     
     // helper method to get the total work hours in a day
     public double calculateTotalHours (String time_in, String time_out) {
-        if (time_out == null) return 0;
+        if (time_out == null) return 0.0;
             
         String [] timeIn = time_in.split(":");             
         String [] timeOut = time_out.split(":");

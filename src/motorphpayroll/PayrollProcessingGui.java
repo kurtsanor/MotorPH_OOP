@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -33,6 +34,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     private HomePageGui home;
     private JWindow overlay = new JWindow();
     private EmployeeManagementModule employeeModule = new EmployeeManagementModule();
+    private DecimalFormat df = new DecimalFormat("#.##");
     
     public PayrollProcessingGui(HomePageGui home) {
         initComponents();
@@ -393,7 +395,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
             payrollDetails[0],
             payrollDetails[1],
             "₱" + payrollDetails[2],
-            payrollDetails[3],
+            df.format(Double.parseDouble(payrollDetails[3])), // round of to 2 decimal places
             "₱" + payrollDetails[4],
             "₱" + payrollDetails[5],
             "₱" + payrollDetails[6],
@@ -416,7 +418,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
             payrollDetails[0],
             payrollDetails[1],
             "₱" + payrollDetails[2],
-            payrollDetails[3],
+            df.format(Double.parseDouble(payrollDetails[3])), // round of to 2 decimal places
             "₱" + payrollDetails[4],
             "₱" + payrollDetails[5],
             "₱" + payrollDetails[6],
