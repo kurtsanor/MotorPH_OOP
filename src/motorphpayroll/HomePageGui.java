@@ -64,8 +64,8 @@ public class HomePageGui extends javax.swing.JFrame {
         logoutButton = new MyButton();
         timeinButton = new MyButton();
         timeoutButton = new MyButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        timeinLabel = new javax.swing.JLabel();
+        timeoutLabel = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         dateLabel = new javax.swing.JLabel();
         clockLabel = new javax.swing.JLabel();
@@ -421,13 +421,13 @@ public class HomePageGui extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("00:00:00");
+        timeinLabel.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        timeinLabel.setForeground(new java.awt.Color(255, 255, 255));
+        timeinLabel.setText("00:00:00");
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("00:00:00");
+        timeoutLabel.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        timeoutLabel.setForeground(new java.awt.Color(255, 255, 255));
+        timeoutLabel.setText("00:00:00");
 
         jPanel5.setBackground(new java.awt.Color(86, 71, 97));
 
@@ -474,8 +474,8 @@ public class HomePageGui extends javax.swing.JFrame {
                             .addComponent(timeinButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(27, 27, 27)
                         .addGroup(popupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(timeinLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timeoutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(popupLayout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -488,11 +488,11 @@ public class HomePageGui extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(popupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timeinButton, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                    .addComponent(jLabel3))
+                    .addComponent(timeinLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(popupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timeoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(timeoutLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
@@ -628,6 +628,14 @@ public class HomePageGui extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+    private void displayLatestTimein () {
+        AttendanceModule attendance = new AttendanceModule(user.getId());
+        String [] records = attendance.getLatestRecord();
+        timeinLabel.setText(records[0]);
+        timeoutLabel.setText(records[1]);        
+    }
+    
+    
     private void displayEmplyoeeDetails () {       
         String text = ("<html>" +
             "<table cellspacing='2' cellpadding='2' style='line-height:1.2;'>" +
@@ -742,6 +750,7 @@ public class HomePageGui extends javax.swing.JFrame {
 
     private void timeinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeinButtonActionPerformed
         timeIn();
+        displayLatestTimein();
     }//GEN-LAST:event_timeinButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
@@ -875,6 +884,7 @@ public class HomePageGui extends javax.swing.JFrame {
 
     private void timeoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeoutButtonActionPerformed
         timeOut();
+        displayLatestTimein();
     }//GEN-LAST:event_timeoutButtonActionPerformed
 
     private void payrollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollButtonActionPerformed
@@ -948,8 +958,6 @@ public class HomePageGui extends javax.swing.JFrame {
     private javax.swing.JButton homeButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -974,6 +982,8 @@ public class HomePageGui extends javax.swing.JFrame {
     private javax.swing.JTextField searchTextfield;
     private javax.swing.JButton timeAndAttendanceButton;
     private javax.swing.JButton timeinButton;
+    private javax.swing.JLabel timeinLabel;
     private javax.swing.JButton timeoutButton;
+    private javax.swing.JLabel timeoutLabel;
     // End of variables declaration//GEN-END:variables
 }

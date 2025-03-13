@@ -247,4 +247,21 @@ public class AttendanceModule implements RecordOperations{
         
         return workHoursMap;
     }
+    
+    public String [] getLatestRecord () {
+        String [] record = new String [2]; // for time in and time out
+        try (Connection con = DatabaseConnection.Connect()) {
+            String query = "SELECT * FROM attendance WHERE id = ? ORDER BY `Attendance #` DESC LIMIT 1";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, employeeId);
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                record[0] = rs.getString("time_in");
+                record[1] = rs.getString("time_out");
+            }                                                  
+        } catch (Exception e) {e.printStackTrace();}
+        System.out.println("here");
+        return record;
+    } 
 }
