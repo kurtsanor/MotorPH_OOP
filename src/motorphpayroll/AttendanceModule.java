@@ -261,7 +261,7 @@ public class AttendanceModule implements RecordOperations{
                 record[1] = rs.getString("time_out");
             }                                                  
         } catch (Exception e) {e.printStackTrace();}
-        System.out.println("here");
+        
         return record;
     } 
 }
