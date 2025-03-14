@@ -688,6 +688,15 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         }
     }
     
+    private boolean hasNegatives (JTextField phoneNum, JTextField hourlyRate, JTextField sssNum, JTextField philhealthNum, JTextField pagibigNum, JTextField tinNum) {
+        return phoneNum.getText().startsWith("-") ||
+               hourlyRate.getText().startsWith("-") ||
+               sssNum.getText().startsWith("-") || 
+               philhealthNum.getText().startsWith("-") ||
+               pagibigNum.getText().startsWith("-") ||
+               tinNum.getText().startsWith("-");
+    }
+    
     
     private void closeButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButton2ActionPerformed
         this.dispose();
@@ -700,6 +709,10 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         }
         if (hasBlankFields(firstName, lastName, birthday, phoneNum, address, position, hourlyRate, sssNum, philhealthNum, pagibigNum, tinNum)) {
             JOptionPane.showMessageDialog(null, "Please fill up all information");
+            return;
+        }
+        if (hasNegatives(phoneNum, hourlyRate, sssNum, philhealthNum, pagibigNum, tinNum)) {
+            JOptionPane.showMessageDialog(null, "Negative numbers are not allowed");
             return;
         }
         setDetails();

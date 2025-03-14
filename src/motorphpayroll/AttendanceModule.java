@@ -248,6 +248,7 @@ public class AttendanceModule implements RecordOperations{
         return workHoursMap;
     }
     
+    // gets the latest time in/time out
     public String [] getLatestRecord () {
         String [] record = new String [2]; // for time in and time out
         try (Connection con = DatabaseConnection.Connect()) {
