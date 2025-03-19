@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class LeaveManagementModule implements RecordOperations {
     
@@ -184,7 +183,7 @@ public class LeaveManagementModule implements RecordOperations {
         return leaveDetails;
     }
     
-    public void submitLeaveRequest (int senderId, String startDate, String endDate, String Reason,
+    public boolean submitLeaveRequest (int senderId, String startDate, String endDate, String Reason,
                                     String firstName, String lastName, String leaveType, String status) {       
         
         try (Connection con = DatabaseConnection.Connect()) {
@@ -202,12 +201,14 @@ public class LeaveManagementModule implements RecordOperations {
             
             ptst.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Request Sent");
+            return true;
                                                                   
         } catch (Exception e) {System.out.println(e);}
+        
+        return false;
     }
         
-    public void approveLeave (int reqNumber) {
+    public boolean approveLeave (int reqNumber) {
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "UPDATE leave_requests SET status = ? WHERE request_number = ?";
              PreparedStatement ptst = con.prepareStatement(query);
@@ -215,12 +216,14 @@ public class LeaveManagementModule implements RecordOperations {
              ptst.setInt(2, reqNumber);
              ptst.executeUpdate();
              
-             JOptionPane.showMessageDialog(null, "Leave Approved");
+             return true;
                                              
         } catch (Exception e) {e.printStackTrace();}
+        
+        return false;
     }
     
-    public void denyLeave (int reqNumber) {
+    public boolean denyLeave (int reqNumber) {
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "UPDATE leave_requests SET status = ? WHERE request_number = ?";
              PreparedStatement ptst = con.prepareStatement(query);
@@ -228,8 +231,10 @@ public class LeaveManagementModule implements RecordOperations {
              ptst.setInt(2, reqNumber);
              ptst.executeUpdate();
              
-             JOptionPane.showMessageDialog(null, "Leave Denied");
+             return true;
                                              
         } catch (Exception e) {e.printStackTrace();}
+        
+        return false;
     }
 }

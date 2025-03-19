@@ -263,16 +263,32 @@ public class LeaveForm extends javax.swing.JFrame {
             return;
         }
         
-        if (validDateFields()) {
+            
+        if (validDateFields() && validReason()) {
             String leavetype = String.valueOf(leaveType.getSelectedItem());
-            leaveModule.submitLeaveRequest(user.getId(), startDateField.getText(),endDateField.getText(), reasonField.getText(), user.getFirstName(), user.getLastName(), leavetype, "Pending");
-            loadLeaveTable();
-            this.dispose();
-            leavePage.setVisible(true);
+            boolean submitted = leaveModule.submitLeaveRequest(user.getId(), startDateField.getText(),endDateField.getText(), reasonField.getText(), user.getFirstName(), user.getLastName(), leavetype, "Pending");
+            if (submitted) {
+                JOptionPane.showMessageDialog(null, "Request Successfully submitted");
+                loadLeaveTable();
+                this.dispose();
+                leavePage.setVisible(true);
+            }else {
+                JOptionPane.showMessageDialog(null, "Unable to send request");
+            }
+            
         }         
         
     }//GEN-LAST:event_submitButtonActionPerformed
-
+    private boolean validReason () {
+        String placeholder = "Enter reason for your leave...";
+        if (reasonField.getText().equals(placeholder)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid reason");
+            return false;
+        }
+        return true;
+    }
+    
+    
     private boolean validDateFields () {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy"); 
         

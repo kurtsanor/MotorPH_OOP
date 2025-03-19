@@ -4,6 +4,7 @@ import motorphpayroll.customcomponents.PanelRound;
 import motorphpayroll.customcomponents.MyButton;
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
 
@@ -207,7 +208,13 @@ public class LoginGui extends javax.swing.JFrame {
     
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         boolean validAccount = system.Login(UsernameTextfield.getText(), String.valueOf(PasswordField.getPassword()));
-        if (validAccount) this.dispose();       
+        if (validAccount) {
+            JOptionPane.showMessageDialog(null, "Logged in successfully");
+            this.dispose();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Invalid username or password");
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void UsernameTextfieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_UsernameTextfieldFocusGained

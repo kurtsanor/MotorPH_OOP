@@ -7,6 +7,7 @@ package motorphpayroll;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -624,19 +625,19 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     private void populateTextFields () {
         String [] empDetails = empModule.getEmployeeDetails(employeeId);
         
-        firstName.setText(empDetails[1]);
-        lastName.setText(empDetails[2]);
-        birthday.setText(empDetails[3]);
-        phoneNum.setText(empDetails[4]);
-        address.setText(empDetails[5]);
+        firstName.setText(empDetails[1].trim());
+        lastName.setText(empDetails[2].trim());
+        birthday.setText(empDetails[3].trim());
+        phoneNum.setText(empDetails[4].trim());
+        address.setText(empDetails[5].trim());
         statusComboBox.setSelectedItem(empDetails[6].trim());
-        position.setText(empDetails[7]);
-        hourlyRate.setText(empDetails[8]);
+        position.setText(empDetails[7].trim());
+        hourlyRate.setText(empDetails[8].trim());
         roleComboBox.setSelectedItem(empDetails[9].trim());
-        sssNum.setText(empDetails[10]);
-        philhealthNum.setText(empDetails[11]);
-        pagibigNum.setText(empDetails[12]);
-        tinNum.setText(empDetails[13]);
+        sssNum.setText(empDetails[10].trim());
+        philhealthNum.setText(empDetails[11].trim());
+        pagibigNum.setText(empDetails[12].trim());
+        tinNum.setText(empDetails[13].trim());
     }
          
     public void loadEmployeeTable () {
@@ -697,30 +698,104 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                tinNum.getText().startsWith("-");
     }
     
+    private boolean validateInputFields () {
+        if (hasLetters(hourlyRate.getText()) || hasLetters(phoneNum.getText()) || hasLetters(sssNum.getText()) || hasLetters(philhealthNum.getText()) || hasLetters(pagibigNum.getText()) || hasLetters(tinNum.getText())) {
+            JOptionPane.showMessageDialog(null, "Only Numerical values are allowed for:\n"
+                                              + "- Phone Number\n "
+                                              + "- Hourly Rate\n"
+                                              + "- Government Numbers");
+            return false;
+        }
+        if (hasBlankFields(firstName, lastName, birthday, phoneNum, address, position, hourlyRate, sssNum, philhealthNum, pagibigNum, tinNum)) {
+            JOptionPane.showMessageDialog(null, "Please fill up all information");
+            return false;
+        }
+        if (hasNegatives(phoneNum, hourlyRate, sssNum, philhealthNum, pagibigNum, tinNum)) {
+            JOptionPane.showMessageDialog(null, "Negative numbers are not allowed for:\n"
+                                              + "- Phone Number\n "
+                                              + "- Hourly Rate\n"
+                                              + "- Government Numbers");                                              
+            return false;
+        }
+        if (!hourlyRate.getText().matches("^\\d+(\\.\\d{1,2})?$")) {
+            JOptionPane.showMessageDialog(null, "Invalid Hourly Rate format: Please enter a valid number with up to two decimal places.");
+            return false;
+        }
+        
+        Date selectedDate = birthdayChooser.getDate();
+        Date currentDate = new Date();
+        if (selectedDate != null && selectedDate.after(currentDate)) {            
+            JOptionPane.showMessageDialog(null, "Birthdate cannot be in the future");
+            return false;
+        }
+        if (selectedDate != null && calculateAge(selectedDate) < 18) {            
+            JOptionPane.showMessageDialog(null, "Employee must be at least 18 years old.");
+            return false;
+        }
+        if (!isValidPhoneNumber(phoneNum.getText())) {
+            JOptionPane.showMessageDialog(null, "Invalid phone number format. Format must be: XXX-XXX-XXX");
+            return false;
+        }
+        if (!isValidSSSNumber(sssNum.getText())) {
+            JOptionPane.showMessageDialog(null, "Invalid SSS number format. Format must be: XX-XXXXXXX-X");
+            return false;
+        }
+        if (!isValidPagibigOrPhilhealthNumber(pagibigNum.getText())) {
+            JOptionPane.showMessageDialog(null, "Invalid Pagibig/Philhealth number format. Must consist of 12 digits");
+            return false;
+        }
+        if (!isValidTIN(tinNum.getText())) {
+            JOptionPane.showMessageDialog(null, "Invalid TIN number format. Format must be ###-###-###-###");
+            return false;
+        }
+        
+        
+        return true;
+    }
     
+    
+    public boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("\\d{3}-\\d{3}-\\d{3}");
+    }
+    
+    public boolean isValidSSSNumber(String sssNumber) {
+        return sssNumber.matches("\\d{2}-\\d{7}-\\d{1}");
+    }
+    public boolean isValidPagibigOrPhilhealthNumber(String pagibigNumber) {
+        return pagibigNumber.matches("\\d{12}");
+    }   
+    public boolean isValidTIN(String tin) {
+        return tin.matches("\\d{3}-\\d{3}-\\d{3}-\\d{3}");
+    }   
+        
     private void closeButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButton2ActionPerformed
         this.dispose();
     }//GEN-LAST:event_closeButton2ActionPerformed
     
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        if (hasLetters(hourlyRate.getText())) {
-            JOptionPane.showMessageDialog(null, "Numerical Values only for hourly rate field");
+        if (!validateInputFields()) {
             return;
         }
-        if (hasBlankFields(firstName, lastName, birthday, phoneNum, address, position, hourlyRate, sssNum, philhealthNum, pagibigNum, tinNum)) {
-            JOptionPane.showMessageDialog(null, "Please fill up all information");
-            return;
-        }
-        if (hasNegatives(phoneNum, hourlyRate, sssNum, philhealthNum, pagibigNum, tinNum)) {
-            JOptionPane.showMessageDialog(null, "Negative numbers are not allowed");
-            return;
-        }
+        
         setDetails();
         if (isAddingEmployee) {           
-            empModule.addEmployee(details);
+            boolean added = empModule.addEmployee(details);
+            if (added){
+                JOptionPane.showMessageDialog(null, "Record Added Sucessfully");
+            } 
+            else {
+                JOptionPane.showMessageDialog(null, "Failed to add record");
+            }
+                      
         }
         else {
-            empModule.editEmployee(employeeId, details);
+            boolean edited = empModule.editEmployee(employeeId, details);
+            if (edited) {
+                JOptionPane.showMessageDialog(null, "Record Updated Sucessfully");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Failed to update record");
+            }
         }
         loadEmployeeTable();
         this.dispose();
@@ -771,7 +846,7 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
 
     private void birthdayKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_birthdayKeyTyped
         char letter = evt.getKeyChar();
-        if (!Character.isDigit(letter) && letter != '/') {
+        if (!Character.isDigit(letter) ) {
             evt.consume(); // Prevent non-numeric characters
         }
     }//GEN-LAST:event_birthdayKeyTyped
@@ -795,9 +870,14 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     private void birthdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthdayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_birthdayActionPerformed
-
+    
+    public static int calculateAge(Date birthDate) {
+        long ageInMillis = new Date().getTime() - birthDate.getTime();
+        return (int) (ageInMillis / (1000L * 60 * 60 * 24 * 365)); // Convert to years
+    }
+    
     private void birthdayChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_birthdayChooserPropertyChange
-        if (birthdayChooser.getDate() == null) return;
+        if (birthdayChooser.getDate() == null) return;       
         birthday.setText(dateFormat.format(birthdayChooser.getDate()));
         System.out.println(dateFormat.format(birthdayChooser.getDate()));
     }//GEN-LAST:event_birthdayChooserPropertyChange

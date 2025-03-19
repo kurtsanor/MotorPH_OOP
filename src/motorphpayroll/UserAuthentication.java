@@ -12,96 +12,101 @@ public class UserAuthentication  {
           
     public boolean Login (String username, String password) {
         try (Connection con = DatabaseConnection.Connect()) {          
-            String query = "SELECT * FROM users WHERE BINARY Username = ? and Password = ?";
+            String query = "SELECT * FROM credentials WHERE BINARY username = ? and password = ?";
             PreparedStatement st = con.prepareStatement(query);
             st.setString(1, username);
             st.setString(2, password);
             ResultSet rs = st.executeQuery();
             
             if (rs.next()) {
+                int empID = rs.getInt("employeeID");   
+                
+                String empQuery = "SELECT * FROM users WHERE id = ?";
+                PreparedStatement empPst = con.prepareStatement(empQuery);
+                empPst.setInt(1, empID);
+                ResultSet empRs = empPst.executeQuery();
+                
+                
+                if (empRs.next()) {
                 User user = null;
-                switch (rs.getString("Role")) {
+                switch (empRs.getString("Role")) {
                     case "IT":
                         user = new IT(
-                        rs.getInt("id"),
-                        rs.getString("First_Name"),    
-                        rs.getString("Last_Name"),
-                        rs.getString("Position"),   
-                        rs.getString("Status"),     
-                        rs.getString("Birthdate"),
-                        rs.getString("Address"),
-                        rs.getString("Phone_number"),
-                        rs.getString("Philhealth"),
-                        rs.getString("SSS"),    
-                        rs.getString("Pagibig"),
-                        rs.getString("TIN"),
-                        rs.getDouble("Hourly_rate"),
-                        rs.getString("Role"));                                                               
+                        empRs.getInt("id"),
+                        empRs.getString("First_Name"),    
+                        empRs.getString("Last_Name"),
+                        empRs.getString("Position"),   
+                        empRs.getString("Status"),     
+                        empRs.getString("Birthdate"),
+                        empRs.getString("Address"),
+                        empRs.getString("Phone_number"),
+                        empRs.getString("Philhealth"),
+                        empRs.getString("SSS"),    
+                        empRs.getString("Pagibig"),
+                        empRs.getString("TIN"),
+                        empRs.getDouble("Hourly_rate"),
+                        empRs.getString("Role"));                                                               
                         break;
                     case "Finance":
                         user = new Finance(
-                        rs.getInt("id"),
-                        rs.getString("First_Name"),    
-                        rs.getString("Last_Name"),
-                        rs.getString("Position"),   
-                        rs.getString("Status"),     
-                        rs.getString("Birthdate"),
-                        rs.getString("Address"),
-                        rs.getString("Phone_number"),
-                        rs.getString("Philhealth"),
-                        rs.getString("SSS"),    
-                        rs.getString("Pagibig"),
-                        rs.getString("TIN"),
-                        rs.getDouble("Hourly_rate"),
-                        rs.getString("Role"));
+                        empRs.getInt("id"),
+                        empRs.getString("First_Name"),    
+                        empRs.getString("Last_Name"),
+                        empRs.getString("Position"),   
+                        empRs.getString("Status"),     
+                        empRs.getString("Birthdate"),
+                        empRs.getString("Address"),
+                        empRs.getString("Phone_number"),
+                        empRs.getString("Philhealth"),
+                        empRs.getString("SSS"),    
+                        empRs.getString("Pagibig"),
+                        empRs.getString("TIN"),
+                        empRs.getDouble("Hourly_rate"),
+                        empRs.getString("Role"));
                         break;
                     case "HR":
                         user = new HR(
-                        rs.getInt("id"),
-                        rs.getString("First_Name"),    
-                        rs.getString("Last_Name"),
-                        rs.getString("Position"),   
-                        rs.getString("Status"),     
-                        rs.getString("Birthdate"),
-                        rs.getString("Address"),
-                        rs.getString("Phone_number"),
-                        rs.getString("Philhealth"),
-                        rs.getString("SSS"),    
-                        rs.getString("Pagibig"),
-                        rs.getString("TIN"),
-                        rs.getDouble("Hourly_rate"),
-                        rs.getString("Role"));
+                        empRs.getInt("id"),
+                        empRs.getString("First_Name"),    
+                        empRs.getString("Last_Name"),
+                        empRs.getString("Position"),   
+                        empRs.getString("Status"),     
+                        empRs.getString("Birthdate"),
+                        empRs.getString("Address"),
+                        empRs.getString("Phone_number"),
+                        empRs.getString("Philhealth"),
+                        empRs.getString("SSS"),    
+                        empRs.getString("Pagibig"),
+                        empRs.getString("TIN"),
+                        empRs.getDouble("Hourly_rate"),
+                        empRs.getString("Role"));
                         break;
                     default:
                         user = new RegularEmployee(
-                        rs.getInt("id"),
-                        rs.getString("First_Name"),    
-                        rs.getString("Last_Name"),
-                        rs.getString("Position"),   
-                        rs.getString("Status"),     
-                        rs.getString("Birthdate"),
-                        rs.getString("Address"),
-                        rs.getString("Phone_number"),
-                        rs.getString("Philhealth"),
-                        rs.getString("SSS"),    
-                        rs.getString("Pagibig"),
-                        rs.getString("TIN"),
-                        rs.getDouble("Hourly_rate"),
-                        rs.getString("Role"));                                           
+                        empRs.getInt("id"),
+                        empRs.getString("First_Name"),    
+                        empRs.getString("Last_Name"),
+                        empRs.getString("Position"),   
+                        empRs.getString("Status"),     
+                        empRs.getString("Birthdate"),
+                        empRs.getString("Address"),
+                        empRs.getString("Phone_number"),
+                        empRs.getString("Philhealth"),
+                        empRs.getString("SSS"),    
+                        empRs.getString("Pagibig"),
+                        empRs.getString("TIN"),
+                        empRs.getDouble("Hourly_rate"),
+                        empRs.getString("Role"));                                           
                 }
                 
-                new HomePageGui(user).setVisible(true); return true;             
+                    new HomePageGui(user).setVisible(true); return true;             
+                }
             }
-            else {
-                JOptionPane.showMessageDialog(null, "Invalid usermname or password","Wrong Credentials", JOptionPane.ERROR_MESSAGE);               
-            }
-                     
+                                                                              
         } catch (Exception e){
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, e, "Error" , JOptionPane.ERROR_MESSAGE);
         }
-        
-            
+                   
         return false;
     }
     

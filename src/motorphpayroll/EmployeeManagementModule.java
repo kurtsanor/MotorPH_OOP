@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 // CRUD operations for employee management
 public class EmployeeManagementModule implements RecordOperations {
@@ -120,7 +119,7 @@ public class EmployeeManagementModule implements RecordOperations {
         return employeeDetails;
     }
         
-    public void addEmployee (String [] employeeData) {                            
+    public boolean addEmployee (String [] employeeData) {                            
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "INSERT INTO users (First_Name, Last_Name, Address, Birthdate, Position, Phone_number, SSS, Philhealth, TIN, Pagibig, Status, Hourly_Rate, Role) "
                           + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
@@ -140,13 +139,15 @@ public class EmployeeManagementModule implements RecordOperations {
              ptst.setDouble(12, Double.parseDouble(employeeData[11])); // Hourly_Rate
              ptst.setString(13, employeeData[12]); // Role
              ptst.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Added Successfully");
+             
+             return true;
              
         } catch (Exception e) {e.printStackTrace();}
+        
+        return false;
     }
     
-    public void editEmployee (int chosenEmployeeID, String [] employeeData) {      
+    public boolean editEmployee (int chosenEmployeeID, String [] employeeData) {      
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "UPDATE users SET First_Name = ?, Last_Name = ?, Address = ?, Birthdate = ?, Position = ?, Phone_number = ?, SSS = ?, Philhealth = ?, TIN = ?, Pagibig = ?, Status = ?, Hourly_Rate = ?, Role = ? "
                           + "WHERE id = ?";
@@ -167,20 +168,24 @@ public class EmployeeManagementModule implements RecordOperations {
              ptst.setInt(14,    chosenEmployeeID);
              ptst.executeUpdate();
              
-             JOptionPane.showMessageDialog(null, "Employee Updated");
-            
-        } catch (Exception e) {}
+             return true;
+             
+        } catch (Exception e) {e.printStackTrace();}
+        
+        return false;
     }
     
-    public void deleteEmployee (int employeeId) {
+    public boolean deleteEmployee (int employeeId) {
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "DELETE FROM users WHERE id = ?";
              PreparedStatement ptst = con.prepareStatement(query);
              ptst.setInt(1, employeeId);
              ptst.execute();
              
-             JOptionPane.showMessageDialog(null, "Record Deleted");
+             return true;
              
-        } catch (Exception e) {}
+        } catch (Exception e) {e.printStackTrace();}
+        
+        return false;
     }      
 }
