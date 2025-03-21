@@ -756,7 +756,8 @@ public class HomePageGui extends javax.swing.JFrame {
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         int response = JOptionPane.showConfirmDialog(null,"Are you sure you want to logout?","Confirm",JOptionPane.YES_NO_OPTION);
         if (response == JOptionPane.YES_OPTION) {
-            new UserAuthentication().logOut(this);
+            new LoginGui().setVisible(true);
+            this.dispose();
         }
         
         

@@ -10,13 +10,13 @@ import javax.swing.border.EmptyBorder;
 
 public class LoginGui extends javax.swing.JFrame {
 
-    private UserAuthentication system;
+    
     
     public LoginGui() {
         initComponents();
         adustTextFields();
         LoginPanel.setBackground(new Color(0,0,0,70));
-        system = new UserAuthentication();
+        
         
     }
 
@@ -207,13 +207,17 @@ public class LoginGui extends javax.swing.JFrame {
     }
     
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        boolean validAccount = system.Login(UsernameTextfield.getText(), String.valueOf(PasswordField.getPassword()));
-        if (validAccount) {
-            JOptionPane.showMessageDialog(null, "Logged in successfully");
+        UserAuthentication authentication = new UserAuthentication(UsernameTextfield.getText(), PasswordField.getText());
+        int employeeID = authentication.authenticateUser();
+        
+        if (employeeID != -1) {
+            JOptionPane.showMessageDialog(this, "Login Successful");
+            User user = authentication.getUserRole();
+            new HomePageGui(user).setVisible(true);
             this.dispose();
         }
         else {
-            JOptionPane.showMessageDialog(null, "Invalid username or password");
+            JOptionPane.showMessageDialog(this, "Invalid login credentials");
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
