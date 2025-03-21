@@ -3,14 +3,19 @@ package motorphpayroll;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
 
 
 public class UserAuthentication  {
     
-    public UserAuthentication () {}
+    private String username;
+    private String password;
+    
+    public UserAuthentication (String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
           
-    public boolean Login (String username, String password) {
+    public boolean Login () {
         try (Connection con = DatabaseConnection.Connect()) {          
             String query = "SELECT * FROM credentials WHERE BINARY username = ? and password = ?";
             PreparedStatement st = con.prepareStatement(query);
@@ -115,7 +120,41 @@ public class UserAuthentication  {
         new LoginGui().setVisible(true);
     }
     
+    public int authenticateUser (String username, String password) {
+        try (Connection con = DatabaseConnection.Connect()) {
+            String query = "SELECT * FROM credentials WHERE BINARY username = ? AND password = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                int employeeID = rs.getInt("employeeID");
+                return employeeID;
+            }
+                      
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return -1; // return -1 if the credentials is incorrect
+    }
     
+    
+    
+    public User getUserRole () {
+        try (Connection con = DatabaseConnection.Connect()) {
+            String query = "SELECT * FROM credentials WHERE BINARY username = ? AND password = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                
+            }
+            
+            
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
+    }
     
     
     
