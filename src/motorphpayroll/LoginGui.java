@@ -212,7 +212,7 @@ public class LoginGui extends javax.swing.JFrame {
         
         if (employeeID != -1) {
             JOptionPane.showMessageDialog(this, "Login Successful");
-            User user = authentication.getUserRole();
+            User user = authentication.getUserRole(employeeID);
             new HomePageGui(user).setVisible(true);
             this.dispose();
         }

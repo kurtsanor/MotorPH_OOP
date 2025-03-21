@@ -17,7 +17,7 @@ public class UserAuthentication  {
                    
     public int authenticateUser () {
         try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM credentials WHERE BINARY username = ? AND password = ?";
+            String query = "SELECT employeeID FROM credentials WHERE BINARY username = ? AND password = ?";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, username);
             pst.setString(2, password);
@@ -25,7 +25,7 @@ public class UserAuthentication  {
             
             if (rs.next()) {
                 int employeeID = rs.getInt("employeeID");
-                return employeeID;
+                return employeeID; // return employee id if credentials are correct to be used for identifying user role
             }
                       
         }catch (Exception e) {
@@ -36,11 +36,10 @@ public class UserAuthentication  {
     
     
     
-    public User getUserRole () {
+    public User getUserRole (int employeeID) {
         try (Connection con = DatabaseConnection.Connect()) {
             String query = "SELECT * FROM users WHERE id = ?";
             PreparedStatement pst = con.prepareStatement(query);
-            int employeeID = authenticateUser();
             pst.setInt(1, employeeID);
             ResultSet rs = pst.executeQuery();
             
