@@ -690,15 +690,22 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     }
     
     private boolean hasNegatives (JTextField phoneNum, JTextField hourlyRate, JTextField sssNum, JTextField philhealthNum, JTextField pagibigNum, JTextField tinNum) {
-        return phoneNum.getText().startsWith("-") ||
-               hourlyRate.getText().startsWith("-") ||
-               sssNum.getText().startsWith("-") || 
-               philhealthNum.getText().startsWith("-") ||
-               pagibigNum.getText().startsWith("-") ||
-               tinNum.getText().startsWith("-");
+        return Integer.parseInt(phoneNum.getText().replace("-", "")) < 0 ||
+               Double.parseDouble(hourlyRate.getText()) < 0 ||
+               Integer.parseInt(sssNum.getText().replace("-", "")) < 0 || 
+               Integer.parseInt(philhealthNum.getText().replace("-", "")) < 0 ||
+               Integer.parseInt(pagibigNum.getText().replace("-", "")) < 0 ||
+               Integer.parseInt(tinNum.getText().replace("-", "")) < 0;
     }
     
     private boolean validateInputFields () {
+        if (hasNumbers(firstName.getText()) || hasNumbers(lastName.getText()) || hasNumbers(position.getText())) {
+            JOptionPane.showMessageDialog(this, 
+            "First Name, Last Name, and Position should not contain numbers. Please enter letters only.", 
+            "Validation Error", 
+            JOptionPane.ERROR_MESSAGE);
+        }
+        
         if (hasLetters(hourlyRate.getText()) || hasLetters(phoneNum.getText()) || hasLetters(sssNum.getText()) || hasLetters(philhealthNum.getText()) || hasLetters(pagibigNum.getText()) || hasLetters(tinNum.getText())) {
             JOptionPane.showMessageDialog(null, "Only Numerical values are allowed for:\n"
                                               + "- Phone Number\n "
@@ -767,6 +774,10 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     public boolean isValidTIN(String tin) {
         return tin.matches("\\d{3}-\\d{3}-\\d{3}-\\d{3}");
     }   
+    
+    public boolean hasNumbers(String input) {
+        return input.matches(".*\\d+.*");
+    }
         
     private void closeButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButton2ActionPerformed
         this.dispose();
