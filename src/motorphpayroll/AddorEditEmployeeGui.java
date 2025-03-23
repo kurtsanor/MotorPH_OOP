@@ -689,14 +689,15 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         }
     }
     
-    private boolean hasNegatives (JTextField phoneNum, JTextField hourlyRate, JTextField sssNum, JTextField philhealthNum, JTextField pagibigNum, JTextField tinNum) {
-        return Integer.parseInt(phoneNum.getText().replace("-", "")) < 0 ||
-               Double.parseDouble(hourlyRate.getText()) < 0 ||
-               Integer.parseInt(sssNum.getText().replace("-", "")) < 0 || 
-               Integer.parseInt(philhealthNum.getText().replace("-", "")) < 0 ||
-               Integer.parseInt(pagibigNum.getText().replace("-", "")) < 0 ||
-               Integer.parseInt(tinNum.getText().replace("-", "")) < 0;
-    }
+    private boolean hasNegatives(JTextField phoneNum, JTextField hourlyRate, JTextField sssNum, 
+                             JTextField philhealthNum, JTextField pagibigNum, JTextField tinNum) {
+    return phoneNum.getText().trim().startsWith("-") ||
+           hourlyRate.getText().trim().startsWith("-") ||
+           sssNum.getText().trim().startsWith("-") ||
+           philhealthNum.getText().trim().startsWith("-") ||
+           pagibigNum.getText().trim().startsWith("-") ||
+           tinNum.getText().trim().startsWith("-");
+}
     
     private boolean validateInputFields () {
         if (hasNumbers(firstName.getText()) || hasNumbers(lastName.getText()) || hasNumbers(position.getText())) {
@@ -704,6 +705,7 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
             "First Name, Last Name, and Position should not contain numbers. Please enter letters only.", 
             "Validation Error", 
             JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         
         if (hasLetters(hourlyRate.getText()) || hasLetters(phoneNum.getText()) || hasLetters(sssNum.getText()) || hasLetters(philhealthNum.getText()) || hasLetters(pagibigNum.getText()) || hasLetters(tinNum.getText())) {
@@ -748,6 +750,10 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
             return false;
         }
         if (!isValidPagibigOrPhilhealthNumber(pagibigNum.getText())) {
+            JOptionPane.showMessageDialog(null, "Invalid Pagibig/Philhealth number format. Must consist of 12 digits");
+            return false;
+        }
+        if (!isValidPagibigOrPhilhealthNumber(philhealthNum.getText())) {
             JOptionPane.showMessageDialog(null, "Invalid Pagibig/Philhealth number format. Must consist of 12 digits");
             return false;
         }

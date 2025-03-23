@@ -488,6 +488,7 @@ public class CrudGui extends javax.swing.JFrame {
             if (JOptionPane.showConfirmDialog(null, "Are you sure you want to delete","", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
                 empManagement.deleteEmployee(chosenEmployee);
+                JOptionPane.showMessageDialog(this, "Employee Deleted");
                 loadEmployeeTable();
             }           
         }

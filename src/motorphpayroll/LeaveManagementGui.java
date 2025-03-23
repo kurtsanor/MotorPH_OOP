@@ -553,6 +553,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         else {
             int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
             leaveModule.approveLeave(requestID);
+            JOptionPane.showMessageDialog(null, "Leave approved");
             loadLeaveTable();
         }       
     }//GEN-LAST:event_approveButtonActionPerformed
@@ -564,6 +565,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         else {
             int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
             leaveModule.denyLeave(requestID);
+            JOptionPane.showMessageDialog(null, "Leave Denied");
             loadLeaveTable();
         }     
     }//GEN-LAST:event_denyButtonActionPerformed
