@@ -34,13 +34,13 @@ public class LeaveManagementModule implements RecordOperations {
                   rs.getString("status")} );
              }
                                   
-        } catch (Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return leaveRecords;
     }
-    
-    
-    
+        
     // loads only the leave records of the logged in employee    
     public List <String []> getAllRecords (int employeeID) {
         List <String []> leaveRecords = new ArrayList<>();
@@ -60,7 +60,9 @@ public class LeaveManagementModule implements RecordOperations {
                   rs.getString("status")} );
              }
                                   
-        } catch (Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return leaveRecords;
     }
@@ -71,25 +73,25 @@ public class LeaveManagementModule implements RecordOperations {
         List <String []> searchResults = new ArrayList<>();
         
         try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM leave_requests;";
+            String query = "SELECT * FROM leave_requests WHERE id LIKE ? OR LOWER(CONCAT(First_name, ' ', Last_name)) LIKE ?";
             PreparedStatement ptst = con.prepareStatement(query);
+            String searchPattern = "%" + searchInput.toLowerCase() + "%";
+            ptst.setString(1, searchPattern);
+            ptst.setString(2, searchPattern);
             ResultSet rs = ptst.executeQuery();
                        
-            while (rs.next()) {
-                if (rs.getString("id").contains(searchInput.toLowerCase()) || 
-                    rs.getString("First_name").toLowerCase().contains(searchInput.toLowerCase()) ||
-                    rs.getString("Last_name").toLowerCase().contains(searchInput.toLowerCase())) 
-                {
-                    searchResults.add(new String[]{
-                    rs.getString("Request_number"),
-                    rs.getString("id"),
-                    rs.getString("First_name") + " " + rs.getString("Last_name"),
-                    rs.getString("Leave_type"),
-                    rs.getString("status")});
-                }
+            while (rs.next()) {              
+                searchResults.add(new String[]{
+                rs.getString("Request_number"),
+                rs.getString("id"),
+                rs.getString("First_name") + " " + rs.getString("Last_name"),
+                rs.getString("Leave_type"),
+                rs.getString("status")});         
             }
                                                         
-        } catch (Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return searchResults;
     }
@@ -97,36 +99,43 @@ public class LeaveManagementModule implements RecordOperations {
     
     // Filters leave records based on status (All, Pending, Approved, Denied)
     public List <String []> filterRecords (String filter, String searchInput) {
+        // if input is equal to the textbox placeholder, clear it
+        if (searchInput.equals("Search")) searchInput = "";
+        
         List <String []> filteredResults = new ArrayList<>();
         
         try (Connection con = DatabaseConnection.Connect()) {
-             String query;
-             switch (filter) {
-                 case "All" -> query = "SELECT * FROM leave_requests";
-                 default -> query = "SELECT * FROM leave_requests WHERE status = ?";
-             }
-             PreparedStatement ptst = con.prepareStatement(query);   
-             
-             if (!filter.equals("All")) ptst.setString(1, filter);             
-             ResultSet rs = ptst.executeQuery();              
+            String query;
+            if (filter.equals("All")) {
+                query = "SELECT * FROM leave_requests WHERE id LIKE ? OR LOWER(CONCAT(First_name, ' ', Last_name)) LIKE ?";
+            } else {
+                query = "SELECT * FROM leave_requests WHERE status = ? AND (id LIKE ? OR LOWER(CONCAT(First_name, ' ', Last_name)) LIKE ?)";
+            }
+            PreparedStatement ptst = con.prepareStatement(query);   
+            String searchPattern = "%" + searchInput.toLowerCase() + "%";
+            
+            if (!filter.equals("All")) {
+                ptst.setString(1, filter);
+                ptst.setString(2, searchPattern);
+                ptst.setString(3, searchPattern);              
+            } else {
+                ptst.setString(1, searchPattern);
+                ptst.setString(2, searchPattern);
+            }
+            
+            ResultSet rs = ptst.executeQuery();              
                          
-             while (rs.next()) {
-                 // if input is equal to the textbox placeholder, clear it
-                 if (searchInput.equals("Search")) searchInput = "";
-                 
-                 if (rs.getString("id").contains(searchInput) ||
-                    rs.getString("Last_Name").toLowerCase().contains(searchInput.toLowerCase()) ||
-                    rs.getString("First_Name").toLowerCase().contains(searchInput.toLowerCase())) 
-                {
-                    filteredResults.add(new String [] {
-                    rs.getString("Request_number"),
-                    rs.getString("id"),
-                    rs.getString("First_name") + " " + rs.getString("Last_name"),
-                    rs.getString("Leave_type"),
-                    rs.getString("status")} );
-                }                 
+             while (rs.next()) {               
+                filteredResults.add(new String [] {
+                rs.getString("Request_number"),
+                rs.getString("id"),
+                rs.getString("First_name") + " " + rs.getString("Last_name"),
+                rs.getString("Leave_type"),
+                rs.getString("status")} );                             
              }                                 
-        } catch (Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return filteredResults;
     }    
@@ -136,26 +145,27 @@ public class LeaveManagementModule implements RecordOperations {
         List <String []> searchResults = new ArrayList<>();
         
         try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM leave_requests WHERE status = ?;";
+            String query = "SELECT * FROM leave_requests WHERE status = ? AND (id LIKE ? OR LOWER(CONCAT(First_name, ' ', Last_name)) LIKE ?)";
             PreparedStatement ptst = con.prepareStatement(query);
+            String searchPattern = "%" + searchInput.toLowerCase() + "%";
             ptst.setString(1, filter);
+            ptst.setString(2, searchPattern);
+            ptst.setString(3, searchPattern);
+            
             ResultSet rs = ptst.executeQuery();
                       
-            while (rs.next()) {
-                if ((rs.getString("id").contains(searchInput.toLowerCase()) && rs.getString("status").equals(filter)) || 
-                    (rs.getString("First_name").toLowerCase().contains(searchInput.toLowerCase()) && rs.getString("status").equals(filter)) ||
-                    (rs.getString("Last_name").toLowerCase().contains(searchInput.toLowerCase())) && rs.getString("status").equals(filter)) 
-                {
-                    searchResults.add(new String[]{
-                    rs.getString("Request_number"),
-                    rs.getString("id"),
-                    rs.getString("First_name") + " " + rs.getString("Last_name"),
-                    rs.getString("Leave_type"),
-                    rs.getString("status")});
-                }
+            while (rs.next()) {           
+                searchResults.add(new String[]{
+                rs.getString("Request_number"),
+                rs.getString("id"),
+                rs.getString("First_name") + " " + rs.getString("Last_name"),
+                rs.getString("Leave_type"),
+                rs.getString("status")});               
             }
                                                         
-        } catch (Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return searchResults;
     }
@@ -165,20 +175,22 @@ public class LeaveManagementModule implements RecordOperations {
         String [] leaveDetails = new String [5];
         
         try (Connection con = DatabaseConnection.Connect()) {
-             String query = "SELECT * FROM leave_requests WHERE Request_number = ?";
-             PreparedStatement ptst = con.prepareStatement(query);
-             ptst.setInt(1, requestID);
-             ResultSet rs = ptst.executeQuery();
+            String query = "SELECT * FROM leave_requests WHERE Request_number = ?";
+            PreparedStatement ptst = con.prepareStatement(query);
+            ptst.setInt(1, requestID);
+            ResultSet rs = ptst.executeQuery();
              
-             if (rs.next()) {               
+            if (rs.next()) {               
                 leaveDetails[0] = rs.getString("First_name") + " " + rs.getString("Last_name");
                 leaveDetails[1] = rs.getString("Start_date");
                 leaveDetails[2] = rs.getString("End_date");
                 leaveDetails[3] = rs.getString("Leave_type");
                 leaveDetails[4] = rs.getString("Reason");                            
-             }
+            }
                                
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return leaveDetails;
     }
@@ -203,7 +215,9 @@ public class LeaveManagementModule implements RecordOperations {
             
             return true;
                                                                   
-        } catch (Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return false;
     }
@@ -218,7 +232,9 @@ public class LeaveManagementModule implements RecordOperations {
              
              return true;
                                              
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return false;
     }
@@ -233,7 +249,9 @@ public class LeaveManagementModule implements RecordOperations {
              
              return true;
                                              
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return false;
     }

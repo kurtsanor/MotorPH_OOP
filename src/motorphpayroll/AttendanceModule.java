@@ -1,10 +1,12 @@
-
 package motorphpayroll;
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,25 +29,29 @@ public class AttendanceModule implements RecordOperations{
     public List <String []> getAllRecords() {
         List <String []> attendanceRecord = new ArrayList<>();
         try (Connection con = DatabaseConnection.Connect()) {
-             String query = "SELECT * FROM attendance WHERE id = ?";
-             PreparedStatement ptst = con.prepareStatement(query);
-             ptst.setInt(1, employeeId);
-             ResultSet rs = ptst.executeQuery();
-                      
-             while (rs.next()) {                
-                 // split the date to identify the month and year
-                 String [] dateParts = rs.getString("date").split("/");
-                 
-                 // dateParts[0] is the month, dateParts[2] is the year
-                 if (dateParts[0].equals(getSelectedMonth(selectedMonth)) && dateParts[2].equals(selectedYear)) {
-                     attendanceRecord.add(new String [] {
-                     rs.getString("date"),
-                     rs.getString("time_in"),
-                     rs.getString("time_out"),
-                     String.valueOf(calculateTotalHours(rs.getString("time_in"), rs.getString("time_out")))});
-                 }
-             }                               
-        } catch (Exception e) {e.printStackTrace();}
+            String query = "SELECT * FROM attendance WHERE id = ? AND YEAR(new_date) = ? AND MONTH(new_date) = ?";
+            PreparedStatement ptst = con.prepareStatement(query);
+            ptst.setInt(1, employeeId);
+            int month = getSelectedMonth(selectedMonth);
+            int year = Integer.parseInt(selectedYear);
+            ptst.setInt(2, year);
+            ptst.setInt(3, month);
+            ResultSet rs = ptst.executeQuery();
+            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            
+            while (rs.next()) {
+                String date = rs.getDate("new_date").toLocalDate().format(formatter);
+                String timeIn = rs.getString("new_time_in");
+                String timeOut = rs.getString("new_time_out");
+                String totalHours = String.valueOf(calculateTotalHours(rs.getTime("new_time_in").toLocalTime(), rs.getTime("new_time_out").toLocalTime()));
+                
+                attendanceRecord.add(new String [] { date, timeIn, timeOut, totalHours});
+                             
+            }                               
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return attendanceRecord;
     }
@@ -55,43 +61,45 @@ public class AttendanceModule implements RecordOperations{
         List <String []> searchResults = new ArrayList<>();
         
         try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM users";
+            String query = "SELECT First_Name, Last_Name, id FROM users WHERE id LIKE ? OR LOWER(CONCAT(First_Name, ' ', Last_Name)) LIKE ?";
             PreparedStatement st = con.prepareStatement(query);
+            String searchPattern = "%" + searchInput.toLowerCase() + "%";
+            st.setString(1, searchPattern);
+            st.setString(2, searchPattern);
             ResultSet rs = st.executeQuery();
                     
             // if an employee name or id matches the search text, it adds it to the arraylist
             while (rs.next()) {
-                String fullName = rs.getString("First_Name").toLowerCase() + " " + rs.getString("Last_Name").toLowerCase();
-                if (rs.getString("id").contains(searchInput) || fullName.contains(searchInput.toLowerCase())) 
-                {
-                    searchResults.add(new String[]{rs.getString("id"),
-                    rs.getString("Last_Name"),
-                    rs.getString("First_Name")
-                });
-                }
+                String employeeID = rs.getString("id");
+                String lastName = rs.getString("Last_Name");
+                String firstName = rs.getString("First_Name");
+
+                searchResults.add(new String[]{employeeID, lastName, firstName});        
             }
                                            
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return searchResults;
     }
     
-    public String getSelectedMonth (String month) {
+    public int getSelectedMonth (String month) {
         switch (month) {
-            case "January"  : return "01";
-            case "February" : return "02";
-            case "March"    : return "03";
-            case "April"    : return "04";
-            case "May"      : return "05";
-            case "June"     : return "06";
-            case "July"     : return "07";
-            case "August"   : return "08";
-            case "September": return "09";
-            case "October"  : return "10";
-            case "November" : return "11";
-            case "December" : return "12";
-            default         : return month;
-        } 
+            case "January"  : return 1;
+            case "February" : return 2;
+            case "March"    : return 3;
+            case "April"    : return 4;
+            case "May"      : return 5;
+            case "June"     : return 6;
+            case "July"     : return 7;
+            case "August"   : return 8;
+            case "September": return 9;
+            case "October"  : return 10;
+            case "November" : return 11;
+            case "December" : return 12;
+        }
+        return -1;
     }
     
     public void setSelectedMonth (String selectedMonth) {
@@ -120,65 +128,66 @@ public class AttendanceModule implements RecordOperations{
     
     
     // helper method to get the total work hours in a day
-    public double calculateTotalHours (String time_in, String time_out) {
-        if (time_out == null) return 0.0;
-            
-        String [] timeIn = time_in.split(":");             
-        String [] timeOut = time_out.split(":");
+    public double calculateTotalHours (LocalTime timeIn, LocalTime timeOut) {
+        if (timeOut == null || timeIn == null) return 0.0;
         
-        double timeInDecimal = Integer.parseInt(timeIn[0]) + (Integer.parseInt(timeIn[1]) / 60.0);
-        double timeOutDecimal = Integer.parseInt(timeOut[0]) + (Integer.parseInt(timeOut[1]) / 60.0);
-                      
-        return Math.round((timeOutDecimal - timeInDecimal) * 100.0) / 100.0;
+        long totalMinutes = ChronoUnit.MINUTES.between(timeIn, timeOut);
+        double totalHours = totalMinutes / 60.0;
+        
+        return Math.round(totalHours * 100.0) / 100.0;                            
     }
     
     // gets the total work hours of an employee on the chosen month and year
     public double getMonthlyHoursWorked () {
         double totalHours = 0;
-        try (Connection con = DatabaseConnection.Connect()) {            
-             String query = "SELECT * FROM attendance WHERE id = ?";
-             PreparedStatement ptst = con.prepareStatement(query);
-             ptst.setInt(1, employeeId);
-             ResultSet rs = ptst.executeQuery();
-                                 
-             while (rs.next()) {
-                 String [] dateParts = rs.getString("date").split("/");
-                 if (dateParts[0].equals(getSelectedMonth(selectedMonth)) && dateParts[2].equals(selectedYear)) {
-                     totalHours += calculateTotalHours(rs.getString("time_in"), rs.getString("time_out"));
-                }
-             }      
-             
-        } catch (Exception e) {e.printStackTrace();}
         
+        try (Connection con = DatabaseConnection.Connect()) {            
+            String query = "SELECT * FROM attendance WHERE id = ? AND YEAR(new_date) = ? AND MONTH(new_date) = ?";
+            PreparedStatement ptst = con.prepareStatement(query);
+            int month = getSelectedMonth(selectedMonth);
+            int year = Integer.parseInt(selectedYear);
+            ptst.setInt(1, employeeId);
+            ptst.setInt(2, year);
+            ptst.setInt(3, month);
+            ResultSet rs = ptst.executeQuery();
+                                          
+            while (rs.next()) {
+                LocalTime timeIn = rs.getTime("new_time_in").toLocalTime();
+                LocalTime timeOut = rs.getTime("new_time_out").toLocalTime();
+                
+                totalHours += calculateTotalHours(timeIn, timeOut);               
+            }      
+             
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // round off to 2 decimal places
         return Math.round(totalHours * 100.0) / 100.0;
     }
     
     public boolean timeIn (String [] details) {        
         try (Connection con = DatabaseConnection.Connect()) {
-             String checkQuery = "SELECT * FROM attendance WHERE id = ? AND date = ? AND time_out IS NULL";
-             PreparedStatement checkPst = con.prepareStatement(checkQuery);
-             checkPst.setInt(1, Integer.parseInt(details[0])); // employee id
-             checkPst.setString(2, details[1]);
-             ResultSet checkResult = checkPst.executeQuery();
+            String checkQuery = "SELECT * FROM attendance WHERE id = ? AND date = ? AND time_out IS NULL";
+            PreparedStatement checkPst = con.prepareStatement(checkQuery);
+            checkPst.setInt(1, Integer.parseInt(details[0])); // employee id
+            checkPst.setString(2, details[1]);
+            ResultSet checkResult = checkPst.executeQuery();
              
-             if (checkResult.next()) {
-                 System.out.println("already timed in");
-                 return false; // return false if employee already timed in and has not timed out yet
-             }
+            if (checkResult.next()) {
+                return false; // return false if employee already timed in and has not timed out yet
+            }
              
-             // otherwise allow employee to time in
-             String query = "INSERT INTO attendance (id, date, time_in) "
-                          + "VALUES (?,?,?)";
-             PreparedStatement ptst = con.prepareStatement(query);
-             ptst.setInt(1, Integer.parseInt(details[0])); // employee id
-             ptst.setString(2, details[1]); // current date
-             ptst.setString(3, details[2]); // current time
-             ptst.executeUpdate();
+            // otherwise allow employee to time in
+            String query = "INSERT INTO attendance (id, date, time_in) "
+                         + "VALUES (?,?,?)";
+            PreparedStatement ptst = con.prepareStatement(query);
+            ptst.setInt(1, Integer.parseInt(details[0])); // employee id
+            ptst.setString(2, details[1]); // current date
+            ptst.setString(3, details[2]); // current time
+            ptst.executeUpdate();
              
-             System.out.println("success");
-             return true;
-             
-             
+            return true;
+                         
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -207,8 +216,7 @@ public class AttendanceModule implements RecordOperations{
              ptst.setString(1, details[0]); // current time
              ptst.setInt(2, attendanceID); // attendance id
              ptst.executeUpdate();
-             
-             System.out.println("success");
+                        
              return true;
              
         } catch (Exception e) {
@@ -217,7 +225,7 @@ public class AttendanceModule implements RecordOperations{
         }
     }
     
-    // calculates all employees work hours each month and stores it in a hashmap
+    // calculates all employees work hours each month and stores it in a hashmap for faster look up
     public Map <String, Double> getAllEmployeesMonthlyHours () {
         Map <String, Double> workHoursMap = new HashMap<>();
         
@@ -226,20 +234,26 @@ public class AttendanceModule implements RecordOperations{
             PreparedStatement pst = con.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            
             String [] key = new String [3]; // keys will be the id, month, and year
             
             while (rs.next()) {
-                String [] dateParts = rs.getString("date").split("/");
-                setSelectedMonth(dateParts[0]); // set month to the current one in the resultset
-                setSelectedYear(dateParts[2]); // set year to the current one in the resultset
+                LocalDate date = rs.getDate("new_date").toLocalDate();
+                
+                setSelectedMonth(String.valueOf(date.getMonth().getValue())); // set month to the current one in the resultset
+                setSelectedYear(String.valueOf(date.getYear())); // set year to the current one in the resultset
                 
                 key[0] = rs.getString("id");
                 key[1] = getSelectedMonth();
                 key[2] = getSelectedYear();
-                               
-                double hoursWorked = calculateTotalHours(rs.getString("time_in"), rs.getString("time_out"));
                 
-                // add the keys and the total hours as values to the hashmap
+                LocalTime timeIn = rs.getTime("new_time_in").toLocalTime();
+                LocalTime timeOut = rs.getTime("new_time_out").toLocalTime();
+                               
+                double hoursWorked = calculateTotalHours(timeIn, timeOut);
+                
+                // add the keys and the total hours as values to the hashmap. the hours worked will keep adding up depending on the month
                 workHoursMap.put(Arrays.toString(key), workHoursMap.getOrDefault(Arrays.toString(key), 0.0) + hoursWorked);                                             
             }   
             
@@ -260,8 +274,11 @@ public class AttendanceModule implements RecordOperations{
             if (rs.next()) {
                 record[0] = rs.getString("time_in");
                 record[1] = rs.getString("time_out");
-            }                                                  
-        } catch (Exception e) {e.printStackTrace();}
+            }                      
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return record;
     } 

@@ -29,7 +29,7 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
         List <String []> payrollRecords = new ArrayList<>();
         
         try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM users";
+            String query = "SELECT id, Hourly_rate, First_name, Last_name FROM users";
             PreparedStatement ptst = con.prepareStatement(query);
             ResultSet rs = ptst.executeQuery();
                           
@@ -54,8 +54,11 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
                  String.valueOf(getGrossPay()),
                  String.valueOf(getNetSalary())
                 });
-            }                                 
-        } catch (Exception e) {e.printStackTrace();}
+            }                
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return payrollRecords;
     }
@@ -65,45 +68,45 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
         List <String []> searchResults = new ArrayList<>();
         
         try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM users";
+            String query = "SELECT id, Hourly_rate, First_name, Last_name FROM users WHERE id LIKE ? OR LOWER(CONCAT(First_name, ' ', Last_name)) LIKE ?";
             PreparedStatement ptst = con.prepareStatement(query);
+            String searchPattern = "%" + searchInput.toLowerCase() + "%";
+            ptst.setString(1, searchPattern);
+            ptst.setString(2, searchPattern);
             ResultSet rs = ptst.executeQuery();
                        
-            while (rs.next()) {
-                if (rs.getString("id").contains(searchInput) ||
-                    rs.getString("Last_Name").toLowerCase().contains(searchInput.toLowerCase()) ||
-                    rs.getString("First_Name").toLowerCase().contains(searchInput.toLowerCase())) 
-                {
-                    // set the employeeID to the current employee
-                    super.setEmployeeId(rs.getInt("id"));
-                    hourlyRate = rs.getDouble("Hourly_rate");
+            while (rs.next()) {               
+                // set the employeeID to the current employee
+                super.setEmployeeId(rs.getInt("id"));
+                hourlyRate = rs.getDouble("Hourly_rate");
                     
-                    // calculates the monthly salary of the current employee in the resultset and populates the salary related variables
-                    calculateMonthlyGrossSalary();
+                // calculates the monthly salary of the current employee in the resultset and populates the salary related variables
+                calculateMonthlyGrossSalary();
                     
-                    searchResults.add(new String[]{
-                    rs.getString("id"),
-                    rs.getString("First_name") + " " + rs.getString("Last_name"),
-                    rs.getString("Hourly_rate"),
-                    String.valueOf(monthlyWorkHours),
-                    String.valueOf(deductionsModule.getPhilHealthDeduction(getGrossPay())),
-                    String.valueOf(deductionsModule.getSSSDeduction(getGrossPay())),
-                    String.valueOf(deductionsModule.getPagIbigDeduction(getGrossPay())),
-                    String.valueOf(deductionsModule.getWithholdingTax(getTaxableIncome())),
-                    String.valueOf(getGrossPay()),
-                    String.valueOf(getNetSalary())                                                     
-                });
-                }
+                String currentEmployeeID = rs.getString("id");
+                String fullName = rs.getString("First_name") + " " + rs.getString("Last_name");
+                String empHourlyRate = rs.getString("Hourly_rate");
+                String totalWorkHours = String.valueOf(monthlyWorkHours);
+                String philHealthDeduction = String.valueOf(deductionsModule.getPhilHealthDeduction(getGrossPay()));
+                String sssDeduction = String.valueOf(deductionsModule.getSSSDeduction(getGrossPay()));
+                String pagibigDeduction = String.valueOf(deductionsModule.getPagIbigDeduction(getGrossPay()));
+                String withHoldingTax = String.valueOf(deductionsModule.getWithholdingTax(getTaxableIncome()));
+                String empGrossPay = String.valueOf(getGrossPay());
+                String empNetPay = String.valueOf(getNetSalary());
+                    
+                searchResults.add(new String[] { currentEmployeeID, fullName, empHourlyRate, totalWorkHours, philHealthDeduction, sssDeduction, pagibigDeduction, withHoldingTax, empGrossPay, empNetPay }); 
             }
             
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         return searchResults;
     }
     
     public void calculateMonthlyGrossSalary() {
         // key for the hashmap (id, month, year)
-        String [] key = {String.valueOf(getEmployeeId()), getSelectedMonth(getSelectedMonth()), getSelectedYear()};
+        String [] key = {String.valueOf(getEmployeeId()), String.valueOf(getSelectedMonth(getSelectedMonth())), getSelectedYear()};
         
         /* retrieves the total work hours of an employee in a month in the hashmap. if the selected year or month does not exist in the hashmap,
         a default value of 0.0 will be placed instead to avoid null exceptions */
@@ -148,9 +151,5 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
     public double getTaxableIncome () {       
         return Math.round((getGrossPay() - getGovernmentDeductionsTotal()) * 100.0) / 100.0;             
     }
-        
-    
-         
-    
-    
+                    
 }
