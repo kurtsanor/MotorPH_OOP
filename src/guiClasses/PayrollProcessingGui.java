@@ -24,6 +24,7 @@ import javax.swing.table.TableCellRenderer;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
+import oopClasses.Finance;
 import oopClasses.PayrollModule;
 
 /**
@@ -35,18 +36,20 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     private PayrollModule payrollModule;
     private HomePageGui home;
     private JWindow overlay = new JWindow();
-    private EmployeeManagementModule employeeModule = new EmployeeManagementModule();
     private DecimalFormat df = new DecimalFormat("#.##");
+    private Finance finance;
     
-    public PayrollProcessingGui(HomePageGui home) {
+    public PayrollProcessingGui(HomePageGui home, Finance finance) {
         initComponents();
         customizeTable();
         addIndentionToTable();      
         adjustSearchField();
         this.home = home;
-        payrollModule = new PayrollModule(0, 0);   
+        this.finance = finance;
         overlay.setBackground(new Color(0, 0, 0, 200));
-        overlay.setVisible(false);   
+        overlay.setVisible(false);
+        
+        
         
     }
     
@@ -386,7 +389,9 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadPayrollTable () {
-        List <String []> payrollRecords = payrollModule.getAllRecords();
+        String month = monthComboBox.getSelectedItem().toString();
+        String year = yearComboBox.getSelectedItem().toString();
+        List <String []> payrollRecords = finance.loadAllPayrollData(month, year);
         
         DefaultTableModel tblmodel = (DefaultTableModel) payrollTable.getModel();
         tblmodel.setRowCount(0);
@@ -409,7 +414,10 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     }
     
     private void search () {
-        List <String []> payrollRecords = payrollModule.search(searchField.getText());
+        String month = monthComboBox.getSelectedItem().toString();
+        String year = yearComboBox.getSelectedItem().toString();
+        String searchInput = searchField.getText();
+        List <String []> payrollRecords = finance.searchPayrollDataByEmployee(searchInput, month, year);
         
         DefaultTableModel tblmodel = (DefaultTableModel) payrollTable.getModel();
         tblmodel.setRowCount(0);
@@ -444,8 +452,6 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
     private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
         long startTime = System.currentTimeMillis();    
-        payrollModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
         loadPayrollTable();
         long endTime = System.currentTimeMillis();
         System.out.println(endTime - startTime + " ms");
@@ -456,8 +462,6 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
 
     private void yearComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_yearComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-            payrollModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
             loadPayrollTable();
         }            
     }//GEN-LAST:event_yearComboBoxItemStateChanged
@@ -482,8 +486,6 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
         long start = System.currentTimeMillis();
-        payrollModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
         search();
         long end = System.currentTimeMillis();  
         System.out.println(end - start + "ms");
@@ -495,16 +497,12 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
             return;
         }
         
-        int chosenEmployee = Integer.parseInt(payrollTable.getValueAt(payrollTable.getSelectedRow(), 0).toString());
-        payrollModule.setEmployeeId(chosenEmployee);
-        payrollModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        
-        String [] empDetails = employeeModule.getEmployeeDetails(chosenEmployee);
-        payrollModule.setHourlyRate(Double.parseDouble(empDetails[8]));
+        int employeeID = Integer.parseInt(payrollTable.getValueAt(payrollTable.getSelectedRow(), 0).toString());
+        String month = monthComboBox.getSelectedItem().toString();
+        String year = yearComboBox.getSelectedItem().toString();               
         
         showOverlay();
-        new PayslipGui(payrollModule, monthComboBox.getSelectedItem().toString(), empDetails, overlay).setVisible(true);
+        new PayslipGui(employeeID, month, year, overlay).setVisible(true);
     }//GEN-LAST:event_viewButtonActionPerformed
 
    

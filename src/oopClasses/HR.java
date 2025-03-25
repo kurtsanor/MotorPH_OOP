@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author keith
  */
-public class HR extends User {
+public class HR extends User implements BasicActions {
     
     private EmployeeManagementModule empManagement;
     
@@ -21,8 +21,37 @@ public class HR extends User {
     {
         super(employeeId, firstName, lastName, position, status, birthday, address, phoneNumber, 
                 philhealthNumber, sssNumber, pagIbigNumber, tinNumber, hourlyRate, role);
-        this.empManagement = new EmployeeManagementModule();
+        this.empManagement = new EmployeeManagementModule();       
     }
+    
+    @Override
+    public String [] viewPersonalSalary (String month, String year) {
+        PayrollModule payrollModule = new PayrollModule(getId(), getHourlyRate());
+        payrollModule.setSelectedMonth(month);
+        payrollModule.setSelectedYear(year);
+        payrollModule.calculateMonthlyGrossSalary();
+               
+        double grossPay = payrollModule.getGrossPay();
+        double netPay = payrollModule.getNetSalary();
+        double sssDeduction = TaxAndDeductionsModule.getSSSDeduction(grossPay);
+        double philhealthDeduction = TaxAndDeductionsModule.getPhilHealthDeduction(grossPay);
+        double pagibigDeduction = TaxAndDeductionsModule.getPagIbigDeduction(grossPay);
+        double witholdingTex = TaxAndDeductionsModule.getWithholdingTax(netPay);
+        double totalDeductions = payrollModule.getTotalDeductions();
+        double totalHoursWorked = payrollModule.getMonthlyWorkHours();
+        
+        return new String [] {
+            String.valueOf(grossPay),
+            String.valueOf(netPay),
+            String.valueOf(sssDeduction),
+            String.valueOf(philhealthDeduction),
+            String.valueOf(pagibigDeduction),
+            String.valueOf(witholdingTex),
+            String.valueOf(totalDeductions),
+            String.valueOf(totalHoursWorked)};
+    }
+    
+    
     
     
     @Override
@@ -45,6 +74,20 @@ public class HR extends User {
     public List<String []> searchEmployees (String searchInput) {
         return empManagement.search(searchInput);
     }
+    
+    public boolean addNewEmployee (RegularEmployee employee) {
+        return empManagement.addEmployee(employee);
+    }
+    
+    public boolean editExistingEmployee (int employeeID, RegularEmployee employee) {
+        return empManagement.editEmployee(employeeID, employee);
+    }
+    
+    public boolean deleteEmployeeRecord (int employeeID) {
+        return empManagement.deleteEmployee(employeeID);
+    }
+    
+    
     
     
     

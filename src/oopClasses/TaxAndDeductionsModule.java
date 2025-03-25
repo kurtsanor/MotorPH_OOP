@@ -5,7 +5,7 @@ package oopClasses;
 public class TaxAndDeductionsModule {
     
     
-    public double getSSSDeduction(double salary) {
+    public static double getSSSDeduction(double salary) {
         double deduction = 0;
         if (salary <= 0) deduction = 0;
         else if (salary < 3250) deduction =135.00;
@@ -57,7 +57,7 @@ public class TaxAndDeductionsModule {
         return deduction;
     }
     
-    public double getPhilHealthDeduction (double salary) {
+    public static double getPhilHealthDeduction (double salary) {
         double deduction;
         if (salary <= 0) deduction = 0;
         else if (salary <= 10000) deduction = 150.0;
@@ -67,7 +67,7 @@ public class TaxAndDeductionsModule {
         return Math.round(deduction * 100.0)/ 100.0;
     }
     
-    public double getPagIbigDeduction (double salary) {
+    public static double getPagIbigDeduction (double salary) {
         double deduction;
         if (salary < 1000) deduction = 0;
         else if (salary <= 1500) deduction = salary * 0.01;
@@ -76,7 +76,7 @@ public class TaxAndDeductionsModule {
         return Math.round(deduction * 100.0)/ 100.0;
     }
     
-    public double getWithholdingTax (double taxableSalary) {
+    public static double getWithholdingTax (double taxableSalary) {
         double deduction;
         if (taxableSalary <= 20832) deduction = 0;
         else if (taxableSalary < 33333) deduction = (taxableSalary - 20833) * 0.20;

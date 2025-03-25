@@ -8,6 +8,7 @@ import oopClasses.EmployeeManagementModule;
 import motorphpayroll.customcomponents.CustomPanel;
 import java.awt.Color;
 import javax.swing.JWindow;
+import oopClasses.RegularEmployee;
 
 /**
  *
@@ -28,9 +29,27 @@ public class ViewProfileGui extends javax.swing.JFrame {
     
     private void showEmployeeInformation () {
         EmployeeManagementModule empModule = new EmployeeManagementModule();
-        String [] info = empModule.getEmployeeInformation(chosenEmployeeId);
-        infoLabel.setText(info[0]);
-        fullNameLabel.setText(info[1]);       
+        RegularEmployee employee = empModule.getEmployeeDetails(chosenEmployeeId);
+                  
+        String empInfo = ("<html>" +
+            "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
+            "  <tr><td><b>Emp ID</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + employee.getId() + " </td></tr>" +
+            "  <tr><td><b>Position</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + employee.getPosition() + " </td></tr>" +
+            "  <tr><td><b>Address</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + employee.getAddress() + " </td></tr>" +
+            "  <tr><td><b>Birthday</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + employee.getBirthday() + " </td></tr>" +
+            "  <tr><td><b>Status</b></td><td>&nbsp:</td><td>" + employee.getStatus() + " </td></tr>" +
+            "  <tr><td><b>Phone</b></td><td>&nbsp:</td><td>" + employee.getPhoneNumber() + " </td></tr>" +
+            "  <tr><td><b>SSS</b></td><td>&nbsp:</td><td>" + employee.getSSSNumber() + " </td></tr>" +
+            "  <tr><td><b>Philhealth</b></td><td>&nbsp:</td><td>" + employee.getPhilhealthNumber() + " </td></tr>" +
+            "  <tr><td><b>PAG-IBIG</b></td><td>&nbsp:</td><td>" + employee.getPagibigNumber() + " </td></tr>" +
+            "  <tr><td><b>TIN</b></td><td>&nbsp:</td><td>" + employee.getTinNumber() + " </td></tr>" +
+            "  <tr><td><b>Hourly Rate</b></td><td>&nbsp:</td><td>" + employee.getHourlyRate() + " </td></tr>" +
+            "</table>" +
+            "</html>"); 
+        String empFullName = employee.getFirstName() +" "+ employee.getFirstName();
+        
+        fullNameLabel.setText(empFullName);
+        infoLabel.setText(empInfo);
     }
 
     

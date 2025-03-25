@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class PayrollModule extends AttendanceModule implements RecordOperations {
     
-    private TaxAndDeductionsModule deductionsModule = new TaxAndDeductionsModule();
     private double hourlyRate;
     private double grossPay;
     private double monthlyWorkHours;
@@ -47,10 +46,10 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
                  rs.getString("First_name") + " " + rs.getString("Last_name"),
                  rs.getString("Hourly_rate"),
                  String.valueOf(monthlyWorkHours),
-                 String.valueOf(deductionsModule.getPhilHealthDeduction(getGrossPay())),
-                 String.valueOf(deductionsModule.getSSSDeduction(getGrossPay())),
-                 String.valueOf(deductionsModule.getPagIbigDeduction(getGrossPay())),
-                 String.valueOf(deductionsModule.getWithholdingTax(getTaxableIncome())),
+                 String.valueOf(TaxAndDeductionsModule.getPhilHealthDeduction(getGrossPay())),
+                 String.valueOf(TaxAndDeductionsModule.getSSSDeduction(getGrossPay())),
+                 String.valueOf(TaxAndDeductionsModule.getPagIbigDeduction(getGrossPay())),
+                 String.valueOf(TaxAndDeductionsModule.getWithholdingTax(getTaxableIncome())),
                  String.valueOf(getGrossPay()),
                  String.valueOf(getNetSalary())
                 });
@@ -87,10 +86,10 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
                 String fullName = rs.getString("First_name") + " " + rs.getString("Last_name");
                 String empHourlyRate = rs.getString("Hourly_rate");
                 String totalWorkHours = String.valueOf(monthlyWorkHours);
-                String philHealthDeduction = String.valueOf(deductionsModule.getPhilHealthDeduction(getGrossPay()));
-                String sssDeduction = String.valueOf(deductionsModule.getSSSDeduction(getGrossPay()));
-                String pagibigDeduction = String.valueOf(deductionsModule.getPagIbigDeduction(getGrossPay()));
-                String withHoldingTax = String.valueOf(deductionsModule.getWithholdingTax(getTaxableIncome()));
+                String philHealthDeduction = String.valueOf(TaxAndDeductionsModule.getPhilHealthDeduction(getGrossPay()));
+                String sssDeduction = String.valueOf(TaxAndDeductionsModule.getSSSDeduction(getGrossPay()));
+                String pagibigDeduction = String.valueOf(TaxAndDeductionsModule.getPagIbigDeduction(getGrossPay()));
+                String withHoldingTax = String.valueOf(TaxAndDeductionsModule.getWithholdingTax(getTaxableIncome()));
                 String empGrossPay = String.valueOf(getGrossPay());
                 String empNetPay = String.valueOf(getNetSalary());
                     
@@ -133,19 +132,23 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
     public double getGrossPay () {
         return grossPay;
     }
+    
+    public double getMonthlyWorkHours () {
+        return monthlyWorkHours;
+    }
 
     public double getNetSalary () {
         return Math.round((getGrossPay() - getTotalDeductions()) * 100.0) / 100.0;       
     }
     
     public double getTotalDeductions () {
-        return Math.round((getGovernmentDeductionsTotal() + deductionsModule.getWithholdingTax(getGrossPay())) * 100.0) / 100.0;
+        return Math.round((getGovernmentDeductionsTotal() + TaxAndDeductionsModule.getWithholdingTax(getGrossPay())) * 100.0) / 100.0;
     }
     
     public double getGovernmentDeductionsTotal () {
-        return deductionsModule.getPagIbigDeduction(getGrossPay())
-             + deductionsModule.getPhilHealthDeduction(getGrossPay())
-             + deductionsModule.getSSSDeduction(getGrossPay());
+        return TaxAndDeductionsModule.getPagIbigDeduction(getGrossPay())
+             + TaxAndDeductionsModule.getPhilHealthDeduction(getGrossPay())
+             + TaxAndDeductionsModule.getSSSDeduction(getGrossPay());
     }
     
     public double getTaxableIncome () {       

@@ -427,7 +427,7 @@ public class HelpSectionGui extends javax.swing.JFrame {
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
         this.setVisible(false);
-        new PayrollDocsGui(user, homePage).setVisible(true);
+        new PayrollDocsGui(user.getId(), homePage).setVisible(true);
     }//GEN-LAST:event_jPanel8MouseClicked
 
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked

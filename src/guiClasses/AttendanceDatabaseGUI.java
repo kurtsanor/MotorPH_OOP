@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.RoundJTextField;
+import oopClasses.RegularEmployee;
 
 /**
  *
@@ -478,8 +479,8 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
         String tableContent = employeeListTable.getValueAt(employeeListTable.getSelectedRow(), 0).toString();
         int chosenEmployeeID = Integer.parseInt(tableContent.split(" ")[1]); // index of the employee number
         
-        String [] employees = empModule.getEmployeeInformation(chosenEmployeeID);
-        employeeName.setText(employees[1]);
+        RegularEmployee employee = empModule.getEmployeeDetails(chosenEmployeeID);
+        employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
         
         attendanceModule.setEmployeeId(chosenEmployeeID);
         attendanceModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());

@@ -5,8 +5,8 @@
 package guiClasses;
 
 import javax.swing.JWindow;
-import oopClasses.PayrollModule;
-import oopClasses.TaxAndDeductionsModule;
+import oopClasses.EmployeeManagementModule;
+import oopClasses.RegularEmployee;
 
 /**
  *
@@ -14,58 +14,60 @@ import oopClasses.TaxAndDeductionsModule;
  */
 public class PayslipGui extends javax.swing.JFrame {
 
-    
-    private PayrollModule payrollModule;
     private String month;
-    private TaxAndDeductionsModule taxModule = new TaxAndDeductionsModule();
+    private String year;
     private JWindow overlay;
-    private String [] empDetails;
+    private int employeeID;
      
-    public PayslipGui(PayrollModule payrollModule, String month, String [] empDetails, JWindow overlay) {        
+    public PayslipGui(int employeeID, String month, String year, JWindow overlay) {        
         initComponents();
-        this.payrollModule = payrollModule;
         this.month = month;
+        this.year = year;
         this.overlay = overlay;
-        this.empDetails = empDetails;
-        payrollModule.calculateMonthlyGrossSalary();
+        this.employeeID = employeeID;     
         showPayslip();      
     }
     
     public void showPayslip () {
+        EmployeeManagementModule empModule = new EmployeeManagementModule();
+        RegularEmployee employee = empModule.getEmployeeDetails(employeeID);
+        String [] salaryDetails = employee.viewPersonalSalary(month, year);
+        
+                      
         String text = ("<html>" +
             "<table cellspacing='2' cellpadding='2' style='line-height:1.2;'>" +
             "  <tr><td><b>Payslip No</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + "31-2023-12-30" + " </td></tr>" +
-            "  <tr><td><b>Pay Period</b></td><td>&nbsp:</td><td>" + month +", " + payrollModule.getSelectedYear()+  " </td></tr>" +
-            "  <tr><td><b>Worked Hours</b></td><td>&nbsp:</td><td>" + payrollModule.getMonthlyHoursWorked()+ " Hours"+ " </td></tr>" +          
+            "  <tr><td><b>Pay Period</b></td><td>&nbsp:</td><td>" + month +", " + year+  " </td></tr>" +
+            "  <tr><td><b>Worked Hours</b></td><td>&nbsp:</td><td>" + salaryDetails[7]+ " Hours"+ " </td></tr>" +          
             "</table>" +
             "</html>");
         label1.setText(text);
         
         String textII = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td><b>Name</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + empDetails[1] + " " + empDetails[2] +  " </td></tr>" +
-            "  <tr><td><b>ID #</b></td><td>&nbsp:</td><td>" + empDetails[0] + " </td></tr>" +
-            "  <tr><td><b>Position</b></td><td>&nbsp:</td><td>" + empDetails[7] + " </td></tr>" +           
+            "  <tr><td><b>Name</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + employee.getFirstName() + " " + employee.getLastName() +  " </td></tr>" +
+            "  <tr><td><b>ID #</b></td><td>&nbsp:</td><td>" + employee.getId() + " </td></tr>" +
+            "  <tr><td><b>Position</b></td><td>&nbsp:</td><td>" + employee.getPosition() + " </td></tr>" +           
             "</table>" +
             "</html>");
         label2.setText(textII);
         
         String textIII = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + payrollModule.getGrossPay() + " </td></tr>" +
-            "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + payrollModule.getGrossPay() + " </td></tr>" +
+            "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + salaryDetails[0] + " </td></tr>" +
+            "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + salaryDetails[0] + " </td></tr>" +
             "</table>" +
             "</html>");
         label4.setText(textIII);
         
         String textIV = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td>SSS</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + taxModule.getSSSDeduction(payrollModule.getGrossPay()) + "0 </td></tr>" +
-            "  <tr><td>Philhealth</b></td><td>&nbsp</td><td>" + taxModule.getPhilHealthDeduction(payrollModule.getGrossPay()) + " </td></tr>" +
-            "  <tr><td>Pagibig</b></td><td>&nbsp</td><td>" + taxModule.getPagIbigDeduction(payrollModule.getGrossPay()) + " </td></tr>" +  
-            "  <tr><td>Withholding Tax</b></td><td>&nbsp</td><td>" + taxModule.getWithholdingTax(payrollModule.getTaxableIncome()) + " </td></tr>" +
-            "  <tr><td>Total Deductions</b></td><td>&nbsp</td><td>" + payrollModule.getTotalDeductions() + " </td></tr>" +
-            "  <tr><td><b>Net Pay</b></td><td>&nbsp</td><td><b>" + payrollModule.getNetSalary() + " </td></tr>" +
+            "  <tr><td>SSS</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + salaryDetails[2] + "0 </td></tr>" +
+            "  <tr><td>Philhealth</b></td><td>&nbsp</td><td>" + salaryDetails[3] + " </td></tr>" +
+            "  <tr><td>Pagibig</b></td><td>&nbsp</td><td>" + salaryDetails[4] + " </td></tr>" +  
+            "  <tr><td>Withholding Tax</b></td><td>&nbsp</td><td>" + salaryDetails[5] + " </td></tr>" +
+            "  <tr><td>Total Deductions</b></td><td>&nbsp</td><td>" + salaryDetails[6] + " </td></tr>" +
+            "  <tr><td><b>Net Pay</b></td><td>&nbsp</td><td><b>" + salaryDetails[1] + " </td></tr>" +
             "</table>" +
             "</html>");
         label5.setText(textIV);

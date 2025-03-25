@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
+import oopClasses.HR;
+import oopClasses.RegularEmployee;
 
 /**
  *
@@ -30,14 +32,15 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
     private int employeeId;
     private EmployeeManagementModule empModule;
     private JTable empTable;
-    private String [] details = new String[13];
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    private HR hr;
     
-    public AddorEditEmployeeGui(boolean isAddingEmployee, int employeeId, JTable empTable) {
+    public AddorEditEmployeeGui(boolean isAddingEmployee, int employeeId, JTable empTable, HR hr) {
         initComponents();
         this.isAddingEmployee = isAddingEmployee;
         this.employeeId = employeeId;
         this.empTable = empTable;
+        this.hr = hr;
         empModule = new EmployeeManagementModule();
         adjustSearchField();
         identifyUserAction();
@@ -608,43 +611,27 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void setDetails () {
-        details[0] = firstName.getText();
-        details[1] = lastName.getText();
-        details[2] = address.getText();
-        details[3] = birthday.getText();
-        details[4] = position.getText();
-        details[5] = phoneNum.getText();
-        details[6] = sssNum.getText();
-        details[7] = philhealthNum.getText();
-        details[8] = tinNum.getText();
-        details[9] = pagibigNum.getText();
-        details[10] = statusComboBox.getSelectedItem().toString();
-        details[11] = hourlyRate.getText();
-        details[12] = roleComboBox.getSelectedItem().toString();
-    }
-    
+   
     private void populateTextFields () {
-        String [] empDetails = empModule.getEmployeeDetails(employeeId);
+        RegularEmployee employee = empModule.getEmployeeDetails(employeeId);
         
-        firstName.setText(empDetails[1].trim());
-        lastName.setText(empDetails[2].trim());
-        birthday.setText(empDetails[3].trim());
-        phoneNum.setText(empDetails[4].trim());
-        address.setText(empDetails[5].trim());
-        statusComboBox.setSelectedItem(empDetails[6].trim());
-        position.setText(empDetails[7].trim());
-        hourlyRate.setText(empDetails[8].trim());
-        roleComboBox.setSelectedItem(empDetails[9].trim());
-        sssNum.setText(empDetails[10].trim());
-        philhealthNum.setText(empDetails[11].trim());
-        pagibigNum.setText(empDetails[12].trim());
-        tinNum.setText(empDetails[13].trim());
+        firstName.setText(employee.getFirstName().trim());
+        lastName.setText(employee.getLastName().trim());
+        birthday.setText(employee.getBirthday().trim());
+        phoneNum.setText(employee.getPhoneNumber().trim());
+        address.setText(employee.getAddress().trim());
+        statusComboBox.setSelectedItem(employee.getStatus().trim());
+        position.setText(employee.getPosition().trim());
+        hourlyRate.setText(String.valueOf(employee.getHourlyRate()).trim());
+        roleComboBox.setSelectedItem(employee.getRole().trim());
+        sssNum.setText(employee.getSSSNumber().trim());
+        philhealthNum.setText(employee.getPhilhealthNumber().trim());
+        pagibigNum.setText(employee.getPagibigNumber().trim());
+        tinNum.setText(employee.getTinNumber().trim());
     }
          
     public void loadEmployeeTable () {
-        List <String []> employeeList = empModule.getAllRecords();
+        List <String []> employeeList = hr.viewAllEmployees();
         DefaultTableModel tblmodel = (DefaultTableModel) empTable.getModel();
         tblmodel.setRowCount(0);
         
@@ -796,6 +783,13 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         String regex = "[^a-zA-Z0-9 ]";  
         return input.matches(".*" + regex + ".*");
     }
+    
+    public void loadEmployeeFromFields (RegularEmployee employee) {
+        // placeholder for ID number since mysql has auto increment ID number (for adding new employees only)
+        int placeHolder = 0;
+        employee = new RegularEmployee(placeHolder, firstName.getText(), lastName.getText(), position.getText(), statusComboBox.getSelectedItem().toString(), birthday.getText(), address.getText(), phoneNum.getText()
+                ,philhealthNum.getText(), sssNum.getText(), pagibigNum.getText(), tinNum.getText(), Double.parseDouble(hourlyRate.getText()), roleComboBox.getSelectedItem().toString());
+    }
         
     private void closeButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButton2ActionPerformed
         this.dispose();
@@ -806,9 +800,14 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
             return;
         }
         
-        setDetails();
+        // create a new employee
+        RegularEmployee newEmployee = null;
+        
+        // load employee information from textfields
+        loadEmployeeFromFields(newEmployee);
+        
         if (isAddingEmployee) {           
-            boolean added = empModule.addEmployee(details);
+            boolean added = hr.addNewEmployee(newEmployee);
             if (added){
                 JOptionPane.showMessageDialog(null, "Record Added Sucessfully");
             } 
@@ -818,7 +817,8 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
                       
         }
         else {
-            boolean edited = empModule.editEmployee(employeeId, details);
+            RegularEmployee employee = empModule.getEmployeeDetails(employeeId);
+            boolean edited = hr.editExistingEmployee(employeeId, employee);
             if (edited) {
                 JOptionPane.showMessageDialog(null, "Record Updated Sucessfully");
             }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// CRUD operations for employee management
+// CRUD operations and employee retrievals
 public class EmployeeManagementModule implements RecordOperations {
     
     public EmployeeManagementModule () {} // default constructor
@@ -57,42 +57,7 @@ public class EmployeeManagementModule implements RecordOperations {
         
         return searchResults;
     }
-    
-    // gets the full information of the chosen employee
-    public String [] getEmployeeInformation (int chosenEmployeeId) {
-        String [] employeeInfo = new String [2];
-        try (Connection con = DatabaseConnection.Connect()) {
-            String query = "SELECT * FROM users WHERE id = ?";
-            PreparedStatement st = con.prepareStatement(query);
-            st.setInt(1, chosenEmployeeId);
-            ResultSet rs = st.executeQuery();
-                
-            if (rs.next()) {
-            employeeInfo[0] = ("<html>" +
-            "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td><b>Emp ID</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + rs.getString("id") + " </td></tr>" +
-            "  <tr><td><b>Position</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + rs.getString("Position") + " </td></tr>" +
-            "  <tr><td><b>Address</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + rs.getString("Address") + " </td></tr>" +
-            "  <tr><td><b>Birthday</b></td><td>&nbsp:&nbsp&nbsp </td><td>" + rs.getString("Birthdate") + " </td></tr>" +
-            "  <tr><td><b>Status</b></td><td>&nbsp:</td><td>" + rs.getString("Status") + " </td></tr>" +
-            "  <tr><td><b>Phone</b></td><td>&nbsp:</td><td>" + rs.getString("Phone_number") + " </td></tr>" +
-            "  <tr><td><b>SSS</b></td><td>&nbsp:</td><td>" + rs.getString("SSS") + " </td></tr>" +
-            "  <tr><td><b>Philhealth</b></td><td>&nbsp:</td><td>" + rs.getString("Philhealth") + " </td></tr>" +
-            "  <tr><td><b>PAG-IBIG</b></td><td>&nbsp:</td><td>" + rs.getString("Pagibig") + " </td></tr>" +
-            "  <tr><td><b>TIN</b></td><td>&nbsp:</td><td>" + rs.getString("TIN") + " </td></tr>" +
-            "  <tr><td><b>Hourly Rate</b></td><td>&nbsp:</td><td>" + rs.getString("Hourly_rate") + " </td></tr>" +
-            "</table>" +
-            "</html>");           
-            
-            employeeInfo[1] = rs.getString("First_Name") +" "+ rs.getString("Last_Name");         
-            }                          
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return employeeInfo;
-    }
-    
+     
     public RegularEmployee getEmployeeDetails (int chosenEmployeeId) {              
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "SELECT * FROM users WHERE id = ?";
@@ -112,25 +77,25 @@ public class EmployeeManagementModule implements RecordOperations {
         return null;
     }
         
-    public boolean addEmployee (String [] employeeData) {                            
+    public boolean addEmployee (RegularEmployee employee) {                            
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "INSERT INTO users (First_Name, Last_Name, Address, Birthdate, Position, Phone_number, SSS, Philhealth, TIN, Pagibig, Status, Hourly_Rate, Role) "
                           + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
              
              PreparedStatement ptst = con.prepareStatement(query);
-             ptst.setString(1,  employeeData[0]); // first name
-             ptst.setString(2,  employeeData[1]); // last name
-             ptst.setString(3,  employeeData[2]); // address
-             ptst.setString(4,  employeeData[3]); // Birthdate
-             ptst.setString(5,  employeeData[4]); // Position
-             ptst.setString(6,  employeeData[5]); // Phone_number
-             ptst.setString(7,  employeeData[6]); // SSS
-             ptst.setString(8,  employeeData[7]); // Philhealth
-             ptst.setString(9,  employeeData[8]); // TIN
-             ptst.setString(10, employeeData[9]); // Pagibig
-             ptst.setString(11, employeeData[10]); // Status
-             ptst.setDouble(12, Double.parseDouble(employeeData[11])); // Hourly_Rate
-             ptst.setString(13, employeeData[12]); // Role
+             ptst.setString(1,  employee.getFirstName()); // first name
+             ptst.setString(2,  employee.getLastName()); // last name
+             ptst.setString(3,  employee.getAddress()); // address
+             ptst.setString(4,  employee.getBirthday()); // Birthdate
+             ptst.setString(5,  employee.getPosition()); // Position
+             ptst.setString(6,  employee.getPhoneNumber()); // Phone_number
+             ptst.setString(7,  employee.getSSSNumber()); // SSS
+             ptst.setString(8,  employee.getPhilhealthNumber()); // Philhealth
+             ptst.setString(9,  employee.getTinNumber()); // TIN
+             ptst.setString(10, employee.getPagibigNumber()); // Pagibig
+             ptst.setString(11, employee.getStatus()); // Status
+             ptst.setDouble(12, employee.getHourlyRate()); // Hourly_Rate
+             ptst.setString(13, employee.getRole()); // Role
              ptst.executeUpdate();
              
              return true;
@@ -140,24 +105,24 @@ public class EmployeeManagementModule implements RecordOperations {
         return false;
     }
     
-    public boolean editEmployee (int chosenEmployeeID, String [] employeeData) {      
+    public boolean editEmployee (int chosenEmployeeID, RegularEmployee employee) {      
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "UPDATE users SET First_Name = ?, Last_Name = ?, Address = ?, Birthdate = ?, Position = ?, Phone_number = ?, SSS = ?, Philhealth = ?, TIN = ?, Pagibig = ?, Status = ?, Hourly_Rate = ?, Role = ? "
                           + "WHERE id = ?";
              PreparedStatement ptst = con.prepareStatement(query);
-             ptst.setString(1,  employeeData[0]); // first name
-             ptst.setString(2,  employeeData[1]); // last name
-             ptst.setString(3,  employeeData[2]); // address
-             ptst.setString(4,  employeeData[3]); // Birthdate
-             ptst.setString(5,  employeeData[4]); // Position
-             ptst.setString(6,  employeeData[5]); // Phone_number
-             ptst.setString(7,  employeeData[6]); // SSS
-             ptst.setString(8,  employeeData[7]); // Philhealth
-             ptst.setString(9,  employeeData[8]); // TIN
-             ptst.setString(10, employeeData[9]); // Pagibig
-             ptst.setString(11, employeeData[10]); // Status
-             ptst.setDouble(12, Double.parseDouble(employeeData[11])); // Hourly_Rate
-             ptst.setString(13, employeeData[12]); // Role
+             ptst.setString(1,  employee.getFirstName()); // first name
+             ptst.setString(2,  employee.getLastName()); // last name
+             ptst.setString(3,  employee.getAddress()); // address
+             ptst.setString(4,  employee.getBirthday()); // Birthdate
+             ptst.setString(5,  employee.getPosition()); // Position
+             ptst.setString(6,  employee.getPhoneNumber()); // Phone_number
+             ptst.setString(7,  employee.getSSSNumber()); // SSS
+             ptst.setString(8,  employee.getPhilhealthNumber()); // Philhealth
+             ptst.setString(9,  employee.getTinNumber()); // TIN
+             ptst.setString(10, employee.getPagibigNumber()); // Pagibig
+             ptst.setString(11, employee.getStatus()); // Status
+             ptst.setDouble(12, employee.getHourlyRate()); // Hourly_Rate
+             ptst.setString(13, employee.getRole()); // Role
              ptst.setInt(14,    chosenEmployeeID);
              ptst.executeUpdate();
              

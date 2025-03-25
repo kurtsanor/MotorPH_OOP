@@ -376,7 +376,7 @@ public class CrudGui extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // opens the GUI for adding employees
         boolean addingEmployee = true;
-        new AddorEditEmployeeGui(addingEmployee, 0, empTable).setVisible(true);
+        new AddorEditEmployeeGui(addingEmployee, 0, empTable, hr).setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
@@ -477,7 +477,7 @@ public class CrudGui extends javax.swing.JFrame {
         else {
             int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
             boolean addingEmployees = true;
-            new AddorEditEmployeeGui(!addingEmployees, chosenEmployee, empTable).setVisible(true);
+            new AddorEditEmployeeGui(!addingEmployees, chosenEmployee, empTable, hr).setVisible(true);
         }
     }//GEN-LAST:event_updateButtonActionPerformed
     // deletes the record of the chosen employee
@@ -490,7 +490,7 @@ public class CrudGui extends javax.swing.JFrame {
         else {           
             if (JOptionPane.showConfirmDialog(null, "Are you sure you want to delete","", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 int chosenEmployee = Integer.parseInt(empTable.getValueAt(empTable.getSelectedRow(),0).toString());
-                empManagement.deleteEmployee(chosenEmployee);
+                hr.deleteEmployeeRecord(chosenEmployee);
                 JOptionPane.showMessageDialog(this, "Employee Deleted");
                 loadEmployeeTable();
             }           

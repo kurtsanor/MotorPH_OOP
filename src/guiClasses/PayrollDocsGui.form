@@ -248,7 +248,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-January&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-January&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -267,7 +267,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-February&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-February&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -286,7 +286,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-March&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-March&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -305,7 +305,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-April&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-April&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -324,7 +324,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-May&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-May&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -343,7 +343,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-June&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-June&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -362,7 +362,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-July&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-July&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -381,7 +381,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-August&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-August&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -400,7 +400,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-September&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-September&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -419,7 +419,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-October&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-October&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -438,7 +438,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-November&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-November&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
@@ -457,7 +457,7 @@
               <Color blue="38" green="24" red="2f" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+user.getLastName()+&quot;-Payslip-December&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;HTML&gt;&lt;U&gt;&quot;+employee.getLastName()+&quot;-Payslip-December&lt;/U&gt;&lt;/HTML&gt;&quot;" type="code"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>

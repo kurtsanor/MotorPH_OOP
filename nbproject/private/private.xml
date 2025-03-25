@@ -4,10 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/oopClasses/HR.java</file>
-            <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/guiClasses/CrudGui.java</file>
+            <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/oopClasses/PayrollModule.java</file>
+            <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/guiClasses/PayslipGui.java</file>
             <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/oopClasses/EmployeeManagementModule.java</file>
-            <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/oopClasses/UserAuthentication.java</file>
-            <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/guiClasses/HomePageGui.java</file>
+            <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/guiClasses/AddorEditEmployeeGui.java</file>
+            <file>file:/C:/Users/keith/OneDrive/Documents/NetBeansProjects/MotorPhPayroll/src/oopClasses/RegularEmployee.java</file>
         </group>
     </open-files>
 </project-private>

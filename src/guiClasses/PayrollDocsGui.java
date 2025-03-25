@@ -4,13 +4,13 @@
  */
 package guiClasses;
 
-import oopClasses.User;
 import oopClasses.EmployeeManagementModule;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JWindow;
 import motorphpayroll.customcomponents.CustomPanel;
 import oopClasses.PayrollModule;
+import oopClasses.RegularEmployee;
 
 /**
  *
@@ -18,21 +18,21 @@ import oopClasses.PayrollModule;
  */
 public class PayrollDocsGui extends javax.swing.JFrame {
 
-    private User user;
     private HomePageGui homePage;
     private PayrollModule payrollModule;
     private JWindow overlay = new JWindow();
     private EmployeeManagementModule empModule = new EmployeeManagementModule();
     private String [] empDetails;
+    private RegularEmployee employee;
 
-    public PayrollDocsGui(User user, HomePageGui homePage) {
-        this.user = user;
+    public PayrollDocsGui(int employeeID, HomePageGui homePage) {
+        employee = empModule.getEmployeeDetails(employeeID);
         this.homePage = homePage;
-        payrollModule = new PayrollModule(user.getId(), user.getHourlyRate());
+        payrollModule = new PayrollModule(employeeID, employee.getHourlyRate());
         initComponents();
         overlay.setBackground(new Color(0, 0, 0, 200));
-        overlay.setVisible(false);
-        empDetails = empModule.getEmployeeDetails(user.getId());
+        overlay.setVisible(false);       
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -123,7 +123,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         januaryPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         januaryPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        januaryPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-January</U></HTML>");
+        januaryPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-January</U></HTML>");
         januaryPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         januaryPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -133,7 +133,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         febPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         febPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        febPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-February</U></HTML>");
+        febPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-February</U></HTML>");
         febPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         febPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -143,7 +143,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         marchPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         marchPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        marchPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-March</U></HTML>");
+        marchPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-March</U></HTML>");
         marchPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         marchPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -153,7 +153,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         aprilPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         aprilPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        aprilPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-April</U></HTML>");
+        aprilPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-April</U></HTML>");
         aprilPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         aprilPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -163,7 +163,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         mayPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         mayPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        mayPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-May</U></HTML>");
+        mayPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-May</U></HTML>");
         mayPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         mayPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -173,7 +173,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         junePayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         junePayslip.setForeground(new java.awt.Color(47, 36, 56));
-        junePayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-June</U></HTML>");
+        junePayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-June</U></HTML>");
         junePayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         junePayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -183,7 +183,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         julyPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         julyPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        julyPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-July</U></HTML>");
+        julyPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-July</U></HTML>");
         julyPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         julyPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -193,7 +193,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         augustPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         augustPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        augustPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-August</U></HTML>");
+        augustPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-August</U></HTML>");
         augustPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         augustPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -203,7 +203,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         septemberPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         septemberPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        septemberPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-September</U></HTML>");
+        septemberPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-September</U></HTML>");
         septemberPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         septemberPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -213,7 +213,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         octoberPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         octoberPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        octoberPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-October</U></HTML>");
+        octoberPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-October</U></HTML>");
         octoberPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         octoberPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -223,7 +223,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         novemberPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         novemberPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        novemberPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-November</U></HTML>");
+        novemberPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-November</U></HTML>");
         novemberPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         novemberPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -233,7 +233,7 @@ public class PayrollDocsGui extends javax.swing.JFrame {
 
         decemberPayslip.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         decemberPayslip.setForeground(new java.awt.Color(47, 36, 56));
-        decemberPayslip.setText("<HTML><U>"+user.getLastName()+"-Payslip-December</U></HTML>");
+        decemberPayslip.setText("<HTML><U>"+employee.getLastName()+"-Payslip-December</U></HTML>");
         decemberPayslip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         decemberPayslip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -378,18 +378,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             if (yearComboBox.getSelectedItem().equals("Select Year")) {
                 return;
             }
-            januaryPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-January-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            febPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-February-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            marchPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-March-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            aprilPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-April-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            mayPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-May-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            junePayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-June-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            julyPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-July-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            augustPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-August-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            septemberPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-September-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            octoberPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-October-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            novemberPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-November-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
-            decemberPayslip.setText("<HTML><U>" + user.getLastName() + "-Payslip-December-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            // renames the JLabel to the employee's name and the selected year
+            januaryPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-January-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            febPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-February-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            marchPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-March-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            aprilPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-April-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            mayPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-May-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            junePayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-June-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            julyPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-July-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            augustPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-August-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            septemberPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-September-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            octoberPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-October-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            novemberPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-November-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
+            decemberPayslip.setText("<HTML><U>" + employee.getLastName() + "-Payslip-December-" + yearComboBox.getSelectedItem().toString() + "</U></HTML>");
 
         }
     }//GEN-LAST:event_yearComboBoxItemStateChanged
@@ -400,9 +401,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("January");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "January", empDetails, overlay).setVisible(true);
+        String month = "January";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_januaryPayslipMouseClicked
 
     private void febPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_febPayslipMouseClicked
@@ -411,9 +412,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("February");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "February", empDetails, overlay).setVisible(true);
+        String month = "February";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_febPayslipMouseClicked
 
     private void marchPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_marchPayslipMouseClicked
@@ -422,9 +423,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("March");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "March", empDetails, overlay).setVisible(true);
+        String month = "March";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_marchPayslipMouseClicked
 
     private void aprilPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aprilPayslipMouseClicked
@@ -433,9 +434,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("April");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "April", empDetails, overlay).setVisible(true);
+        String month = "April";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_aprilPayslipMouseClicked
 
     private void mayPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mayPayslipMouseClicked
@@ -444,9 +445,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("May");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "May", empDetails, overlay).setVisible(true);
+        String month = "May";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_mayPayslipMouseClicked
 
     private void junePayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_junePayslipMouseClicked
@@ -455,9 +456,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("June");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "June", empDetails, overlay).setVisible(true);
+        String month = "June";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_junePayslipMouseClicked
 
     private void julyPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_julyPayslipMouseClicked
@@ -466,9 +467,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("July");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "July", empDetails, overlay).setVisible(true);
+        String month = "July";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_julyPayslipMouseClicked
 
     private void augustPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_augustPayslipMouseClicked
@@ -477,9 +478,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("August");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "August", empDetails, overlay).setVisible(true);
+        String month = "August";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_augustPayslipMouseClicked
 
     private void septemberPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_septemberPayslipMouseClicked
@@ -488,9 +489,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("September");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "September", empDetails, overlay).setVisible(true);
+        String month = "September";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_septemberPayslipMouseClicked
 
     private void octoberPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_octoberPayslipMouseClicked
@@ -499,9 +500,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("October");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "October", empDetails, overlay).setVisible(true);
+        String month = "October";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_octoberPayslipMouseClicked
 
     private void novemberPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_novemberPayslipMouseClicked
@@ -510,9 +511,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             return;
         }
         showOverlay();
-        payrollModule.setSelectedMonth("November");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "November", empDetails, overlay).setVisible(true);
+        String month = "November";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_novemberPayslipMouseClicked
 
     private void decemberPayslipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decemberPayslipMouseClicked
@@ -520,10 +521,9 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
-        payrollModule.setSelectedMonth("December");
-        payrollModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        new PayslipGui(payrollModule, "December", empDetails, overlay).setVisible(true);
+        String month = "Decmber";
+        String year = yearComboBox.getSelectedItem().toString();
+        new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_decemberPayslipMouseClicked
 
     /**

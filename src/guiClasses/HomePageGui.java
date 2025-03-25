@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import oopClasses.Finance;
 import oopClasses.HR;
 
 
@@ -811,7 +812,7 @@ public class HomePageGui extends javax.swing.JFrame {
 
     private void payrollDocsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollDocsButtonActionPerformed
         this.setVisible(false);
-        new PayrollDocsGui(user,this).setVisible(true);
+        new PayrollDocsGui(user.getId(),this).setVisible(true);
     }//GEN-LAST:event_payrollDocsButtonActionPerformed
 
     private void myAttendanceMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myAttendanceMenuActionPerformed
@@ -879,7 +880,7 @@ public class HomePageGui extends javax.swing.JFrame {
     private void payrollButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payrollButtonActionPerformed
         if (user.hasFinanceAccess()) {
             this.setVisible(false);
-            new PayrollProcessingGui(this).setVisible(true);
+            new PayrollProcessingGui(this, (Finance)user).setVisible(true);
         }
         else {
             JOptionPane.showMessageDialog(null, "Only Finance can access this feature");
@@ -922,7 +923,7 @@ public class HomePageGui extends javax.swing.JFrame {
     private void myPayrollMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myPayrollMenuActionPerformed
         hamburgerPanel.setVisible(false);
         this.setVisible(false);
-        new PayrollDocsGui(user,this).setVisible(true);
+        new PayrollDocsGui(user.getId(),this).setVisible(true);
     }//GEN-LAST:event_myPayrollMenuActionPerformed
 
     private void needHelpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_needHelpMenuActionPerformed
