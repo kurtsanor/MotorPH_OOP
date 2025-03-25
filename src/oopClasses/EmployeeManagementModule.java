@@ -93,9 +93,7 @@ public class EmployeeManagementModule implements RecordOperations {
         return employeeInfo;
     }
     
-    public String [] getEmployeeDetails (int chosenEmployeeId) {       
-        String [] employeeDetails = new String[14];
-        
+    public RegularEmployee getEmployeeDetails (int chosenEmployeeId) {              
         try (Connection con = DatabaseConnection.Connect()) {
              String query = "SELECT * FROM users WHERE id = ?";
              PreparedStatement ptst = con.prepareStatement(query);
@@ -103,25 +101,15 @@ public class EmployeeManagementModule implements RecordOperations {
              ResultSet rs = ptst.executeQuery();
              
              if (rs.next()) {
-                 employeeDetails[0] = (rs.getString("id"));
-                 employeeDetails[1] = (rs.getString("First_Name"));
-                 employeeDetails[2] = (rs.getString("Last_Name"));
-                 employeeDetails[3] = (rs.getString("Birthdate"));
-                 employeeDetails[4] = (rs.getString("Phone_number"));     
-                 employeeDetails[5] = (rs.getString("address"));
-                 employeeDetails[6] = (rs.getString("Status"));
-                 employeeDetails[7] = (rs.getString("Position"));
-                 employeeDetails[8] = (rs.getString("Hourly_Rate"));
-                 employeeDetails[9] = (rs.getString("Role"));
-                 employeeDetails[10] = (rs.getString("SSS"));
-                 employeeDetails[11] = (rs.getString("Philhealth"));
-                 employeeDetails[12] = (rs.getString("Pagibig"));
-                 employeeDetails[13] = (rs.getString("TIN"));   
+                return new RegularEmployee(rs.getInt("id"), rs.getString("First_Name"), rs.getString("Last_Name"), rs.getString("Position"), rs.getString("Status"), rs.getString("Birthdate"), rs.getString("address")
+                        ,rs.getString("Phone_number"), rs.getString("Philhealth"), rs.getString("SSS"), rs.getString("Pagibig"), rs.getString("TIN"), rs.getDouble("Hourly_Rate"), rs.getString("Role"));                               
              }
                                    
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
-        return employeeDetails;
+        return null;
     }
         
     public boolean addEmployee (String [] employeeData) {                            
