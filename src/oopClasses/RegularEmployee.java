@@ -1,6 +1,9 @@
 
 package oopClasses;
 
+import java.time.LocalDate;
+import java.util.List;
+
 
 public class RegularEmployee extends User implements BasicActions {
     
@@ -38,6 +41,28 @@ public class RegularEmployee extends User implements BasicActions {
             String.valueOf(witholdingTex),
             String.valueOf(totalDeductions),
             String.valueOf(totalHoursWorked)};
+    }
+    
+    @Override
+    public List<String[]> viewPersonalAttendanceRecords (String month, String year) {
+        AttendanceModule attendanceModule = new AttendanceModule(employeeId);
+        attendanceModule.setSelectedMonth(month);
+        attendanceModule.setSelectedYear(year);
+        
+        return attendanceModule.getAllRecords();
+    }
+    
+    @Override
+    public boolean requestForLeave (int employeeID, LocalDate startDate, LocalDate endDate, String reason, String firstName, String lastName, String leaveType) {
+        LeaveManagementModule leaveModule = new LeaveManagementModule(this);
+        
+        return leaveModule.submitLeaveRequest(employeeID, startDate, endDate, reason, firstName, lastName, leaveType);
+    }
+    
+    public List<String[]> viewPersonalLeaveRecords (int employeeID) {
+        LeaveManagementModule leaveModule = new LeaveManagementModule(this);
+        
+        return leaveModule.getAllRecords(employeeID);
     }
     
     @Override

@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.PanelRound;
 import motorphpayroll.customcomponents.RoundJTextField;
+import oopClasses.RegularEmployee;
 
 /**
  *
@@ -28,8 +29,7 @@ public class HelpSectionGui extends javax.swing.JFrame {
         adjustSearchField();
         this.homePage = homePage;
         this.user = user;
-        this.popupMenu = popupMenu;
-        
+        this.popupMenu = popupMenu;       
     }
 
     /**
@@ -422,7 +422,7 @@ public class HelpSectionGui extends javax.swing.JFrame {
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
         this.setVisible(false);
-        new AttendancePageGui(user, homePage).setVisible(true);
+        new AttendancePageGui(user.getId(), homePage).setVisible(true);
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked

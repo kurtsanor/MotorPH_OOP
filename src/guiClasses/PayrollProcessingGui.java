@@ -4,7 +4,6 @@
  */
 package guiClasses;
 
-import oopClasses.EmployeeManagementModule;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -25,7 +24,6 @@ import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
 import oopClasses.Finance;
-import oopClasses.PayrollModule;
 
 /**
  *
@@ -33,7 +31,6 @@ import oopClasses.PayrollModule;
  */
 public class PayrollProcessingGui extends javax.swing.JFrame {
 
-    private PayrollModule payrollModule;
     private HomePageGui home;
     private JWindow overlay = new JWindow();
     private DecimalFormat df = new DecimalFormat("#.##");
@@ -417,6 +414,7 @@ public class PayrollProcessingGui extends javax.swing.JFrame {
         String month = monthComboBox.getSelectedItem().toString();
         String year = yearComboBox.getSelectedItem().toString();
         String searchInput = searchField.getText();
+        
         List <String []> payrollRecords = finance.searchPayrollDataByEmployee(searchInput, month, year);
         
         DefaultTableModel tblmodel = (DefaultTableModel) payrollTable.getModel();

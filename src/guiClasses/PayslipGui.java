@@ -33,6 +33,15 @@ public class PayslipGui extends javax.swing.JFrame {
         RegularEmployee employee = empModule.getEmployeeDetails(employeeID);
         String [] salaryDetails = employee.viewPersonalSalary(month, year);
         
+        // convert details to display up to 2 decimal places
+        double grossPay = Double.parseDouble(salaryDetails[0]);
+        double SSS = Double.parseDouble(salaryDetails[2]);
+        double philHealth = Double.parseDouble(salaryDetails[3]);
+        double pagIbig = Double.parseDouble(salaryDetails[4]);
+        double tax = Double.parseDouble(salaryDetails[5]);
+        double totalDeductions = Double.parseDouble(salaryDetails[6]);
+        double netPay = Double.parseDouble(salaryDetails[1]);
+        
                       
         String text = ("<html>" +
             "<table cellspacing='2' cellpadding='2' style='line-height:1.2;'>" +
@@ -54,20 +63,20 @@ public class PayslipGui extends javax.swing.JFrame {
         
         String textIII = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + salaryDetails[0] + " </td></tr>" +
-            "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + salaryDetails[0] + " </td></tr>" +
+            "  <tr><td>Gross Pay</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + String.format("%.2f", grossPay) + " </td></tr>" +
+            "  <tr><td>Total Earnings</b></td><td>&nbsp</td><td>" + String.format("%.2f", grossPay) + " </td></tr>" +
             "</table>" +
             "</html>");
         label4.setText(textIII);
         
         String textIV = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
-            "  <tr><td>SSS</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + salaryDetails[2] + "0 </td></tr>" +
-            "  <tr><td>Philhealth</b></td><td>&nbsp</td><td>" + salaryDetails[3] + " </td></tr>" +
-            "  <tr><td>Pagibig</b></td><td>&nbsp</td><td>" + salaryDetails[4] + " </td></tr>" +  
-            "  <tr><td>Withholding Tax</b></td><td>&nbsp</td><td>" + salaryDetails[5] + " </td></tr>" +
-            "  <tr><td>Total Deductions</b></td><td>&nbsp</td><td>" + salaryDetails[6] + " </td></tr>" +
-            "  <tr><td><b>Net Pay</b></td><td>&nbsp</td><td><b>" + salaryDetails[1] + " </td></tr>" +
+            "  <tr><td>SSS</b></td><td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </td><td>" + String.format("%.2f", SSS) + " </td></tr>" +
+            "  <tr><td>Philhealth</b></td><td>&nbsp</td><td>" + String.format("%.2f", philHealth) + " </td></tr>" +
+            "  <tr><td>Pagibig</b></td><td>&nbsp</td><td>" + String.format("%.2f", pagIbig) + " </td></tr>" +  
+            "  <tr><td>Withholding Tax</b></td><td>&nbsp</td><td>" + String.format("%.2f", tax) + " </td></tr>" +
+            "  <tr><td>Total Deductions</b></td><td>&nbsp</td><td>" + String.format("%.2f", totalDeductions) + " </td></tr>" +
+            "  <tr><td><b>Net Pay</b></td><td>&nbsp</td><td><b>" + String.format("%.2f", netPay) + " </td></tr>" +
             "</table>" +
             "</html>");
         label5.setText(textIV);

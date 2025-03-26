@@ -4,6 +4,7 @@
  */
 package oopClasses;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class HR extends User implements BasicActions {
     {
         super(employeeId, firstName, lastName, position, status, birthday, address, phoneNumber, 
                 philhealthNumber, sssNumber, pagIbigNumber, tinNumber, hourlyRate, role);
-        this.empManagement = new EmployeeManagementModule();       
+        this.empManagement = new EmployeeManagementModule();      
     }
     
     @Override
@@ -51,9 +52,28 @@ public class HR extends User implements BasicActions {
             String.valueOf(totalHoursWorked)};
     }
     
+    @Override
+    public List<String[]> viewPersonalAttendanceRecords (String month, String year) {
+        AttendanceModule attendanceModule = new AttendanceModule(employeeId);
+        attendanceModule.setSelectedMonth(month);
+        attendanceModule.setSelectedYear(year);
+        
+        return attendanceModule.getAllRecords();
+    }
     
+    @Override
+    public boolean requestForLeave (int employeeID, LocalDate startDate, LocalDate endDate, String reason, String firstName, String lastName, String leaveType) {
+        LeaveManagementModule leaveModule = new LeaveManagementModule(this);
+        
+        return leaveModule.submitLeaveRequest(employeeID, startDate, endDate, reason, firstName, lastName, leaveType);
+    }
     
-    
+    public List<String[]> viewPersonalLeaveRecords (int employeeID) {
+        LeaveManagementModule leaveModule = new LeaveManagementModule(this);
+        
+        return leaveModule.getAllRecords(employeeID);
+    }
+          
     @Override
     public boolean hasHrAccess() {
         return true;
@@ -85,6 +105,36 @@ public class HR extends User implements BasicActions {
     
     public boolean deleteEmployeeRecord (int employeeID) {
         return empManagement.deleteEmployee(employeeID);
+    }
+    
+    public RegularEmployee viewEmployeeByID (int employeeID) {
+        return empManagement.getEmployeeDetails(employeeID);
+    } 
+    
+    public List<String[]> loadEmployeeAttendanceByID (int employeeID, String month, String year) {
+        AttendanceModule attendanceModule = new AttendanceModule(employeeID);
+        attendanceModule.setSelectedMonth(month);
+        attendanceModule.setSelectedYear(year);
+        
+        return attendanceModule.getAllRecords();
+    }
+    
+    public List<String[]> loadAllEmployeeLeaveRecords () {
+        LeaveManagementModule leaveModule = new LeaveManagementModule(this);
+        
+        return leaveModule.getAllRecords();
+    }
+    
+    public boolean approveEmployeeLeave (int requestID) {
+        LeaveManagementModule leaveModule = new LeaveManagementModule(this);
+        
+        return leaveModule.approveLeave(requestID);
+    }
+    
+    public boolean denyEmployeeLeave (int requestID) {
+        LeaveManagementModule leaveModule = new LeaveManagementModule(this);
+        
+        return leaveModule.denyLeave(requestID);
     }
     
     

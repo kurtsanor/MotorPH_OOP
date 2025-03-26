@@ -2,8 +2,10 @@
 package oopClasses;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -195,21 +197,20 @@ public class LeaveManagementModule implements RecordOperations {
         return leaveDetails;
     }
     
-    public boolean submitLeaveRequest (int senderId, String startDate, String endDate, String Reason,
-                                    String firstName, String lastName, String leaveType, String status) {       
+    public boolean submitLeaveRequest (int senderId, LocalDate startDate, LocalDate endDate, String Reason,
+                                    String firstName, String lastName, String leaveType) {       
         
         try (Connection con = DatabaseConnection.Connect()) {
             String query = "INSERT INTO leave_requests "
-                         + "(id, Start_date, End_date, Reason, First_name, Last_name, Leave_type, status) VALUES (?,?,?,?,?,?,?,?)";
+                         + "(id, Start_date, End_date, Reason, First_name, Last_name, Leave_type, status) VALUES (?,?,?,?,?,?,?, 'Pending')";
             PreparedStatement ptst = con.prepareStatement(query);
             ptst.setInt(1, senderId);
-            ptst.setString(2, startDate);
-            ptst.setString(3, endDate);
+            ptst.setDate(2, Date.valueOf(startDate));
+            ptst.setDate(3, Date.valueOf(endDate));
             ptst.setString(4, Reason);
             ptst.setString(5, firstName);
             ptst.setString(6, lastName);
             ptst.setString(7, leaveType);
-            ptst.setString(8, "Pending");
             
             ptst.executeUpdate();
             

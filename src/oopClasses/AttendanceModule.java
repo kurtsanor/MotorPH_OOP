@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 // Tracks employee attendance records and work hours
-public class AttendanceModule implements RecordOperations{
+public class AttendanceModule implements RecordOperations {
     
     private int employeeId;
     protected String selectedMonth;
@@ -291,5 +291,24 @@ public class AttendanceModule implements RecordOperations{
         }
         
         return record;
-    } 
+    }
+    
+    // method to check if an employee has an attendance record/s on the said date
+    public boolean hasRecords (int employeeID, String month, String year) {
+        try (Connection con = DatabaseConnection.Connect()) {
+            String query = "SELECT * FROM attendance WHERE id = ? AND MONTH(new_date) = ? AND YEAR(new_date) = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            int convertedMonth = getSelectedMonth(month);
+            pst.setInt(1, employeeID);
+            pst.setInt(2, convertedMonth);
+            pst.setInt(3, Integer.parseInt(year));
+            ResultSet rs = pst.executeQuery();
+            
+            return rs.next();
+                                                
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

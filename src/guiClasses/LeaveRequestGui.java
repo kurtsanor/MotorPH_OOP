@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import oopClasses.HR;
 import oopClasses.LeaveManagementModule;
 
 
@@ -222,7 +223,7 @@ public class LeaveRequestGui extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadLeaveTable () {
+    public void loadLeaveTable () {
         List <String []> leaveRecords = leaveModule.getAllRecords(user.getId());
         
         DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
@@ -246,7 +247,7 @@ public class LeaveRequestGui extends javax.swing.JFrame {
 
     private void requestLeaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestLeaveButtonActionPerformed
         this.setVisible(false);
-        new LeaveForm(user,this, leaveTable).setVisible(true);
+        new LeaveForm(user.getId(), this).setVisible(true);
     }//GEN-LAST:event_requestLeaveButtonActionPerformed
 
     private void requestLeaveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_requestLeaveButtonMouseEntered
@@ -268,7 +269,7 @@ public class LeaveRequestGui extends javax.swing.JFrame {
     private void manageLeaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageLeaveButtonActionPerformed
         if (user.hasHrAccess()) {
             this.setVisible(false);
-            new LeaveManagementGui(user,this).setVisible(true);
+            new LeaveManagementGui((HR)user, this).setVisible(true);
         }
         else {
             JOptionPane.showMessageDialog(null, "Only HR has access to this feature");

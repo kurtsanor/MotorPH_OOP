@@ -8,6 +8,7 @@ import oopClasses.EmployeeManagementModule;
 import motorphpayroll.customcomponents.CustomPanel;
 import java.awt.Color;
 import javax.swing.JWindow;
+import oopClasses.HR;
 import oopClasses.RegularEmployee;
 
 /**
@@ -19,17 +20,18 @@ public class ViewProfileGui extends javax.swing.JFrame {
     
     private int chosenEmployeeId;
     private JWindow overlay;
+    private HR hr;
             
-    public ViewProfileGui(int chosenEmployeeId, JWindow overlay) {
+    public ViewProfileGui(int chosenEmployeeId, JWindow overlay, HR hr) {
         initComponents();
         this.chosenEmployeeId = chosenEmployeeId;
         this.overlay = overlay;
+        this.hr = hr;
         showEmployeeInformation();
     }
     
     private void showEmployeeInformation () {
-        EmployeeManagementModule empModule = new EmployeeManagementModule();
-        RegularEmployee employee = empModule.getEmployeeDetails(chosenEmployeeId);
+        RegularEmployee employee = hr.viewEmployeeByID(chosenEmployeeId);
                   
         String empInfo = ("<html>" +
             "<table cellspacing='1' cellpadding='1' style='line-height:1.2;'>" +
@@ -46,7 +48,7 @@ public class ViewProfileGui extends javax.swing.JFrame {
             "  <tr><td><b>Hourly Rate</b></td><td>&nbsp:</td><td>" + employee.getHourlyRate() + " </td></tr>" +
             "</table>" +
             "</html>"); 
-        String empFullName = employee.getFirstName() +" "+ employee.getFirstName();
+        String empFullName = employee.getFirstName() +" "+ employee.getLastName();
         
         fullNameLabel.setText(empFullName);
         infoLabel.setText(empInfo);

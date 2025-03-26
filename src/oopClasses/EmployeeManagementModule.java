@@ -12,6 +12,7 @@ public class EmployeeManagementModule implements RecordOperations {
     
     public EmployeeManagementModule () {} // default constructor
     
+    // loads only basic informations of all employees to be used for the jtable
     @Override
     public List <String []> getAllRecords () {
         List <String []> employeeList = new ArrayList<>();
@@ -125,7 +126,7 @@ public class EmployeeManagementModule implements RecordOperations {
              ptst.setString(13, employee.getRole()); // Role
              ptst.setInt(14,    chosenEmployeeID);
              ptst.executeUpdate();
-             
+  
              return true;
              
         } catch (Exception e) {e.printStackTrace();}

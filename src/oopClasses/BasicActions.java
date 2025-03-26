@@ -4,11 +4,16 @@
  */
 package oopClasses;
 
+import java.time.LocalDate;
+import java.util.List;
+
 /**
  *
  * @author keith
  */
 public interface BasicActions {
     String [] viewPersonalSalary(String month, String year);
-    
+    List<String[]> viewPersonalAttendanceRecords (String month, String year);
+    boolean requestForLeave (int employeeID, LocalDate startDate, LocalDate endDate, String reason, String firstName, String lastName, String leaveType);
+    List <String[]> viewPersonalLeaveRecords (int employeeID);
 }

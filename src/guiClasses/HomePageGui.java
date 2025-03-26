@@ -17,6 +17,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import oopClasses.Finance;
 import oopClasses.HR;
+import oopClasses.RegularEmployee;
 
 
 public class HomePageGui extends javax.swing.JFrame {
@@ -758,7 +759,7 @@ public class HomePageGui extends javax.swing.JFrame {
     }//GEN-LAST:event_leaveRequestButtonActionPerformed
 
     private void timeAndAttendanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeAndAttendanceButtonActionPerformed
-        new AttendancePageGui(user,this).setVisible(true);
+        new AttendancePageGui(user.getId(), this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_timeAndAttendanceButtonActionPerformed
 
@@ -817,7 +818,7 @@ public class HomePageGui extends javax.swing.JFrame {
 
     private void myAttendanceMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myAttendanceMenuActionPerformed
         hamburgerPanel.setVisible(false);
-        new AttendancePageGui(user,this).setVisible(true);
+        new AttendancePageGui(user.getId(), this).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_myAttendanceMenuActionPerformed
 
@@ -833,7 +834,7 @@ public class HomePageGui extends javax.swing.JFrame {
     private void attendanceDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attendanceDatabaseButtonActionPerformed
         if (user.hasHrAccess()) {
             this.setVisible(false);
-            new AttendanceDatabaseGUI(this).setVisible(true);
+            new AttendanceDatabaseGUI(this, (HR)user).setVisible(true);
         }
         else {
             JOptionPane.showMessageDialog(null, "Only HR can access this feature");

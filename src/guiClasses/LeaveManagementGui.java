@@ -4,7 +4,6 @@
  */
 package guiClasses;
 
-import oopClasses.User;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -22,6 +21,7 @@ import javax.swing.table.TableCellRenderer;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.MyButton;
 import motorphpayroll.customcomponents.RoundJTextField;
+import oopClasses.HR;
 import oopClasses.LeaveManagementModule;
 
 /**
@@ -30,18 +30,18 @@ import oopClasses.LeaveManagementModule;
  */
 public class LeaveManagementGui extends javax.swing.JFrame {
 
-    private LeaveManagementModule leaveModule;
-    private User user;
     private LeaveRequestGui leaveReqGui;
+    private HR hr;
+    private LeaveManagementModule leaveModule;
     
-    public LeaveManagementGui(User user, LeaveRequestGui leaveReqGui) {
+    public LeaveManagementGui(HR hr, LeaveRequestGui leaveReqGui) {
         initComponents();
         adjustTextFields();
         addIndentionToTable();
         customizeTable();
-        this.user = user;
+        this.hr = hr;
+        this.leaveModule = new LeaveManagementModule(hr);
         this.leaveReqGui = leaveReqGui;
-        leaveModule = new LeaveManagementModule(user);
         adjustSearchField();
         loadLeaveTable();
         
@@ -453,7 +453,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void loadLeaveTable () {
-        List <String []> leaveRecords = leaveModule.getAllRecords();
+        List <String []> leaveRecords = hr.loadAllEmployeeLeaveRecords();
         
         DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
         tblmodel.setRowCount(0);
@@ -549,7 +549,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         }
         else {
             int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
-            leaveModule.approveLeave(requestID);
+            hr.approveEmployeeLeave(requestID);
             JOptionPane.showMessageDialog(null, "Leave approved");
             loadLeaveTable();
         }       
@@ -561,7 +561,7 @@ public class LeaveManagementGui extends javax.swing.JFrame {
         }
         else {
             int requestID = Integer.parseInt(leaveTable.getValueAt(leaveTable.getSelectedRow(), 0).toString());
-            leaveModule.denyLeave(requestID);
+            hr.denyEmployeeLeave(requestID);
             JOptionPane.showMessageDialog(null, "Leave Denied");
             loadLeaveTable();
         }     

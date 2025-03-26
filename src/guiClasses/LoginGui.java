@@ -209,7 +209,7 @@ public class LoginGui extends javax.swing.JFrame {
     }
     
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        UserAuthentication authentication = new UserAuthentication(UsernameTextfield.getText(), PasswordField.getText());
+        UserAuthentication authentication = new UserAuthentication(UsernameTextfield.getText(), new String(PasswordField.getPassword()));
         int employeeID = authentication.authenticateUser();
         
         if (employeeID != -1) {
@@ -219,7 +219,7 @@ public class LoginGui extends javax.swing.JFrame {
             this.dispose();
         }
         else {
-            JOptionPane.showMessageDialog(this, "Invalid login credentials");
+            JOptionPane.showMessageDialog(this, "Invalid login credentials", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 

@@ -4,8 +4,6 @@
  */
 package guiClasses;
 
-import oopClasses.EmployeeManagementModule;
-import oopClasses.AttendanceModule;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,6 +11,7 @@ import java.awt.Font;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.RoundJTextField;
+import oopClasses.HR;
 import oopClasses.RegularEmployee;
 
 /**
@@ -29,17 +29,17 @@ import oopClasses.RegularEmployee;
  */
 public class AttendanceDatabaseGUI extends javax.swing.JFrame {
 
-    private AttendanceModule attendanceModule = new AttendanceModule(0);
-    private EmployeeManagementModule empModule = new EmployeeManagementModule();
     private HomePageGui previousFrame;
+    private HR hr;
     
-    public AttendanceDatabaseGUI(HomePageGui previousFrame) {
+    public AttendanceDatabaseGUI(HomePageGui previousFrame, HR hr) {
+        this.hr = hr;
         initComponents();
         addIndentionToTable();
         customizeTable();
         loadEmployeeList();
         adjustSearchField();
-        this.previousFrame = previousFrame;   
+        this.previousFrame = previousFrame;          
     }
 
     
@@ -365,16 +365,14 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
+                                .addGap(18, 18, 18)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
+                                .addGap(28, 28, 28)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(manageEmpLabel6)
@@ -397,7 +395,10 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -418,7 +419,7 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
 
     
     private void loadEmployeeList () {       
-        List <String []> employeeList = empModule.getAllRecords();
+        List <String []> employeeList = hr.viewAllEmployees();
         
         DefaultTableModel empTbl = (DefaultTableModel) employeeListTable.getModel();
         
@@ -431,8 +432,8 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
         }
     }
     
-    private void loadAttendanceTable () {
-        List <String []> attendanceRecords = attendanceModule.getAllRecords();       
+    private void loadAttendanceTable (int employeeID, String month, String year) {
+        List <String []> attendanceRecords = hr.loadEmployeeAttendanceByID(employeeID, month, year);       
         
         DefaultTableModel attendanceTbl = (DefaultTableModel) attendanceTable.getModel();
         attendanceTbl.setRowCount(0);
@@ -440,14 +441,32 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
         if (!attendanceRecords.isEmpty()) {
             dateText.setText(attendanceRecords.get(0)[0]);
             for (String [] record: attendanceRecords) {
-            attendanceTbl.addRow(new Object [] {
-            record[0],
-            record[1],
-            record[2],
-            record[3],});
-            }   
+                attendanceTbl.addRow(new Object [] {
+                record[0],
+                record[1],
+                record[2],
+                record[3],});
+            }
+            return;
         }
+        JOptionPane.showMessageDialog(this, "No records found in the chosen date", "No data", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void updateEmployeeAttendanceView() {
+        if (employeeListTable.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(this, "No employee selected. Please choose an employee to view attendance.", "Selection Required", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String tableContent = employeeListTable.getValueAt(employeeListTable.getSelectedRow(), 0).toString();
+          
+        int chosenEmployeeID = Integer.parseInt(tableContent.split(" ")[1]); // index of the employee number
+        String month = monthComboBox.getSelectedItem().toString();
+        String year = yearComboBox.getSelectedItem().toString();
         
+        RegularEmployee employee = hr.viewEmployeeByID(chosenEmployeeID);
+        employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
+                     
+        loadAttendanceTable(chosenEmployeeID, month, year); 
     }
     
     private void adjustSearchField() {
@@ -464,28 +483,18 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
 
     private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            
-
+            updateEmployeeAttendanceView();   
         }
     }//GEN-LAST:event_monthComboBoxItemStateChanged
 
     private void yearComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_yearComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            
+            updateEmployeeAttendanceView(); 
         }
     }//GEN-LAST:event_yearComboBoxItemStateChanged
 
     private void employeeListTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeListTableMouseReleased
-        String tableContent = employeeListTable.getValueAt(employeeListTable.getSelectedRow(), 0).toString();
-        int chosenEmployeeID = Integer.parseInt(tableContent.split(" ")[1]); // index of the employee number
-        
-        RegularEmployee employee = empModule.getEmployeeDetails(chosenEmployeeID);
-        employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
-        
-        attendanceModule.setEmployeeId(chosenEmployeeID);
-        attendanceModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
-        attendanceModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
-        loadAttendanceTable();              
+        updateEmployeeAttendanceView();              
     }//GEN-LAST:event_employeeListTableMouseReleased
 
     private void searchFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFieldFocusGained
@@ -506,7 +515,7 @@ public class AttendanceDatabaseGUI extends javax.swing.JFrame {
 
     private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyReleased
         // search for employee
-        List <String []> searchResults = attendanceModule.search(searchField.getText());
+        List <String []> searchResults = hr.searchEmployees(searchField.getText());
         
         DefaultTableModel empTbl = (DefaultTableModel) employeeListTable.getModel();
         empTbl.setRowCount(0);

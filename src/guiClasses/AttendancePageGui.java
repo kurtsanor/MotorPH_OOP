@@ -1,7 +1,5 @@
 package guiClasses;
 
-import oopClasses.User;
-import oopClasses.AttendanceModule;
 import motorphpayroll.customcomponents.CustomPanel;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,22 +15,24 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import oopClasses.EmployeeManagementModule;
+import oopClasses.RegularEmployee;
 
 public class AttendancePageGui extends javax.swing.JFrame {
 
-    private User user;
     private HomePageGui homePage;
-    private AttendanceModule attendanceModule;
+    private EmployeeManagementModule empModule;
+    private RegularEmployee employee;
     
-    public AttendancePageGui(User user, HomePageGui homePage) {
+    public AttendancePageGui(int employeeID, HomePageGui homePage) {
         initComponents();
         customizeTable();
         addIndentionToTable();
-        this.user = user;
-        this.homePage = homePage;
-        employeeName.setText(user.getFirstName()+ " " + user.getLastName());
-        attendanceModule = new AttendanceModule(user.getId());
-        
+        this.homePage = homePage;        
+        this.empModule = new EmployeeManagementModule();
+        this.employee = empModule.getEmployeeDetails(employeeID);
+        employeeName.setText(employee.getFirstName() + " " + employee.getLastName());
+        loadAttendanceTable();
     }
 
     
@@ -277,8 +277,11 @@ public class AttendancePageGui extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadAttendanceTable () {       
-        List <String []> attendanceRecords = attendanceModule.getAllRecords();
+    private void loadAttendanceTable () {
+        String month = monthComboBox.getSelectedItem().toString();
+        String year = yearComboBox.getSelectedItem().toString();
+        
+        List <String []> attendanceRecords = employee.viewPersonalAttendanceRecords(month, year);
         DefaultTableModel tblmodel = (DefaultTableModel) attendanceTable.getModel();
         tblmodel.setRowCount(0);
         
@@ -304,8 +307,6 @@ public class AttendancePageGui extends javax.swing.JFrame {
 
     private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-           attendanceModule.setSelectedMonth(String.valueOf(monthComboBox.getSelectedItem()));
-           attendanceModule.setSelectedYear(String.valueOf(yearComboBox.getSelectedItem()));
            loadAttendanceTable();
            
       }
@@ -313,8 +314,6 @@ public class AttendancePageGui extends javax.swing.JFrame {
 
     private void yearComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_yearComboBoxItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {          
-           attendanceModule.setSelectedMonth(monthComboBox.getSelectedItem().toString());
-           attendanceModule.setSelectedYear(yearComboBox.getSelectedItem().toString());
            loadAttendanceTable();                        
       }
     }//GEN-LAST:event_yearComboBoxItemStateChanged

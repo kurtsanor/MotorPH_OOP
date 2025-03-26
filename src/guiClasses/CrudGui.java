@@ -462,7 +462,7 @@ public class CrudGui extends javax.swing.JFrame {
         }                   
         // opens a new frame and displays employee info
         showOverlay();
-        profile = new ViewProfileGui(chosenEmployee, overlay);
+        profile = new ViewProfileGui(chosenEmployee, overlay, hr);
         profile.setVisible(true);  
                 
     }//GEN-LAST:event_viewButtonActionPerformed

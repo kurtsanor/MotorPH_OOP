@@ -9,7 +9,7 @@ import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JWindow;
 import motorphpayroll.customcomponents.CustomPanel;
-import oopClasses.PayrollModule;
+import oopClasses.AttendanceModule;
 import oopClasses.RegularEmployee;
 
 /**
@@ -19,16 +19,16 @@ import oopClasses.RegularEmployee;
 public class PayrollDocsGui extends javax.swing.JFrame {
 
     private HomePageGui homePage;
-    private PayrollModule payrollModule;
     private JWindow overlay = new JWindow();
-    private EmployeeManagementModule empModule = new EmployeeManagementModule();
-    private String [] empDetails;
+    private EmployeeManagementModule empModule;
+    private AttendanceModule attendanceModule;
     private RegularEmployee employee;
 
     public PayrollDocsGui(int employeeID, HomePageGui homePage) {
+        empModule = new EmployeeManagementModule();
+        attendanceModule = new AttendanceModule(employeeID);
         employee = empModule.getEmployeeDetails(employeeID);
         this.homePage = homePage;
-        payrollModule = new PayrollModule(employeeID, employee.getHourlyRate());
         initComponents();
         overlay.setBackground(new Color(0, 0, 0, 200));
         overlay.setVisible(false);       
@@ -400,9 +400,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "January";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_januaryPayslipMouseClicked
 
@@ -411,9 +421,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "February";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_febPayslipMouseClicked
 
@@ -422,9 +442,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "March";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_marchPayslipMouseClicked
 
@@ -433,9 +463,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "April";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_aprilPayslipMouseClicked
 
@@ -444,9 +484,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "May";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_mayPayslipMouseClicked
 
@@ -455,9 +505,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "June";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_junePayslipMouseClicked
 
@@ -466,9 +526,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "July";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_julyPayslipMouseClicked
 
@@ -477,9 +547,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "August";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_augustPayslipMouseClicked
 
@@ -488,9 +568,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "September";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_septemberPayslipMouseClicked
 
@@ -499,9 +589,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "October";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_octoberPayslipMouseClicked
 
@@ -510,9 +610,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        showOverlay();
+        
         String month = "November";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_novemberPayslipMouseClicked
 
@@ -521,8 +631,19 @@ public class PayrollDocsGui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a year to generate the payslip.");
             return;
         }
-        String month = "Decmber";
+        
+        String month = "December";
         String year = yearComboBox.getSelectedItem().toString();
+        
+        if (!attendanceModule.hasRecords(employee.getId(), month, year)) {
+            JOptionPane.showMessageDialog(null, 
+            "No attendance records found for " + month + " " + year + ".\nPayslip cannot be generated.", 
+            "Attendance Not Found", 
+            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        showOverlay();
         new PayslipGui(employee.getId(), month, year, overlay).setVisible(true);
     }//GEN-LAST:event_decemberPayslipMouseClicked
 

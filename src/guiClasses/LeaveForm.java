@@ -4,7 +4,6 @@
  */
 package guiClasses;
 
-import oopClasses.User;
 import motorphpayroll.customcomponents.CustomPanel;
 import motorphpayroll.customcomponents.PanelRound;
 import motorphpayroll.customcomponents.MyButton;
@@ -12,14 +11,11 @@ import motorphpayroll.customcomponents.RoundJTextField;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import oopClasses.LeaveManagementModule;
+import oopClasses.EmployeeManagementModule;
+import oopClasses.RegularEmployee;
 
 /**
  *
@@ -27,24 +23,22 @@ import oopClasses.LeaveManagementModule;
  */
 public class LeaveForm extends javax.swing.JFrame {
 
-    private User user;
+    private int employeeID;
     private LeaveRequestGui leavePage;
-    private LeaveManagementModule leaveModule;
-    private JTable leaveTable;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");  
+    private SimpleDateFormat dateFormat; 
+    private EmployeeManagementModule empModule;
+    private RegularEmployee employee;
     
-    public LeaveForm(User user, LeaveRequestGui leavePage, JTable leaveTable) {
+    public LeaveForm(int employeeID, LeaveRequestGui leavePage) {
         initComponents();
         adjustTextField();
-        this.user = user;
+        this.employeeID = employeeID;
         this.leavePage = leavePage;
-        this.leaveTable = leaveTable;
-        leaveModule = new LeaveManagementModule(user);          
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        empModule = new EmployeeManagementModule();
+        employee = empModule.getEmployeeDetails(employeeID);         
     }
-    
-    
-
-    
+     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -244,36 +238,26 @@ public class LeaveForm extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void loadLeaveTable () {
-        List <String []> leaveRecords = leaveModule.getAllRecords(user.getId());
-        
-        DefaultTableModel tblmodel = (DefaultTableModel) leaveTable.getModel();
-        tblmodel.setRowCount(0);
-        
-        for (String [] record: leaveRecords) {
-            tblmodel.addRow(new String [] {
-            record[0],
-            record[1],
-            record[2],
-            record[3],
-            record[4]});
-        }      
-    }
-    
+       
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (startDateField.getText().isBlank() || endDateField.getText().isBlank() || reasonField.getText().isBlank()) {
             JOptionPane.showMessageDialog(null, "Please fillup all information");
             return;
         }
-        
-            
+                   
         if (validDateFields() && validReason()) {
+            
+            LocalDate startDate = LocalDate.parse(startDateField.getText());
+            LocalDate endDate = LocalDate.parse(endDateField.getText());
+            String reason = reasonField.getText();
+            String firstName = employee.getFirstName();
+            String lastName = employee.getLastName();           
             String leavetype = String.valueOf(leaveType.getSelectedItem());
-            boolean submitted = leaveModule.submitLeaveRequest(user.getId(), startDateField.getText(),endDateField.getText(), reasonField.getText(), user.getFirstName(), user.getLastName(), leavetype, "Pending");
+                       
+            boolean submitted = employee.requestForLeave(employeeID, startDate, endDate, reason, firstName, lastName, leavetype);
             if (submitted) {
                 JOptionPane.showMessageDialog(null, "Request Successfully submitted");
-                loadLeaveTable();
+                leavePage.loadLeaveTable();
                 this.dispose();
                 leavePage.setVisible(true);
             }else {
@@ -293,11 +277,9 @@ public class LeaveForm extends javax.swing.JFrame {
     }
     
     
-    private boolean validDateFields () {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy"); 
-        
-        LocalDate startDate = LocalDate.parse(startDateField.getText(), formatter);
-        LocalDate endDate = LocalDate.parse(endDateField.getText(), formatter);
+    private boolean validDateFields () {        
+        LocalDate startDate = LocalDate.parse(startDateField.getText());
+        LocalDate endDate = LocalDate.parse(endDateField.getText());
         LocalDate currentDate = LocalDate.now();
         
         // checks if leave dates are in the past or end date is before the start date
@@ -360,7 +342,6 @@ public class LeaveForm extends javax.swing.JFrame {
     private void startDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_startDateChooserPropertyChange
         if (startDateChooser.getDate() == null) return;
         startDateField.setText(dateFormat.format(startDateChooser.getDate()));
-        System.out.println(dateFormat.format(startDateChooser.getDate()));
     }//GEN-LAST:event_startDateChooserPropertyChange
 
     private void adjustTextField() {

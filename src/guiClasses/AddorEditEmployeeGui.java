@@ -784,10 +784,10 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         return input.matches(".*" + regex + ".*");
     }
     
-    public void loadEmployeeFromFields (RegularEmployee employee) {
-        // placeholder for ID number since mysql has auto increment ID number (for adding new employees only)
+    public RegularEmployee loadEmployeeFromFields () {
+        // placeholder for ID number since mysql already has auto increment ID number
         int placeHolder = 0;
-        employee = new RegularEmployee(placeHolder, firstName.getText(), lastName.getText(), position.getText(), statusComboBox.getSelectedItem().toString(), birthday.getText(), address.getText(), phoneNum.getText()
+        return new RegularEmployee(placeHolder, firstName.getText(), lastName.getText(), position.getText(), statusComboBox.getSelectedItem().toString(), birthday.getText(), address.getText(), phoneNum.getText()
                 ,philhealthNum.getText(), sssNum.getText(), pagibigNum.getText(), tinNum.getText(), Double.parseDouble(hourlyRate.getText()), roleComboBox.getSelectedItem().toString());
     }
         
@@ -799,33 +799,21 @@ public class AddorEditEmployeeGui extends javax.swing.JFrame {
         if (!validateInputFields()) {
             return;
         }
-        
-        // create a new employee
-        RegularEmployee newEmployee = null;
-        
+                             
         // load employee information from textfields
-        loadEmployeeFromFields(newEmployee);
-        
+        RegularEmployee employee = loadEmployeeFromFields();
+        boolean success;
+        String message;
+
         if (isAddingEmployee) {           
-            boolean added = hr.addNewEmployee(newEmployee);
-            if (added){
-                JOptionPane.showMessageDialog(null, "Record Added Sucessfully");
-            } 
-            else {
-                JOptionPane.showMessageDialog(null, "Failed to add record");
-            }
-                      
+            success = hr.addNewEmployee(employee);
+            message = success ? "Record Added Successfully" : "Failed to add record";
+        } else {           
+            success = hr.editExistingEmployee(employeeId, employee);
+            message = success ? "Record Updated Successfully" : "Failed to update record";
         }
-        else {
-            RegularEmployee employee = empModule.getEmployeeDetails(employeeId);
-            boolean edited = hr.editExistingEmployee(employeeId, employee);
-            if (edited) {
-                JOptionPane.showMessageDialog(null, "Record Updated Sucessfully");
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Failed to update record");
-            }
-        }
+
+        JOptionPane.showMessageDialog(null, message);
         loadEmployeeTable();
         this.dispose();
     }//GEN-LAST:event_saveButtonActionPerformed
