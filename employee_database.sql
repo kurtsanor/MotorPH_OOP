@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2025 at 09:23 AM
+-- Generation Time: Mar 26, 2025 at 11:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -2245,7 +2245,9 @@ INSERT INTO `attendance` (`Attendance #`, `id`, `new_date`, `new_time_in`, `new_
 (2199, 10006, '2025-03-19', '15:40:00', '15:40:00'),
 (2205, 10025, '2025-03-24', '18:02:53', '18:03:27'),
 (2206, 10006, '2025-03-24', '18:05:06', '18:05:16'),
-(2207, 10001, '2025-03-25', '13:54:28', '14:07:42');
+(2207, 10001, '2025-03-25', '13:54:28', '14:07:42'),
+(2208, 10021, '2025-03-25', '16:28:23', '16:28:44'),
+(2209, 10020, '2025-03-26', '13:09:59', '13:10:23');
 
 -- --------------------------------------------------------
 
@@ -2299,8 +2301,8 @@ INSERT INTO `credentials` (`credentialsID`, `employeeID`, `username`, `password`
 CREATE TABLE `leave_requests` (
   `Request_number` int(255) NOT NULL,
   `id` int(255) DEFAULT NULL,
-  `Start_date` varchar(255) DEFAULT NULL,
-  `End_date` varchar(255) DEFAULT NULL,
+  `Start_date` date DEFAULT NULL,
+  `End_date` date DEFAULT NULL,
   `Reason` varchar(255) DEFAULT NULL,
   `First_name` varchar(255) DEFAULT NULL,
   `Last_name` varchar(255) DEFAULT NULL,
@@ -2313,12 +2315,8 @@ CREATE TABLE `leave_requests` (
 --
 
 INSERT INTO `leave_requests` (`Request_number`, `id`, `Start_date`, `End_date`, `Reason`, `First_name`, `Last_name`, `Leave_type`, `status`) VALUES
-(39, 10006, '12/02/2025', '12/05/25', 'Vacation', 'Andrea Mae', 'Villanueva', 'VL - Vacation', 'Approved'),
-(40, 10006, '02/07/2025', '03/04/2025', 'Vacay', 'Andrea Mae', 'Villanueva', 'VL - Vacation', 'Pending'),
-(45, 10006, '03/19/2025', '03/20/2025', 'asd', 'Andrea Mae', 'Villanueva', 'VL - Vacation', 'Pending'),
-(46, 10006, '03/19/2025', '03/20/2025', 'vacation', 'Andrea Mae', 'Villanueva', 'VL - Vacation', 'Denied'),
-(47, 10006, '03/19/2025', '03/20/2025', 'vacation', 'Andrea Mae', 'Villanueva', 'VL - Vacation', 'Pending'),
-(48, 10006, '03/21/2025', '03/22/2025', 'sick', 'Andrea Mae', 'Villanueva', 'SL - Sick', 'Pending');
+(50, 10006, '2025-03-26', '2025-03-27', 'Going out', 'Andrea Mae', 'Villanueva', 'VL - Vacation', 'Approved'),
+(51, 10006, '2025-03-27', '2025-03-29', 'Going for vacation', 'Andrea Mae', 'Villanueva', 'VL - Vacation', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -2352,28 +2350,28 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `Last_Name`, `First_Name`, `Address`, `Birthdate`, `Position`, `Phone_number`, `SSS`, `Philhealth`, `TIN`, `Pagibig`, `Status`, `Basic_salary`, `Gross_semi_monthly_rate`, `Hourly_rate`, `Role`) VALUES
 (10001, 'Garcia III', 'Manuel', 'Valero Carpark Building Valero Street 1227, Makati City', '10/11/1983', 'Chief Executive Officer', '966-860-270', '44-4506057-3', '820126853951', '442-605-657-000', '691295330870', 'Regular', '90,000', '45,000', 535.71, 'Employee'),
 (10002, 'Lim', 'Antonio', 'San Antonio De Padua 2, Block 1 Lot 8 and 2, Dasmarinas, Cavite', '06/19/1988', 'Chief Operating Officer', '171-867-411', '52-2061274-9', '331735646338', '683-102-776-000', '663904995411', 'Regular', '60,000\r\n', '30,000\r\n', 357.14, 'Employee'),
-(10003, 'Aquino', 'Bianca Sofia', 'Rm. 402 4/F Jiao Building Timog Avenue Cor. Quezon Avenue 1100, Quezon City ', '08/04/1989', 'Chief Finance Officer ', '966-889-370\r ', '30-8870406-2\r ', '177451189665', '171519773969', '971-711-280-000\r ', 'Regular\r ', '60,000\r\n', '30,000\r\n', 357.14, 'Employee'),
-(10004, 'Reyes', 'Isabella', '460 Solanda Street Intramuros 1000, Manila ', '06/16/1994 ', 'Chief Marketing Officer ', '786-868-477\r\n', '40-2511815-0\r\n', '341911411254', '876-809-437-000\r\n', '416946776041', 'Regular\r\n', '60,000\r\n', '30,000\r\n', 357.14, 'Employee'),
-(10005, 'Hernandez', 'Eduard', 'National Highway, Gingoog,  Misamis Occidental', '09/23/1989', 'IT Operations and Systems', '088-861-012\r ', '50-5577638-1\r ', '957436191812', '031-702-374-000\r ', '952347222457', 'Regular\r ', '52,670\r\n', '26,335\r\n', 313.51, 'IT'),
-(10006, 'Villanueva', 'Andrea Mae', '17/85 Stracke Via Suite 042, Poblacion, Las Piñas 4783 Dinagat Islands ', '02/14/1988', 'HR Manager', '918-621-603\r ', '49-1632020-8\r ', '382189453145', '317-674-022-000\r ', '441093369646', 'Regular\r ', '52,670\r\n', '26,335\r\n', 313.51, 'HR'),
-(10007, 'San Jose', 'Brad', '99 Strosin Hills, Poblacion, Bislig 5340 Tawi-Tawi', '03/15/1996', 'HR Team Leader', '797-009-261\r\n', '40-2400714-1\r\n', '239192926939', '672-474-690-000\r\n', '210850209964', 'Regular\r\n', '42,975\r\n', '21,488\r\n', 255.80, 'Employee'),
-(10008, 'Romualdez', 'Alice', '12A/33 Upton Isle Apt. 420, Roxas City 1814 Surigao del Norte ', '05/14/1992', 'HR Rank and File', '983-606-799\r\n', '55-4476527-2\r\n', '545652640232', '888-572-294-000\r\n', '211385556888', 'Regular\r\n', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
-(10009, 'Atienza', 'Rosie', '90A Dibbert Terrace Apt. 190, San Lorenzo 6056 Davao del Norte', '09/24/1948', 'HR Rank and File', '266-036-427\r\n', '41-0644692-3\r\n', '708988234853', '604-997-793-000\r\n', '260107732354', 'Regular\r\n', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
-(10010, 'Alvaro', 'Roderick', '#284 T. Morato corner, Scout Rallos Street, Quezon City', '03/30/1988', 'Accounting Head', '053-381-386\r\n', '64-7605054-4\r\n', '578114853194', '525-420-419-000', '799254095212', 'Regular\r\n', '52,670\r\n', '26,335\r\n', 313.51, 'Finance'),
-(10011, 'Salcedo', 'Anthony', '93/54 Shanahan Alley Apt. 183, Santo Tomas 1572 Masbate', '09/14/1993', 'Payroll Manager', '070-766-300\r\n', '26-9647608-3\r\n', '126445315651', '210-805-911-000\r\n', '218002473454', 'Regular\r\n', '50,825\r\n', '25,413\r\n', 302.53, 'Finance'),
+(10003, 'Aquino', 'Bianca Sofia', 'Rm. 402 4/F Jiao Building Timog Avenue Cor. Quezon Avenue 1100, Quezon City', '08/04/1989', 'Chief Finance Officer', '966-889-370', '30-8870406-2', '177451189665', '971-711-280-000', '171519773969', 'Regular', '60,000\r\n', '30,000\r\n', 357.14, 'Employee'),
+(10004, 'Reyes', 'Isabella', '460 Solanda Street Intramuros 1000, Manila', '06/16/1994', 'Chief Marketing Officer', '786-868-477', '40-2511815-0', '341911411254', '876-809-437-000', '416946776041', 'Regular', '60,000\r\n', '30,000\r\n', 357.14, 'Employee'),
+(10005, 'Hernandez', 'Eduard', 'National Highway, Gingoog,  Misamis Occidental', '09/23/1989', 'IT Operations and Systems', '088-861-012', '50-5577638-1', '957436191812', '031-702-374-000', '952347222457', 'Regular', '52,670\r\n', '26,335\r\n', 313.51, 'IT'),
+(10006, 'Villanueva', 'Andrea Mae', '17/85 Stracke Via Suite 042, Poblacion, Las Piñas 4783 Dinagat Islands', '02/14/1988', 'HR Manager', '918-621-603', '49-1632020-8', '382189453145', '317-674-022-000', '441093369646', 'Regular', '52,670\r\n', '26,335\r\n', 313.51, 'HR'),
+(10007, 'San Jose', 'Brad', '99 Strosin Hills, Poblacion, Bislig 5340 Tawi-Tawi', '03/15/1996', 'HR Team Leader', '797-009-261', '40-2400714-1', '239192926939', '672-474-690-000', '210850209964', 'Regular', '42,975\r\n', '21,488\r\n', 255.80, 'Employee'),
+(10008, 'Romualdez', 'Alice', '12A/33 Upton Isle Apt. 420, Roxas City 1814 Surigao del Norte', '05/14/1992', 'HR Rank and File', '983-606-799', '55-4476527-2', '545652640232', '888-572-294-000', '211385556888', 'Regular', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
+(10009, 'Atienza', 'Rosie', '90A Dibbert Terrace Apt. 190, San Lorenzo 6056 Davao del Norte', '09/24/1948', 'HR Rank and File', '266-036-427', '41-0644692-3', '708988234853', '604-997-793-000', '260107732354', 'Regular', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
+(10010, 'Alvaro', 'Roderick', '#284 T. Morato corner, Scout Rallos Street, Quezon City', '03/30/1988', 'Accounting Head', '053-381-386', '64-7605054-4', '578114853194', '525-420-419-000', '799254095212', 'Regular', '52,670\r\n', '26,335\r\n', 313.51, 'Finance'),
+(10011, 'Salcedo', 'Anthony', '93/54 Shanahan Alley Apt. 183, Santo Tomas 1572 Masbate', '09/14/1993', 'Payroll Manager', '070-766-300', '26-9647608-3', '126445315651', '210-805-911-000', '218002473454', 'Regular', '50,825\r\n', '25,413\r\n', 302.53, 'Finance'),
 (10012, 'Lopez', 'Josie', '49 Springs Apt. 266, Poblacion, Taguig 3200 Occidental Mindoro', '01/14/1987', 'Payroll Team Leader', '478-355-427\r\n', '44-8563448-3\r\n', '431709011012', '218-489-737-000', '113071293354', 'Regular\r\n', '38,475\r\n', '19,238\r\n', 229.02, 'Employee'),
 (10013, 'Farala', 'Martha', '42/25 Sawayn Stream, Ubay 1208 Zamboanga del Norte ', '01/11/1942', 'Payroll Rank and File', '329-034-366\r\n', '45-5656375-0\r\n', '233693897247', '210-835-851-000\r\n', '631130283546', 'Regular\r\n', '24,000\r\n', '12,000\r\n', 142.86, 'Employee'),
-(10014, 'Martinez', 'Leila', '37/46 Kulas Roads, Maragondon 0962 Quirino ', '07/11/1970', 'Payroll Rank and File', '877-110-749\r\n', '27-2090996-4\r\n', '515741057496', '275-792-513-000\r\n', '101205445886', 'Regular\r\n', '24,000\r\n', '12,000\r\n', 142.86, 'Employee'),
-(10015, 'Romualdez', 'Fredrick', '22A/52 Lubowitz Meadows, Pililla 4895 Zambales', '03/10/1985', 'Account Manager', '023-079-009\r\n', '26-8768374-1\r\n', '308366860059', '598-065-761-000\r\n', '223057707853', 'Regular\r\n', '53,500\r\n', '26,750\r\n', 318.45, 'Employee'),
-(10017, 'De Leon', 'Selena', '89A Armstrong Trace, Compostela 7874 Maguindanao', '02/20/1975', 'Account Team Leader', '975-432-139\r ', '27-2090208-8\r ', '587272469938', '482-259-498-000\r ', '719007608464', 'Regular\r ', '41,850\r\n', '20,925\r\n', 249.11, 'Employee'),
-(10018, 'San Jose', 'Allison', '08 Grant Drive Suite 406, Poblacion, Iloilo City 9186 La Union', '06/24/1986', 'Account Rank and File', '179-075-129\r\n', '45-3251383-0\r\n', '745148459521', '121-203-336-000\r\n', '114901859343', 'Regular\r\n', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
-(10019, 'Rosario', 'Cydney', '93A/21 Berge Points, Tapaz 2180 Quezon', '10/06/1996', 'Account Rank and File', '868-819-912\r\n', '49-1629900-2\r\n', '579253435499', '122-244-511-000\r\n', '265104358643', 'Regular\r\n', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
+(10014, 'Martinez', 'Leila', '37/46 Kulas Roads, Maragondon 0962 Quirino', '07/11/1970', 'Payroll Rank and File', '877-110-749', '27-2090996-4', '515741057496', '275-792-513-000', '101205445886', 'Regular', '24,000\r\n', '12,000\r\n', 142.86, 'Employee'),
+(10015, 'Romualdez', 'Fredrick', '22A/52 Lubowitz Meadows, Pililla 4895 Zambales', '03/10/1985', 'Account Manager', '023-079-009', '26-8768374-1', '308366860059', '598-065-761-000', '223057707853', 'Regular', '53,500\r\n', '26,750\r\n', 318.45, 'Employee'),
+(10017, 'De Leon', 'Selena', '89A Armstrong Trace, Compostela 7874 Maguindanao', '02/20/1975', 'Account Team Leader', '975-432-139', '27-2090208-8', '587272469938', '482-259-498-000', '719007608464', 'Regular', '41,850\r\n', '20,925\r\n', 249.11, 'Employee'),
+(10018, 'San Jose', 'Allison', '08 Grant Drive Suite 406, Poblacion, Iloilo City 9186 La Union', '06/24/1986', 'Account Rank and File', '179-075-129', '45-3251383-0', '745148459521', '121-203-336-000', '114901859343', 'Regular', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
+(10019, 'Rosario', 'Cydney', '93A/21 Berge Points, Tapaz 2180 Quezon', '10/06/1996', 'Account Rank and File', '868-819-912', '49-1629900-2', '579253435499', '122-244-511-000', '265104358643', 'Regular', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
 (10020, 'Bautista', 'Mark', '65 Murphy Center Suite 094, Poblacion, Palayan 5636 Quirino', '02/12/1991', 'Account Rank and File', '683-725-348\r\n', '49-1647342-5\r\n', '399665157135', '273-970-941-000\r\n', '260054585575', 'Regular\r\n', '23,250\r\n', '11,625\r\n', 138.39, 'Employee'),
 (10021, 'Lazaro', 'Darlene', '47A/94 Larkin Plaza Apt. 179, Poblacion, Caloocan 2751 Quirino', '11/25/1985', 'Account Rank and File', '740-721-558\r\n', '45-5617168-2\r\n', '606386917510', '354-650-951-000\r\n', '104907708845', 'Probationary\r\n', '23,250\r\n', '11,625\r\n', 138.39, 'Employee'),
 (10022, 'Delos Santos', 'Kolby', '06A Gulgowski Extensions, Bongabon 6085 Zamboanga del Sur', '02/26/1980', 'Account Rank and File', '739-443-033\r\n', '52-0109570-6\r\n', '357451271274', '187-500-345-000\r\n', '113017988667', 'Probationary\r\n', '24,000\r\n', '12,000\r\n', 142.86, 'Employee'),
-(10023, 'Santos', 'Vella', '99A Padberg Spring, Poblacion, Mabalacat 3959 Lanao del Sur', '12/31/1983', 'Account Rank and File', '955-879-269\r\n', '52-9883524-3\r\n', '548670482885', '101-558-994-000\r\n', '360028104576', 'Probationary\r\n', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
-(10024, 'Del Rosario', 'Tomas', '80A/48 Ledner Ridges, Poblacion, Kabankalan 8870 Marinduque', '12/18/1978', 'Account Rank and File', '882-550-989\r\n', '45-5866331-6\r\n', '953901539995', '560-735-732-000\r\n', '913108649964', 'Probationary\r\n', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
-(10025, 'Tolentino', 'Jacklyn', '96/48 Watsica Flats Suite 734, Poblacion, Malolos 1844 Ifugao', '05/19/1984', 'Account Rank and File', '675-757-366\r\n', '47-1692793-0\r\n', '753800654114', '841-177-857-000\r\n', '210546661243', 'Probationary\r\n', '24,000\r\n', '12,000\r\n', 142.86, 'Employee');
+(10023, 'Santos', 'Vella', '99A Padberg Spring, Poblacion, Mabalacat 3959 Lanao del Sur', '12/31/1983', 'Account Rank and File', '955-879-269', '52-9883524-3', '548670482885', '101-558-994-000', '360028104576', 'Probationary', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
+(10024, 'Del Rosario', 'Tomas', '80A/48 Ledner Ridges, Poblacion, Kabankalan 8870 Marinduque', '12/18/1978', 'Account Rank and File', '882-550-989', '45-5866331-6', '953901539995', '560-735-732-000', '913108649964', 'Probationary', '22,500\r\n', '11,250\r\n', 133.93, 'Employee'),
+(10025, 'Tolentino', 'Jacklyn', '96/48 Watsica Flats Suite 734, Poblacion, Malolos 1844 Ifugao', '05/19/1984', 'Account Rank and File', '675-757-366', '47-1692793-0', '753800654114', '841-177-857-000', '210546661243', 'Probationary', '24,000\r\n', '12,000\r\n', 142.86, 'Employee');
 
 --
 -- Indexes for dumped tables
@@ -2411,7 +2409,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `Attendance #` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2208;
+  MODIFY `Attendance #` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2210;
 
 --
 -- AUTO_INCREMENT for table `credentials`
@@ -2423,13 +2421,13 @@ ALTER TABLE `credentials`
 -- AUTO_INCREMENT for table `leave_requests`
 --
 ALTER TABLE `leave_requests`
-  MODIFY `Request_number` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `Request_number` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10046;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10047;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
