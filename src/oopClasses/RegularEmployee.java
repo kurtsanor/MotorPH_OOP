@@ -59,6 +59,7 @@ public class RegularEmployee extends User implements BasicActions {
         return leaveModule.submitLeaveRequest(employeeID, startDate, endDate, reason, firstName, lastName, leaveType);
     }
     
+    @Override
     public List<String[]> viewPersonalLeaveRecords (int employeeID) {
         LeaveManagementModule leaveModule = new LeaveManagementModule(this);
         

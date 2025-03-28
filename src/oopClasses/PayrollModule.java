@@ -35,7 +35,7 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
             while (rs.next()) {
                 // set the employeeID to the current employee
                 super.setEmployeeId(rs.getInt("id"));
-                hourlyRate = rs.getDouble("Hourly_rate");
+                this.hourlyRate = rs.getDouble("Hourly_rate");
                 
                 // calculates the monthly salary of the current employee
                 calculateMonthlyGrossSalary();
@@ -45,7 +45,7 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
                  rs.getString("id"),
                  rs.getString("First_name") + " " + rs.getString("Last_name"),
                  rs.getString("Hourly_rate"),
-                 String.valueOf(monthlyWorkHours),
+                 String.valueOf(this.monthlyWorkHours),
                  String.valueOf(TaxAndDeductionsModule.getPhilHealthDeduction(getGrossPay())),
                  String.valueOf(TaxAndDeductionsModule.getSSSDeduction(getGrossPay())),
                  String.valueOf(TaxAndDeductionsModule.getPagIbigDeduction(getGrossPay())),
@@ -77,7 +77,7 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
             while (rs.next()) {               
                 // set the employeeID to the current employee
                 super.setEmployeeId(rs.getInt("id"));
-                hourlyRate = rs.getDouble("Hourly_rate");
+                this.hourlyRate = rs.getDouble("Hourly_rate");
                     
                 // calculates the monthly salary of the current employee in the resultset and populates the salary related variables
                 calculateMonthlyGrossSalary();
@@ -85,7 +85,7 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
                 String currentEmployeeID = rs.getString("id");
                 String fullName = rs.getString("First_name") + " " + rs.getString("Last_name");
                 String empHourlyRate = rs.getString("Hourly_rate");
-                String totalWorkHours = String.valueOf(monthlyWorkHours);
+                String totalWorkHours = String.valueOf(this.monthlyWorkHours);
                 String philHealthDeduction = String.valueOf(TaxAndDeductionsModule.getPhilHealthDeduction(getGrossPay()));
                 String sssDeduction = String.valueOf(TaxAndDeductionsModule.getSSSDeduction(getGrossPay()));
                 String pagibigDeduction = String.valueOf(TaxAndDeductionsModule.getPagIbigDeduction(getGrossPay()));
@@ -109,9 +109,9 @@ public class PayrollModule extends AttendanceModule implements RecordOperations 
         
         /* retrieves the total work hours of an employee in a month in the hashmap. if the selected year or month does not exist in the hashmap,
         a default value of 0.0 will be placed instead to avoid null exceptions */
-        double monthlyHours = workHoursMap.getOrDefault(Arrays.toString(key), 0.0);
+        double monthlyHours = this.workHoursMap.getOrDefault(Arrays.toString(key), 0.0);
         
-        double monthlySalary = monthlyHours * hourlyRate;
+        double monthlySalary = monthlyHours * this.hourlyRate;
         if (monthlySalary <= 0) {
             this.grossPay = 0;
         }
